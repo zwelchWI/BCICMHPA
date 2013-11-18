@@ -83,21 +83,32 @@ def main():
     #     WHERE price < 5""")
 
 
+    #we really aught to consider a streaming option if this gets too big
+
     time_query=""
     if start_date is not None and end_date is not None:
-        time_query = "BETWEEN "+start_time.strftime("%m/%d/%y") +" and "+end_time.strftime("%m/%d/%y")
+        time_query = "Date BETWEEN '"+start_time.strftime("%m/%d/%y") +"' and '"+end_time.strftime("%m/%d/%y")+"'"
     elif start_date is not None:
-        time_query = ""
+        time_query = "where post_date >  '"+start_time.strftime("%m/%d/%y")+"'"
     elif end_date is not None:
         time_query = ""
 
 
+    #get basic data
     db.query("select * from scmlog "+time_query)
+    commits = db.stor_results()
 
-
-    #assume 1 is clean and -1 is buggy
+    #get all the rows as a tuple of dictionaries, where each key is the column name
+    commit_data = commits.get_row(max_row=0,how=1)
+    #get list of buggy commits
     db.query("select DISTINCT bug_commit_id from Hunk_Blames;")
     buggy = db.store_results()
+    
+
+    for commit in commit_data:
+        #print out the data
+
+
 
 
     csv.close()
