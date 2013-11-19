@@ -13,8 +13,8 @@ def usage():
         -pX or --db-passwd X    set password to X
         -dZ or --db-database Z  set db name to Z
         -Ha or --db-host a      set database host to a
-        --start-date MO/DAY/YR  ex: 07/04/1776
-   	--end-date   MO/DAY/YR
+        --start-date YYYY/MM/DD  ex: 1776/1/14
+   	--end-date   YYYY/MM/DD
 	-c  or --csv-file C	set csv filename
         def user         : root
         def password     : ""
@@ -65,10 +65,10 @@ def main():
             Host = arg
         elif opt in ('--start-date'):
             sd = arg.split('/')
-            start_date = date(int(sd[2]),int(sd[0]),int(sd[1]))
+            start_date = date(int(sd[0]),int(sd[1]),int(sd[2]))
         elif opt in ('--end-date'):
             ed = arg.split('/')
-            end_date = date(int(ed[2]),int(ed[0]),int(ed[1]))
+            end_date = date(int(ed[0]),int(ed[1]),int(ed[2]))
         elif opt in ('-c','--csv-file'):
             csv_name = arg
 
@@ -87,27 +87,45 @@ def main():
 
     time_query=""
     if start_date is not None and end_date is not None:
-        time_query = "Date BETWEEN '"+start_time.strftime("%m/%d/%y") +"' and '"+end_time.strftime("%m/%d/%y")+"'"
+        time_query = "where commit_date BETWEEN '"+start_date.strftime("%y/%m/%d") +"' and '"+end_date.strftime("%y/%m/%d")+"'"
     elif start_date is not None:
-        time_query = "where post_date >  '"+start_time.strftime("%m/%d/%y")+"'"
+        time_query = "where commit_date >= '"+start_date.strftime("%y/%m/%d")+"'"
     elif end_date is not None:
-        time_query = ""
+        time_query = "where commit_date <=  '"+end_date.strftime("%y/%m/%d")+"'"
 
-
+    query_str=' select a.id,rev,commit_date,message,email,added,removed,file_count from scmlog a INNER JOIN people b ON a.author_id=b.id  INNER JOIN commits_lines c on a.id=c.commit_id INNER JOIN (select commit_id,count(commit_id) as file_count from actions group by commit_id) as d on a.id=d.commit_id'
     #get basic data
-    db.query("select * from scmlog "+time_query)
-    commits = db.stor_results()
-
+    db.query(query_str+" "+time_query)
+    commits = db.use_result()
     #get all the rows as a tuple of dictionaries, where each key is the column name
-    commit_data = commits.get_row(max_row=0,how=1)
+    commit_data = commits.fetch_row(maxrows=0,how=1)
+
     #get list of buggy commits
     db.query("select DISTINCT bug_commit_id from Hunk_Blames;")
-    buggy = db.store_results()
-    
+    buggy = db.use_result()
+    buggy_data = buggy.fetch_row(maxrows=0,how=1)
 
+    buggys=[]
+    for b in buggy_data:
+        buggys.append(b['bug_commit_id'])
+
+    buggy=None
+    buggy_data=None
+
+    csv.write('date,user,lines_added,lines_removed,num_files_changed,buggy,comment\n')
     for commit in commit_data:
         #print out the data
-
+        csv.write(commit['commit_date']+',')
+        csv.write(commit['email']+',')
+        csv.write(commit['added']+',')
+        csv.write(commit['removed']+',')
+        csv.write(commit['file_count']+',')
+        if commit['id'] in buggys:
+            csv.write('1')
+        else:
+            csv.write('-1')
+        csv.write(',')
+        csv.write('"'+commit['message'].strip('\n')+'"\n')
 
 
 
