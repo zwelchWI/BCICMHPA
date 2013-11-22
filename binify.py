@@ -83,21 +83,24 @@ def main():
 
     for data in indata[1:]:
         vals = [float(x) for x in data.split(',')]
-        for ndx in range(len(vals)):
+        for ndx in range(len(vals)-1):
             for range_ndx in range(numbins):
                 print range_ndx," ",numbins/2.0
                 low_bin = mins[ndx]+range_ndx*ranges[ndx]
                 high_bin= mins[ndx]+(range_ndx+1)*ranges[ndx]
-                if range_ndx < numbins/2.0:
-                    something = 'low'+str(int(math.ceil(numbins/2.0)-range_ndx))
-                elif range_ndx > numbins/2.0:
-                    something = 'up'+str(int(range_ndx-math.ceil(numbins/2.0)))
+                if range_ndx < (numbins-1)/2.0:
+                    something = 'low'+str(int(math.ceil((numbins-1)/2.0)-range_ndx))
+                elif range_ndx > (numbins-1)/2.0:
+                    something = 'up'+str(int(range_ndx-math.ceil(numbins/2.0)+1))
                 else:
                     something ='mid'  
                 if vals[ndx] >= low_bin and vals[ndx] <= high_bin:
                     #in this bin
                     outfile.write(something+',')
-                    
+        if vals[-1] < 0:
+            outfile.write('clean')
+        else: 
+            outfile.write('buggy')                    
         outfile.write('\n')
     outfile.close()
 
