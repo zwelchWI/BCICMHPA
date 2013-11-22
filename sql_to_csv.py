@@ -16,6 +16,20 @@ def usage():
         --start-date YYYY/MM/DD  ex: 1776/1/14
    	--end-date   YYYY/MM/DD
 	-c  or --csv-file C	set csv filename
+        --extensions		comma separated list of extensions
+		LinesAdded
+                LinesRemoved
+		TimeHour
+		TimeMin
+		Day
+		Month
+		Year
+		DayOfWeek
+		User
+		Comment
+		CommentLength
+		NumFiles
+		
         def user         : root
         def password     : ""
         def db name      : cvsanaly
@@ -34,7 +48,7 @@ def main():
         options, remainder = getopt.getopt(sys.argv[1:],
             'hu:p:d:H:c:',["help","db-user=","db-passwd=",
 		"db-database=","db-host=","start-date=","end-date=",
-		"csv-file="])
+		"csv-file=","extensions="])
 	#fix later
     except getopt.GetoptError, err:
         print str(err)
@@ -48,7 +62,8 @@ def main():
     Host='localhost'
     csv_name = 'out.csv'
     start_date = None
-    end_date = None 
+    end_date = None
+    extensions = [] 
 
     for opt, arg in options:
         
@@ -71,6 +86,8 @@ def main():
             end_date = date(int(ed[0]),int(ed[1]),int(ed[2]))
         elif opt in ('-c','--csv-file'):
             csv_name = arg
+        elif opt in ('--extensions'):
+            extensions = arg.split(',')
 
         else:
             assert False, "unhandled option "+opt
@@ -112,22 +129,43 @@ def main():
     buggy=None
     buggy_data=None
 
-    csv.write('date,user,lines_added,lines_removed,num_files_changed,buggy,comment\n')
+    for ext in extensions:
+        csv.write(ext+',')
+    csv.write('buggy\n')
     for commit in commit_data:
         #print out the data
-        csv.write(commit['commit_date']+',')
-        csv.write(commit['email']+',')
-        csv.write(commit['added']+',')
-        csv.write(commit['removed']+',')
-        csv.write(commit['file_count']+',')
+        for ext in extensions:
+            if ext is 'LinesAdded':
+                csv.write(commit['added']+',')
+            if ext is 'LinesRemoved':
+                csv.write(commit['removed']+',')
+            if ext is 'TimeHour':
+                pass
+            if ext is 'TimeMin':
+                pass
+            if ext is 'Day':
+                pass
+            if ext is 'Month':
+                pass
+            if ext is 'Year':
+                pass
+            if ext is 'DayOfWeek':
+                pass
+            if ext is 'User':
+                csv.write(commit_data['email']+',')
+            if ext is 'Comment':
+                csv.write('"'+commit['message'].strip('\n')+'",')     
+            if ext is 'CommentLength':
+                csv.write(str(len(commit['message']))+',')
+            if ext is 'NumFiles':
+                csv.write(commit['file_count']+',')
+
+
         if commit['id'] in buggys:
-            csv.write('1')
+            csv.write('buggy')
         else:
-            csv.write('-1')
-        csv.write(',')
-        csv.write('"'+commit['message'].strip('\n')+'"\n')
-
-
+            csv.write('clean')
+        csv.write('\n')
 
     csv.close()
 
