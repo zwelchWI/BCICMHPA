@@ -91,9 +91,8 @@ def main():
 
         else:
             assert False, "unhandled option "+opt
-
     csv = open(csv_name,'w')
-
+    
     db = _mysql.connect(host=Host,user=User,passwd=Passwd,db=db_name)
 
     #db.query("""SELECT spam, eggs, sausage FROM breakfast
@@ -134,30 +133,45 @@ def main():
     csv.write('buggy\n')
     for commit in commit_data:
         #print out the data
+        date_time = commit['commit_date']
+        cdate=date_time.split()[0]
+        ctime=date_time.split()[1]
+        cdates = cdate.split('-')
+        ctimes = ctime.split(':')
+
         for ext in extensions:
-            if ext is 'LinesAdded':
+            
+            if ext == 'LinesAdded':
                 csv.write(commit['added']+',')
-            if ext is 'LinesRemoved':
+            if ext == 'LinesRemoved':
                 csv.write(commit['removed']+',')
-            if ext is 'TimeHour':
-                pass
-            if ext is 'TimeMin':
-                pass
-            if ext is 'Day':
-                pass
-            if ext is 'Month':
-                pass
-            if ext is 'Year':
-                pass
-            if ext is 'DayOfWeek':
-                pass
-            if ext is 'User':
-                csv.write(commit_data['email']+',')
-            if ext is 'Comment':
-                csv.write('"'+commit['message'].strip('\n')+'",')     
-            if ext is 'CommentLength':
+            if ext == 'TimeHour':
+                csv.write(ctimes[0]+',')
+            if ext == 'TimeMin':
+                csv.write(ctimes[1]+',')
+            if ext == 'Day':
+                csv.write(cdates[2]+',')
+            if ext == 'Month':
+                csv.write(cdates[1]+',')
+            if ext == 'Year':
+                csv.write(cdates[0]+',')
+            if ext == 'DayOfWeek':
+                dow = date(int(cdates[0]),int(cdates[1]),int(cdates[2])).weekday()
+                d=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+                csv.write(d[dow]+',')
+            if ext == 'User':
+                csv.write(commit['email']+',')
+            if ext == 'Comment':
+                lines = commit['message'].splitlines()
+                messg = ''
+                for line in lines:
+                    messg = messg+' '+line.lstrip()
+                messg = messg.replace(',','')
+                messg = messg.replace('"','')
+                csv.write('"'+messg.strip('"')+'",')
+            if ext == 'CommentLength':
                 csv.write(str(len(commit['message']))+',')
-            if ext is 'NumFiles':
+            if ext == 'NumFiles':
                 csv.write(commit['file_count']+',')
 
 

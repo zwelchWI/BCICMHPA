@@ -64,44 +64,71 @@ def main():
     outfile= open(outfile,'w')
     outfile.write(indata[0])
     num_cols = len(indata[0].split(',')) 
-    mins = [float(x) for x in indata[1].split(',')]
-    maxs = [float(x) for x in indata[1].split(',')]
-    
+    maxs=[]
+    mins=[]
+    for x in indata[1].split(','):
+        try:
+            val = float(x)
+            mins.append(val)
+            maxs.append(val)
+        except:
+            mins.append(None)
+            maxs.append(None)
     for data in indata[2:]:
-        vals = [float(x) for x in data.split(',')]
+        vals = []
+        for x in data.split(','):
+            try:
+                val = float(x)
+                vals.append(val)
+            except:
+                vals.append(None)
         for ndx in range(len(vals)):
-            if vals[ndx] < mins[ndx]:
-                mins[ndx]=vals[ndx]
-            elif vals[ndx] > maxs[ndx]:
-                maxs[ndx] = vals[ndx]
-    print mins
-    print maxs
+            if vals[ndx] is not None:
+                if vals[ndx] < mins[ndx]:
+                    mins[ndx]=vals[ndx]
+                elif vals[ndx] > maxs[ndx]:
+                    maxs[ndx] = vals[ndx]
     ranges = [0 for x in maxs]
     for ndx in range(len(maxs)):
-        ranges[ndx] = (maxs[ndx]-mins[ndx])/float(numbins)
-        
+        if vals[ndx] is not None:
+            ranges[ndx] = (maxs[ndx]-mins[ndx])/float(numbins)
+        else:
+            ranges[ndx] = None
 
     for data in indata[1:]:
-        vals = [float(x) for x in data.split(',')]
+        vals = []
+        for x in data.split(','):
+            try:
+                val = float(x)
+                vals.append(val)
+            except:
+                vals.append(x)
+
         for ndx in range(len(vals)-1):
-            for range_ndx in range(numbins):
-                print range_ndx," ",numbins/2.0
-                low_bin = mins[ndx]+range_ndx*ranges[ndx]
-                high_bin= mins[ndx]+(range_ndx+1)*ranges[ndx]
-                if range_ndx < (numbins-1)/2.0:
-                    something = 'low'+str(int(math.ceil((numbins-1)/2.0)-range_ndx))
-                elif range_ndx > (numbins-1)/2.0:
-                    something = 'up'+str(int(range_ndx-math.ceil(numbins/2.0)+1))
-                else:
-                    something ='mid'  
-                if vals[ndx] >= low_bin and vals[ndx] <= high_bin:
-                    #in this bin
-                    outfile.write(something+',')
-        if vals[-1] < 0:
-            outfile.write('clean')
-        else: 
-            outfile.write('buggy')                    
-        outfile.write('\n')
+            if type(vals[ndx]) is str:
+                outfile.write(vals[ndx]+',')
+            else:
+                print vals[ndx]
+                for range_ndx in range(numbins):
+                    low_bin = mins[ndx]+range_ndx*ranges[ndx]
+                    high_bin= mins[ndx]+(range_ndx+1)*ranges[ndx]
+                    if range_ndx < (numbins-1)/2.0:
+                        something = 'low'+str(int(math.ceil((numbins-1)/2.0)-range_ndx))
+                    elif range_ndx > (numbins-1)/2.0:
+                        something = 'up'+str(int(range_ndx-math.ceil(numbins/2.0)+1))
+                    else:
+                        something ='mid'
+                    if ranges[ndx] ==0:
+                        something='only'
+                    if (vals[ndx] >= low_bin and vals[ndx] < high_bin) or (ranges[ndx]==0):
+                        print 'PRINT'
+                        #in this bin
+                        outfile.write(something+',')
+                        if ranges[ndx] ==0:
+                            break
+                    elif vals[ndx] == maxs[ndx]:
+                        outfile.write(something+',')
+        outfile.write(vals[-1])    
     outfile.close()
 
     
