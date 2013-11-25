@@ -1,0 +1,1535 @@
+% 1. Title : cyclus.spam.train
+%
+%
+% 2. Sources:
+%    (a) Creator : Zach Welch
+%    (b) Date 2013-11-25
+@RELATION BUGGY
+@ATTRIBUTE Comment STRING
+@ATTRIBUTE classification {clean,buggy}
+
+@DATA
+" Negative material exception was being thrown by some input files. This has been ameliorated by reinstating proper use of isZero during normalization.",buggy
+" You must erase an entry in a CompHistory or MassHistory before you insert a new entry with the same key. Be more careful.",buggy
+" This is Roy's first commit! Great success!",buggy
+" This is Roy's second commit...",clean
+" This is Roy's first solo commit...",buggy
+" This creates a second sandbox executable so that Roy can choose between an executable that builds his new module and the current stable build. I officially endorse the breaking of the sandbox build. That said this sandbox executable will be deprecated as soon as we move to a testing framework. My goofing around yesterday with googletest has won me over. However it requires a newer version of cmake than CAE is comfortable with. I'll be looking into installing CMAKE 2.8.2-2 and googletest on the cnerg space.",buggy
+" This links cyclus with the googletest testing framework. It is now necessary for users of cyclus to set two environment variables GTEST_ROOT and GTEST_INCLUDE_DIR to their googletest build and googletest include directories respectively. For cyclus this has been done within in the cnerg environment.",buggy
+" Now the Logician sends the Tick and Tock to the Regions and Institutions as well as the Facilities. The function is virtual but not pure virtual and therefore the regions and institutions will ignore the tick and tock by default.",buggy
+" I decided the default receiveMessage behavior for RegionModels should be to pass messages up and down according to the message direction.",clean
+" Moved default message passing behavior to InstModel as well. Analgous to revision 219 changes to the RegionModels.",clean
+" Adds testing framework that incorporates googletest without all the environment variable hoopla. This notion of packaging gtest using pthreads came from Daniel Blezek and the SimpleITK project.",buggy
+" Fixed that annoying thing... you know that thing where building the documentation is included in make all. Phew.",clean
+" More testing stuff for the wiki. Includes broken MaterialTest file. To be fixed during workshop in a bit.",buggy
+" This fixes the unit testing problem. I was previously failing to link to the libraries of the source code. Much thanks to Daniel Blezek for his help.",buggy
+" Matrix Name Change and now building in main cyclus and not sandbox",buggy
+" This adds a functioning test within the MaterialTest test case. It is called ManualConstructor tests one of the material connstrucors in a very basic way.",buggy
+" improves MaterialTest::ManualConstructor test to do slightly more interesting things.",clean
+" Added getNumFacilities() function to InstModel interface for public reporting of current facilities",clean
+" When using the sep1test.xml file it fails in SepMatFac within the sendMaterial Function.  I have provided some comments within section where failure occurs",buggy
+" Matt and Katy Team Programming day! Worked on DeployInst model.",buggy
+" Rearranged input files and added septest.xml",buggy
+" Removes malformed sendMessage member in SeparationsMatrixFacility class. The convention for message passing was undermined by this implementation. This facility did not need a sendMessage function and the malformed implementation overrode an appropriately implemented version in the Communicator class. This closes the issue presented by the comments of revision 233.",buggy
+" Fixes a minor memory leak resulting from the use of c_str  thanks to excellent valgrind rune translation by Steve Jackson.",buggy
+" The regions pass the ticks and tocks to institutions successfully. Next step will be to pass the ticks and tocks from institutions to facilities. Initial attempts at the latter fail. Perhaps due to lack of proper initializaton of recipe data members of facilities?",clean
+" This will keep the gtest files out of the cyclus documentation.",clean
+" Handle Ticks/Tocks now pass from Regions -> Insts -> Facs successfully. The copy function for each model is now called from copyFreshModel which allows a parent model to copy a child without knowing the child's type.",buggy
+" Addresses missing copyFreshModel implementation in various Facility models not completed in revision 240. A crash was noted in null milestone tests 5 and 6 related to initialization of commType for copied models. (an issue to be created).",buggy
+" Addresses missing copyFreshModel implementation in every Region Inst Market and Converter model not completed in revision 240 or 241. Also fixes the crash that was noted in null milestone tests 5 and 6 related to initialization of commType for copied models.",buggy
+" This radical grammarian has found and fixed a specific spelling error.",clean
+" Fixed SourceFacility copy function to correctly copy capacity and inventory size variables. Also removed some extraneous comments and print statements used for bookmarking and debugging while ticks and tocks were being worked on.",clean
+" Initial work on BuildRegion",buggy
+" Working on BuildRegion. Current plan is to simply get build capability at time not equal to 0. After an algorithm should be developed to determine what facility to build what institution should build it and request that said institution builds the facility. Perhaps we should have a preference list and request from the top down stopping when a request is accepted...",buggy
+" Commenting out BuildRegion functions so nobody crashes...",buggy
+" Added basic ability to build new facilities at a given time through BuildRegion and BuildInst. Testing input is testBuild.xml in /input/null. Both classes need heavy refinement.",buggy
+" Moved test files associated with the inpro benchmark milestone into a new test input file folder called input/inpro . This will keep them separated from those associated with the null milestone.",clean
+" Adds an exception to detect nonexistent offers in the greedymarket",buggy
+" Adresses Issue 13 by copying data files into the build directory during the configure step. Also adresses some issues in the MassTable class concerning the appropriate use of the HDF5/CPP API in steady progress toward Issue 1",buggy
+" This fixes issue 1 employing the MassTable in the mass lookup in the material class.",buggy
+" This adds a compiling BookKeeper class which defines a singleton instance and creates an empty HDF5 file called cyclus.h5",buggy
+" Working on BuildRegion and XML matrix input",buggy
+" This answers the question posed in r258 about generating names for models. It creates a handle out of the model implementation type (modelImpl) and the model serial number (ID). The appropriateness or redundancy of this solution with the existence of model names should be discussed further... but generally speaking these are unique names and can be called with the Model::getHandle() function.",clean
+" BookKeeper here progresses toward creating hdf5 file with appropriate structure.",buggy
+" added generic INPRO fresh and spent LWR fuel recipes to serve as basis for PWR and BWR for NWTRB milestone.",buggy
+" The bookkeeper can now read information from the logician's list of facilities. Nice. Next we need it to read *useful* information...",buggy
+" Unbreaks something I apparently broke in the build this weekend. Oops sorry guys! I guess since no one told me it didn't get in anyone's way just yet. Phew. Onward.",clean
+" added NWTRB facilities input file. next step is adding input file",buggy
+" This catches an error which appears to have been introduced in r240. The load_facilitycatalog function was failing to load the models within its namespace and experienced an error indicating as much. The fix (uncommenting Model::load_facilities) may introduce facility duplication. We should double check this once and for all since there seems to be some misunderstanding about the chain of events.",clean
+" Changes the capacities in some facilities to be in kg for a couple of test cases. Minor.",buggy
+" This adds compiling tests for the BookKeeper class... step two of Test Driven Development is to make them pass.",buggy
+" update to BuildRegion.cpp",buggy
+" Finishing touches needed in BuildRegion.cpp",buggy
+" BookKeeper passes a few but certainly not all tests.",buggy
+" A few more BookKeeper tests pass.",buggy
+" BuildRegion now works as cited. The wiki still needs to be updated so I'll get to that soon.",clean
+" The BookKeeper now smoothly fails the first of its reading and writing tests. This though decidedly non-ideal is a marked improvement over previous behavior (immediate seg-fault.) .",buggy
+" BookKeeper passes 1D integer reading and writing tests.",clean
+" This is supposed to make everything cross platform (at least for linux and mac). I will double check that everything is still okay on the cae side and my own ubuntu box but double-checking from everyone's machines would be nice. Thanks!",buggy
+" BookKeeper passes more reading and writing tests. Still fails for strings and 3D doubles. Lots of repeated lines of code in this version of the BookKeeper should be condensed and reviewed once everything is working.",clean
+" This adds the boost library to the BookKeeper class and sucessfully passes read and write tests for integers and doubles in 1 2 and 3 dimensions. Strings will take a back seat for now so that functions specific to simulation records can be address in the near term.",buggy
+" Changes default float type to IEEE_F64LE rather than  IEE_F32LE. Minor.",clean
+" Some progress writing model implemenations in a hierarchical way is begun with this. Please ignore compiler warning about HOFFSET for now.",buggy
+" This adds a RecipeReactor model to version control. While it has the right datamembers it doesn't have all the necessary functionality yet.",buggy
+" Improves BookKeeper capabilities. Mostly committing to test platform portability.",buggy
+" This fixes the warning about HOFFSET introduced in r281  now treating strings as char[128] character arrays of fixed length .",buggy
+" This makes the BookKeeper a little better at dealing with c_strings.",clean
+" Oops.",clean
+" This adds decay functionality to the Material class. Does not yet pass all tests.",buggy
+" Updated NWTRB Facility Catalog with needed changes for lifetime and naming conventions from wiki issues.",buggy
+" Adjustments concerning decay address different indexing convention. Additions to the MaterialTests class confirm functions of composition changing .",buggy
+" Decay passes tests.",buggy
+" Implemented model writing for regions insts facs and markets. Output database now has some real structure! Contemplate adjusting this to more hierarchically (region<inst<fac<data market<data material<data  etc.)",buggy
+" Adds some implementation of Transaction structure. Some test fixtures still must be updated to confirm that bookkeeper is implemented correctly.",buggy
+" Minor fix for a bug introduced in writeModelLists in the last revision",buggy
+" Adds a storage facility that releases material after a characteristic residence time. NOTE: decay does not occur within the storage facility.",clean
+" Oops. Forgot to svn add the files in the last revision.",buggy
+" Implements transactions table.",clean
+" Slightly better database structure allowing for easier extraction using pytables.",clean
+" This udates the nwtrb facility catalog recipebook etc in order to load all facilities as recipe reactors. cyclus.rng file correctly parses this set of files now... Onward to making the recipereactor behave!",buggy
+" Adds the capability for multiple fuel types to the RecipeReactor but more cycle behavior tweaks are required before it performs exactly as expected..",buggy
+" Adds batch handling to the RecipeReactor.",buggy
+" RecipeReactor loads recipes more properly potentially more succintly with a fuelpairs structure.",buggy
+" The Recipe Reactor cycles through its list of recipes properly.",buggy
+" working on StorageFacility",buggy
+" more work towards storge facility",buggy
+" Should fix query for total mass of empty stocks. Please check.",clean
+" almost done with StorageFacility",clean
+" The SeparationsMatrixFacility now compiles.  I still need to do some heavy debugging using basic test cases before ready for use in nwtrb benchmark.",buggy
+" StorageFacility now has an initial stocks capability; it can but currently does not record the facility from which it receieves material at time = 0",buggy
+" This adds a material history table to the BookKeeper. I would like this to be written in a more awesome way but for the moment this will do. Soon enough this can be rewritten as a better organized large sparse dataset.",buggy
+" work on a new capacity region. still need to write an input file to begin debugging.",buggy
+" work on a new capacity region. still need to write an input file to begin debugging.",buggy
+" more work on capacity region. next steps are to make a capacity region input to check the xml interface.",buggy
+" Updated SeparationsMatrixFacility files.  Still work in progress.",buggy
+" Input recipes for fresh PWR and RUOX PWR fuel.  Need to get files off computer with other fresh input recipes later.  Still working on script for output isotopics.",buggy
+" Script parsing ORIGEN output now complete.  Updated NWTRB recipebook is for Post-2010 PWR spent fuel recipe.  Lingering question about oxygen accounting will be addressed soon along with rest of spent fuel recipes.",buggy
+" nwtrb test input file made and is ready for recipe testing.",buggy
+" nearing completion of simple capacity region",buggy
+" made location for NWTRB origin files",clean
+" added folder for nwtrb doe input files and entries for fresh pwr and bwr fuel in the recipe book. should we add U-234 and U-236? if so at nominal natural percentages or with enrichment?",buggy
+" added raw nwtrb plant file",clean
+" initial stocks for nwtrb have been parsed and added to nwtrb.in.xml",buggy
+" Here is the .xml recipes file which has the spent fuel isotopics for Pre-2010 PWR and BWR fuel to support Phase 1 of NWTRB test.",buggy
+" Here is folder which has the recipeParse.py file for generating isotopics from Origin .out files. It also has all the .out files for the recipes for Pre- and Post-2010 Fresh UO2 RUO2 and 5 year decayed MOX from pre-2010 spent UO2 fuel",buggy
+" some moving and shaking with origin files. nothing big",buggy
+" nwtrb runs with all facilities and initial stocks. next step is to write initial stocks to the database post-process and verify.",buggy
+" nwtrb simulation now runs with all facilities included and material recipes for BWRs and PWRs. Still need to develop a database writing function and post processing to complete Phase 1.",clean
+" all code-related phase 1 capability is complete save post-processing.",buggy
+" I was able to get a quick-and-dirty output for nwtrb phase 1. It applies the total initial mass in BWRs and PWRs multiplied by the spent fuel recipie's mass fractions. I haven't checked it. Nor has decay been taken into account. To take decay into account we need to have more robust BookKeeping. That'll be the next step. Then we can check to make sure the original spent fuel recipes are correct and then phase 1 is complete",buggy
+" I was able to get a quick-and-dirty output for nwtrb phase 1. It applies the total initial mass in BWRs and PWRs multiplied by the spent fuel recipie's mass fractions. I haven't checked it. Nor has decay been taken into account. To take decay into account we need to have more robust BookKeeping. That'll be the next step. Then we can check to make sure the original spent fuel recipes are correct and then phase 1 is complete",buggy
+" wanting to upload general sepfacmat facility testing file",buggy
+" Updated recipebook with ORIGEN Uranium enrichment isotopics for Pre-2010 PWRs and BWRs.  Next up is updating Post-2010 PWRs and BWRs and then trying to apply for re-enriched UOX.",buggy
+" Recipe now updated for Post-2010 PWR and BWR and Recycled PWR from Post-2010 spent uranium.",buggy
+" Phase 1 mass tracking seems to be correct now. I updated the post-processing to account for all isotopes including those with A < 70.  I think issue was mass difference due to oxygen in spent fuel now being counted. Next step is additional testing then back to Separations work.",buggy
+" added PreHistory to simulation progression. this acts as a time between initialize and t=0 in which initial conditions can be set. i chose this method because of possible dependencies on facility initializations which arose in setting up the storage facility.",buggy
+" Updated StorageFacility's action on PreHistory. Note it is currently BROKEN -- the xml node pointer is not storing correctly within the StorageFacility class.",buggy
+" The storage facility is broken as noted in r344 so I took it out of the build in CMakeLists. Note if something is broken in the future it's probably best to simultaneously remove it from the appropriate CMakeLists file.",clean
+" This adds skeletal repository facility models to version control.",buggy
+" Repository was too general a name this repository model more specifically is the GenericRepository.",clean
+" Made some early additions to the GenericRepository. Not yet working.",buggy
+" Made supportive changes to Volume and BookKeeper classes to assist with further development of GenericRepository class.",buggy
+" GenericRepository compiles. Onward to making it do what I want. Testing suite upcoming.",buggy
+" There was a bug in the MaterialTests.",buggy
+" Correctly resolve the ID of the receiving facility in sendMaterial.",clean
+" The SeparationsMatrixFacility is now able to ask for and make offers of material.  Material enters the facility. Next issue is how facility is getting rid of material it offers and gets matched to provide.",buggy
+" * In the Message class (Message.h Message.cpp):  * added trailing underscore to instance variables.  Even though you all think its ugly it is a real bear for me to figure out where variables come from.  The trailing uderscore would have been extremely helpful if you had used it consistently.  I move to use trailing unerscores from now on.  * moved opening brace for some functions to the same line as function definition.  Many other minor formatting changes (eliminating tabs...)  * removed unnecessary arg 'dir' from setPath function - the function now just uses the class instance variable (I don't know why this wasn't done before).  * Moved the printTrans method to after all the constructor definitions (instead of between them).",buggy
+" Reworked and cleaned up the Logician class (interface and implementation). The changes were far reaching throughout the entire code base. It compiles and runs.  I am very happy with the results.  Note that the Logician code (both header and cpp) is only ~65% of its previous length. Here is a summary list of many of the changes:  * cleaned up/consolidated Logician interface.  * combined addInst addFacility etc. into a single addModel * combined get[modeltype]ByID into getModelByID. This removed need for function pointer in BookKeeper.cpp * combined get[modeltype]ByName into getModelByName. This removed need for function pointer in BookKeeper.cpp * combined print[modeltype] into printModels method.  * Message class (Message.h Message.cpp) - removed the sender and recipient args from setPath as they were also already instance variables. Adjusted code comments accordingly.  * formatting cleaned up in Model.cpp Logician.cpp. Logician.h and other places  * marked some methods with TODO comments (e.g. methods that need to be private or deleted).  * Moved ModelType enum from BookKeeper.h to Model.h and made enum all caps (and correspondingly in BookKeeper.cpp). This prevents potential conflicts with other variables that may appear. And it just makes more sense to have it with the model class.",buggy
+" Summary list of changes:  * added trailing underscores to Logician instance variables.  * removed model-specific list from the Logician in favor of a map<ModelType ModelList> structure.  This makes the logician much more agile - easier to adapt to whatever the uncertain future holds.  * added a END_MODEL_TYPES entry to the ModelType enum to allow for primitive iteration over the enum.  The END_MODEL_TYPES enum must always be the last entry in the enum list.  The default integers values for the enum must be used or Logician constructor code will break.  This has been noted in comments I added to the code.",buggy
+" Summary list of changes:  * made CommunicatorType enum all caps (with underscores)  * made MessageDir enum all caps  * formatting cleanup in many places  * made my TODO and deprecated comments use doxygen standard format (e.g. @todo and @deprecated).",buggy
+" Added file for Logician unit testing and have coded the unit test 'shell' for the Logician.",clean
+" Changed all member variables in Model class to private.  Created setModelType setSN methods in the Model class.  Adjusted all other subclasses of Model class accordingly. Compiles runs input files and passes tests.",clean
+" Fixed nasty bug left by me in rev 358. All should update before attempting compile/runs.",clean
+" This commit primarily adds a GenericRepositoryTests file to the test suite. It really has only a very minor test (which really tests the model::load function). More tests will be possible when there is a non-xml model::init function.  I have also fixed some small errors with the (still) skeletal GenericRepository class.",buggy
+" minor correction to cmakelists in the testing directory last build wasn't dynamically linking right. Now this is better. Take this as a reminder that to clear the whole build directory to be sure about library linking changes before you commit.",clean
+" Changed Model ID's to have a single global ID-space.  This change required me to make the following adjustments in the code:  * changed ModelList to be a map instead of a vector to accomodate non-consecutive ID's.  * added begin(ModelType) and end(ModelType) methods to the Logician in order to preserve iterating functionality over models for classes external to logician (currently only used by bookkeeper).  * Added next_id_ static member var to Model class.  Default model constructor automatically sets the ID_ var and increments next_id_. Removed nextID vars and nextID++ statements from FacilityMode MarketModel etc. constructors.  I also deleted some comments that I felt were not helpful at all.  We should put some effort into deleting and/or improving bad comments. Examples of unhelpful comments:  ConverterModel.h /** * The ConverterModel class is the abstract class/interconve used by all * converter models * */ Yes we know it is a class.  And we probably could guess that more specific converter types inherit from this.  Material.h /** * type definition for isotopes */ What is the variable used for? How is it used.  This isn't worthless but it's not great.",buggy
+" Changed all the c-style dynamic casting to c++ style dynamic casting. See issue 55.",buggy
+" Adds boost requirement to build system. See issue 39.",clean
+" Correct some Doxygen errors",buggy
+" Added some slightly more informative input parsing... and a big default try-catch block.",clean
+" This commit adds the beginnings of a directory structure for the GenericRepository and adds the xml grammar to the rng file so that the GenericRepository can be successfully loaded. Some test input files have been created as well. Finally the Volume class has been moved to its proper place within the GenericRepository model directory.",buggy
+" Corrects a minor typo introduced in r370 within a test input file for the repository.",clean
+" Consolidated catch statements in BookKeeper.cpp",buggy
+" House-keeping on the Model class as I try to understand how the dynamic loading works.",buggy
+" Made cyclus exception prettier as suggested by code review of r371 .",clean
+" Added GenericRepositoryTests improvement suggested in code review of r368.",buggy
+" Process made on trailing underscores. Test driver hangs prior to commit (on clean r377).",buggy
+" Added a system wide decay step to the Logician::handleTimeStep method and a switch to indicate how often to perform the decay calculation on all materials.  This commit also alters all current input test files to incorporate the necessary change in the cyclus.rng schema file that added the switch.  This commit closes issue 29 .",buggy
+" Appended trailing underscores to all member variables.",buggy
+" * Created TimeAgent class with all virtual functions for handling sim time steps.  It inherits from Model.  * made all models with handle[whatever] methods are now subclasses of TimeAgent instead of Model.  * added a TimeAgent stub class (and added it to cmakelists.txt files). Left other stubs as they are. Not sure how many stubs we want but the complete set of permutations is growing.  A complete set would minimally require the creation of StubCommTimeAgent.  * moved region model constructor into cpp file to prevent #include loops  * moved handle[whatever] responsibility from logician into timer.  * RegionModel registers itself to receive time-step notifications in its constructor  * Care has been taken to preserve order of calls to handle[whatever] resolveMarkets and decayMaterials.",buggy
+" Housekeeping on Material class and Logician.  Removed 'using namespace std' from their header files. Discovered some sloppiness in #includes - particularly some classes were getting their includes from includes of files they included - not from explicitly including their dependencies directly.  I think we need to comb through the project and shore up the #includes for each class: remove unused includes move includes that are only used in implementation to the implementation file explicitly include dependencies directly.",buggy
+" * TAKE CARE: don't put 'using namespace std' in header files.  * TAKE CARE: don't include files in a header that are only used by implementation as it can cause include circle problems in the future.  * noticed that UniformTaylor threw std::strings as exceptions instead of GenException.  Code in Material class's decay member function had a try statement that did nothing but convert a UniformTaylor exceptions (strings) into GenExceptions.  I changed UniformTaylor exceptions to GenExceptions and removed try statement in decay member function. Removed unnecessary try-catch blocks from uniform taylor.  * housekeeping in many classes.  * removed 'using namespace std' from all core header files (everything not inside the Model directory) - see issue 57.",buggy
+" Removed using namespace std from core model type classes (FacilityModel MarketModel etc. Removed unneeded includes here and there. More house-keeping.",buggy
+" This took a lot longer than expected. It adds some non-xml constructors to everything except the capacity region which had an intricated initialization scheme that I didn't want to mess with. Much of this structure was taken from robert's suggestion in issue59. A templated static caster was added for ease of use. The basic structure is expressed by this snippet at http://codepad.org/Cq49ElpD .",buggy
+" I failed to include the markets in the change committed in r390. This fixes that.",buggy
+" This adds a GenericRepository wiki page and makes some structural advances in the current GenericRepository model.  It also fixes a very minor typoin the FixedInst.",buggy
+" Incremental improvements to GenericRepository. Throws enough exceptions too keep unwitting users from thinking it is fully functional.",buggy
+" Housekeeping.",buggy
+" Fixes missing += in error message construction consolidates addmodel command.",buggy
+" This does a few things :  - adds better datatyping to cyclus.rng file. (issue37) - adds lifetime variable to recipereactor initialization (fixes runtime segfault) - fixes poor template handling in FacilityModel::init(map<stringvoid*) function (also fixes runtime segfault)",clean
+" Fixed a negative year in the nwtrb facilitycatalog. Yay for type checking. This input file however doesn't actually run because we've taken the broken storage facility out of the build...",buggy
+" fixed compile failure - I had to #include cstring in the bookkeeper.cpp file. I'm not sure if this is a quirk of my machine or what.  Did compiling fail for anyone else in r399?",clean
+" Made improvements to the GenericRepository class.  Note: This is a work in progress. Changes in this commit include :  - changes in the cyclus.rng file don't forget to reconfigure your build - a StubComponent class - addition of the StubComponent class to the build system. Reconfigure! - some structure for a multi-component repsoitory input scheme - an update to one repo input file. other test input files still need to be updated.",buggy
+" Minor. Fixes wf_wp_map_ and commod_wf_map initialization.",clean
+" Adds exception for cleaner break. Also the last commit was a little backwards so strike that reverse it.",buggy
+" GenericRepository can now generate a new StubComponent and call the StubCompnent init function.",buggy
+" GenericRepository bugfix. The allowed waste forms and commodities now initialize properly. Sorry about all these commit emails during the early development of this module. I just like to commit as often as improvements compile. I do not expect code reviews on each of these. I will make specific code review requests for improvements to this module when those are desired. Thanks...",buggy
+" StubComponent is initialized and functional. Next step... process logic.",buggy
+" This reverts the changes made in r391 and r390. For the interested this was very easy with the commands:  svn merge -c -391 https://cyclus.googlecode.com/svn/trunk svn merge -c -390 https://cyclus.googlecode.com/svn/trunk  Some merging conflicts arose so some cleanup was required. I'd like everyone to try reconfiguring compiling and running it to make sure everything is okay.  This closes issue 70.",buggy
+" Revamped message passing paradigm to be more generic simpler codewise and simpler to understand. Messages track their upward path.  When the message direction is down they retrace their upward path (in reverse). The actual receiveMessage calls are performed by the Message class (ideally receiveMessage will never be called by anything but the message class.  The sendMessage became entirely unnecessary and has been removed from the communicator class. This is a pretty deep-core change and I would encourage all to check and make sure cyclus runs as it has before (no nasty hidden bugs). Code reviews would be great.",buggy
+" Housekeeping got rid of atoi and atof everywhere. Issue87 closed.",buggy
+" Removed nearly empty Communicator.cpp file from cyclus project.  Communicator class is now effectively a pure virtual/abstract class.  Removed unused CommunicatorType enum from Communicator.h",buggy
+" GenericRepository improvements... consolodates some code into an initComponent function. More flexibility can be built on top of this later...",buggy
+" GenericRepository improvements... Various process logic fixes within the GenericRepository. Working toward issue69.",buggy
+" Message class now throws an exception if a communicator attempts to send a message to itself. I only tested it crudely (and it appears to work).  Feel free to test this by trying to have models send messages to themselves (anywhere in the messaging chain).",buggy
+" GenericRepository Loads wfs>wps>buffers. No runtime errors still working on robust process logic (issue69) consistent subcomponent initialization etc.",buggy
+" GenericRepository fixes to process logic... deque iterators were failing to be consistent when operations involving pushing and pulling elements occured within the loops. Better now.",buggy
+" Realized virtual methods can be private.  Changed Communicator class to reflect this.",clean
+" GenericRepository additions... added a virtual ThermalModel interface class...",clean
+" Added MessageTests (only partially complete - but very nifty). Refactored message passing a bit - made the code more self-documenting.",buggy
+" Basic message passing test suite completed. Tests for proper message passing between multiple communicators.  Checks that exceptions are thrown if a communicator tries: to send a message w/o destination to send a message to itself.  Checks that messages can be yo-yo'ed by flipping direction between UP and DOWN (they can). Checks that messages retrace their upward path properly.",buggy
+" improved tests by using more features of googletest (primarily better assertion selection).",clean
+" Added SourceFacilityTests file (but it is commented out in the cmakelists file because there is a linking error I have been unable to resolve as yet. Minor housekeeping.",buggy
+" Improvements to Generic Repository including virtual thermal and nuclide model classes which split up the previous functionality of the component class.",buggy
+" GenericRepository improvements and associated wiki edits and input file improvements. Waste condtitioning packaging and emplacement occurs properly. No physics is implemented and only the stub model works. This addresses issue69.",buggy
+" GenericRepository minor cleanup",buggy
+" Uncommented lines 14 and 15 in cmakelists for tests - SourceFacilityTests now runs (albeit it fails) and can be used as a guide for how to write future tests.  At first when I ran the test it kept seg-faulting.  That was because some classes were naughty and had methods that returned NULL or uninitialized pointers.  I think we should make it a general practice to never return a NULL or uninitialized pointer - rather to throw an exception - this allows us to get more helpful error messages.  In order to get the test to compile I did as steve suggested and moved the construct and destruct functions into the SourceFacility class's implementation file.  As paul mentioned we can't rename these functions but we should move them into the implementation files.",buggy
+" fixed errors in the StorageFacility.cpp file so it can be compiled.",buggy
+" moved extern C construct/destruct stuff from header to implementation for all facility models.",buggy
+" Cleanup doxygen errors - mostly unmatched function implementations because explicit std namespace was used in headers and not in implementations.",buggy
+" Fixed infinite looping/hang when attempting to run cyclus from outside the build directory.  Cyclus can now be executed from any arbitrary directory as the working directory.",buggy
+" cleaned up the code that allows cyclus to be executed from any directory.",buggy
+" Removed test tests.  CyclusUnitTestDriver can now be executed from an arbitrary working directory.",buggy
+" Changed name of GenException to CycException - it is now more 'conventional' and is clear that CycExceptions are exceptions that belong to our code base. Created CycException subclasses (CycIOException CycTypeException CycNullException CycRangeException CycParseException CycOverrideException CycMessageException) and changed existing exception throws to use one of the more specific subclasses.",buggy
+" Transactions/Messages now use pointers to requester/supplier pairs instead of ID's.  The Logician function getModelByID is now deprecated and unused in our codebase.",buggy
+" Created a logger/verbosity candidate class. It is based on code found here: http://drdobbs.com/cpp/201804215?pgno=1 . I haven't had time to add documentation to it yet but I will do it soon.  There is an example of how to use it in the App.cpp code file.",buggy
+" sorry - the App.cpp logger example should have been included with the prev revision.",clean
+" This addresses the platform-dependent issue introduced in r432 in which one static variable referenced another. The order in which they're initialized is not consistent among compilers.  My compiler/linker on OSX was trying to initialize InputXML::main_schema_ before Env::path_from_cwd_to_cyclus_ .  Here's a stack overflow discussion link for the curious:  http://stackoverflow.com/questions/211237/c-static-variables-initialisation-order  In any case with this sleuthing Robert was able to make the simple suggestion that the default main_schema_ variable not rely on the path_from_cwd_to_cyclus_ will be portable accross platforms. That solution is implemented here.",clean
+" Added command line arg parsing via the boost program_options library (it's pretty nifty). Experimented with changing 'verbosity' levels from the command line.  It works. I understand that the logger I have created is still a candidate not necessarily the chosen one.",buggy
+" Cleaned up logger handling of conversion between enum and text.",clean
+" Small logger adjustments.",clean
+" Moved market resolve handling functionality out of the logician and into the timer. Markets now 'register' to receive 'resolve' notifications.",buggy
+" Moved a great deal of exception throwing down lower (into the logician) and out of the concrete models. Many throws were consolidated/gathered.",buggy
+" removed experimental lines I left in App.cpp from the last commit. I'm getting sloppy.",clean
+" house-keeping. Deleted unused methods in logician getMarketBy(...).",buggy
+" Moved commodity instance tracking into a static member var in the Commodity class.  Previously the commodity constructor added every commodity to the logician.  I figured since the commodity class already 'knows' when instances of Commodity are created we might as well track commodity instances where they are already known - eliminating another cross dependency.",buggy
+" Beginnings of a conditioning facility... a work in progress.",buggy
+" exception housekeeping and changed level_to_string in logger to a vector (instead of map) as steve suggested.",buggy
+" Investigated BookKeeper some. The function writeModelList was pretty long and hard to follow so I split it up into a setUpModelList and doWriteModelList. I had some issues with passing pointers to arrays so I am only committing a version with the second function.",clean
+" Housekeeping and minor performance mods to Logger.",buggy
+" Split logger into separate interface/implementation files. Command line verbosity arg can now be given optionally as int.",buggy
+" Migrated cout statements to LOG(level) statements.  I'm sure there will be adjusting with the LOG statements and levels (and how we use them) as we begin to use this more.  I think we should come up with a few general guidelines to use for doing LOG statements.",buggy
+" Started to refactor the material class (basically making CompMap into its own IsoVector class). Minor housekeeping.  The refactored files have not yet been added to cmakelist so they don't affect the build.",buggy
+" More work on the Material class refactor. Housekeeping (i.e. giving methods/variables better names).",buggy
+" More work on the material class refactor.",buggy
+" more work on material class refactor.",buggy
+" IsoVector is nearing completion. I added it to the cmake build. It still is unused in the core.",buggy
+" More work on the conditioning facility.",buggy
+" changed setSN() to setID() and getSN() to ID()",buggy
+" changed getName() to name() and added the notion of parent and children to the Model class. Note: my parent/child commit got corrupted so I'm checking it in in bits at a time.",buggy
+" This is a relatively large commit which has far-reaching implications.  This commit institutes the child/parent paradigm. Now all models have a notion of their parent model and their child models. Within the R-I-F heirarchy messages are passed up from children to parents.  A few housekeeping actions have been taken as well such as removing some using namespace stds.",buggy
+" Cleaned up last commit.. odd error. I replaced all the getSNs etc. before using find+sed; however those changes didnt register with SVN. Accordingly I checked out a sandbox version and fixed the rest with my emacs regexp search and replace. This way was much more tedious. I'd be interested in hearing ideas as to why this might have happened.",buggy
+" Improvements on HDF5 conditioning table loading.",buggy
+" Added grammar and highly unattractive csv reader to ConditioningFacility as well as an example input file.",buggy
+" Fixes a path error in ConditioningFacility adds some comments.",clean
+" Layout updates to the GenericRepository its schema and its test input files. Working toward issue72 .",clean
+" Testing what it takes to fix unnecessary executable file permissions using svn propdel svn:executable cyclus.rng . If it does work my next commit will apply it to all files which shouldn't be executable. If it doesn't I may keep testing..",clean
+" Removed svn:executable property from files that probably should not be executable. This is mostly aestheic in my opinion but could be perceived as a security issue I imagine.  Anyway files that should not be executable inclue *.cpp *.h *.txt *.xml and others. It may be worth checking that your default file permissions do not include the executable option. The way to do this on a unix/linux system is by setting umask in your .bashrc file to something like -rw-r--r-- (umask 002) or -rw-rw---- (umask 022). The default on the CAE machines seems to be 022 which is fine.  I know my settings were wrong for a while so I'm at fault for many of these files having been executables early on but it's also the case that I've seen more files popping up recently with executable permissions so I thought I'd wipe it clean and mention it here in the hopes that we can keep it clean going forward.",clean
+" Adds radiuses to Component class schema.",clean
+" Realigns misaligned tabs in the test input files.",clean
+" Completed HDF5 table loading function for Conditioning facility and added an appropriate example input file and hdf5 file.",buggy
+" This commit is intended to fix a bug in which our dlopen / dlsym paradigm is incompatible with the nature of Windows dynamic loading . PLEASE CHECK that this configuration change still works on your machine. Use a clean build directory reconfigure rebuild and run.  For details on the whys and the hows see http://en.wikipedia.org/wiki/Dynamic_loading#In_C.2FC.2B.2B .  This has not yet been tested on either LINUX or windows systems. It has only been tested on my mac. It will be tested on windows soon but again PLEASE CHECK. This will contribute to issue104.",buggy
+" Fixes a typo in naming the backend.",buggy
+" Fixed message passing bug where messages were sent directly to sender instead of through hierarchy. Removed obsolete execute method on Message class.  Cleaned up Message class clone method to use default copy constructor.  Markets should never create new message - they should only use the clone method.  This allows for the preservation of the path the message traveled.  So using the clone method allows the newly created messages to still 'know' how to get back home.  Consolidated Message class constructors. Other minor housekeeping.",buggy
+" Added some geometry to the component class.",clean
+" added a sloppy start to the channel concept described in issue 112.",buggy
+" fixed compile failure inroduced in r487.",clean
+" Added lots of doxygen documentation for the logger (it got it's own page.  Added link to logger documentation to doxygen main page (had to create mainpage documentation file (mainpage.dox).",buggy
+" Finalizes layout initialization in GenericRepository. issue72.",buggy
+" WINDOWS: This may fix some issues recently encountered with building in Windondows.",clean
+" added some bookkeeping.",buggy
+" Finer time granularity was added in the following way: * the Timer now uses boost::gregorian to keep track of the current day and month * the Timer sends ticks tocks and resolves on the first day of the month ** we can change this so that resolve/tocks are sent on other days * then for each day (including the first) the Timer sends a new function called sendDailyTasks ** currently the sending tree mirrors the tick/tock tree ** we may want to add a set of daily listeners much like we have tick listeners to explicitly determine the listeners  NOTE: FacilityModel is failing the receieve message test. It was failing this test on a clean checkout before this commit so we should figure out which commit caused the fail and fix it.",buggy
+" Some quick documentation revisions as caught by katy from r493",clean
+" moved sendTock() to last day of the month",clean
+" killed old runSim comment",clean
+" Implements the database creation for the GenericRepository. Also irons out some bugs in geometric initialization paradigm. This addresses Issue73.",clean
+" Windows Fix:  This should fix the following recently encountered error (and it's ilk):  LEV_ERROR: cyclus exception : Unable to load model shared object file: cyclus/Models/MarketStubMarket.dll",clean
+" Added template for tutorial and link to it from mainpage.",clean
+" added getting building running styleguide a docdoc page and an outline on the mainpage.",clean
+" here are the files I forgot to add to r500.",clean
+" moved InstModel info from wiki to InstModel.h doxygen",clean
+" FixedInst wiki info moved to FixedInst.h via doxygen documentation.",buggy
+" moved logger documentation to the Logger.h file.",buggy
+" some more transfer from wiki pages to header files",clean
+" This commit begins to rearrange the directory structure to encapsulate modules.  That is it begins to adress issue 128 which seeks a structure for new module creation existing models need to be encapsulated into their own directory with their supporting files tests RelaxNG.",buggy
+" Fixes a missing CMakeLists.txt in the previous commit and moves tests into the proper directory structure (if we plan to have tests amongst the source encapsulated with their modules.)",clean
+" missing dox page for running a cyclus simulation.",clean
+" This commit moves the descriptions of facility models into the doxygen documentation from their previous place on the wiki.",buggy
+" This commit modularizes relaxng parameter grammar definitions for dynamically loaded modules.  It preserves the file hierarchy within the build directory so that the .rng files remain in the directory with their object files.  At this point the main cyclus.rng file must be updated to include the model rng files. In the future this can be automated either with configuration options with a plugin-install script or both.",buggy
+" This adds a material data member indicating whether it is a template. It will help keep track of what materials are truly part of the simulation and which are just for reference (including recipes requests etc.). As we add the Resource capability the need for this will increase.",buggy
+" More wiki pages turned into doxygen",buggy
+" This adresses issue129 by writing only the final material composition to the db. That is if there are two material changes registered within a single timestep the second overwrites the first (and so too does the nth overwrite the (n-1)st.  This commit also caught a bug in the writeMatHist function in which the composition was not being entirely captured for each material. This is now fixed.",buggy
+" some more wiki -> doxy changes",buggy
+" started tinkering with killing the commodity class.",buggy
+" removed commodity class and am converging on completing core changes for killing Commodity class.  Concrete models still need to be reworked to comply with new paradigm.",clean
+" removed all lingering refs to the commodity class. The core compiles now.  All remaining is to rework concrete models to use new commodity paradigm.",buggy
+" started fixing concrete models to use std::string instead of Commodity*.",buggy
+" compiles and runs - except null/test4.xml failes.",buggy
+" Commodity class is completely obliterated from all concrete models except SWUeUF6Converter and SeparationsMatrixFacility.  These two concrete models are removed from the build.",buggy
+" misc merge props.",clean
+" updated all wiki pages to doxy text in respective header files completing issue 122. Note: I did not delete wiki pages. Should we?",buggy
+" fixed rng naming problem that resulted in failure to run input files (problem in CMakeLists for generic repo).",clean
+" fixed bug introduced into null/test4.xml that prevented it from running.",buggy
+" Reinstates the SWUeUF6Converter. Also fixes an EnrichmentFacility bug (minor from a search and replace) introduced in r381.",buggy
+" This commit reinstates the SeparationsMatrixFacility. It is clearly still not quite fully functional ( that is it currently has a weird hack hardcoding the number of streams and whatnot ) but it compiles and all of the test input files (in the input/sep/ directory) run just fine.",buggy
+" The Material class now inherits from the Resource class. The next step toward issue96 will be to teach the messages and markets to exclusively used the Resource interface for offer/request matching.",buggy
+" Toward issue96 this removes references to Materials from the Message class and Markets. Also it fixes input/test3null and test4null which had typos.",buggy
+" Continued adjustment of the Material class to jive with the Resource interface. Now checks total mass as well as total atoms. Used EPS_KG for equality checking.",buggy
+" added skeleton output.dox document and linked accordingly",clean
+" This addresses issue96 by implementing a GenericResource class and eliminates dependence of the Message class on the Material class and Material notions of amounts.  Some cleanup still needs to be done and the concept of resources should be migrated into decision-making in the Markets.",buggy
+" Cleanup fixes sign error in NullMarket introduced by new paradigm",buggy
+" More cleanup from issue 96. Changed convention of SinkFacility and NullFacility capacity defninitions in grammar so that they no longer reference recipes which are not included in those models. Variability in output masses is due to massbased material creation.",buggy
+" Simplifications to the Resource classes.",buggy
+" Minor Material class cleanup to fix lack of bookkeeper checkin in decay function.",buggy
+" Added search box to doxygen output. Renamed Log class to Logger. Added logger documentation.",buggy
+" fixed some documentation refs to the renamed logger class.",clean
+" a wee bit of house keeping.. thinking a lot about how we want to implement more of the database.",clean
+" Fixed clone function in message class so that it copies the proper resource. Also simplified SinkFacility class by employing some code reuse.",buggy
+" Fixes related bugs found in GreedyMarket NullMarket SourceFacility and SinkFacility. Combined these issues resulted in facilities sending more than they were told to send. There is still a similar problem lurking in the NullFacility. I am looking into it.",buggy
+" Fixed bug in NullFacility having to do with Resource compatibility. Also fixed test4 and test6 input file capacity conventions to agree with current syntax.",buggy
+" added recipe-reading functionality to isovector.  Moved recipe tracking from logician into IsoVector.  Many more changes to come.",buggy
+" changed Transaction.resource to Resource instead of Resource*.  This allows for message cloning to be shallow (and greatly simplified.",buggy
+" Increases coverage of SourceFacilityTests. They now pass. Also corrects erroneous (copy/paste error) documentation in MarketModel.h",buggy
+" gave a first crack at assigning unique ids to transactions. currently id's are assigned when they are registered with the bookkeeper. this may change given the requirements for other output.",buggy
+" Tests find bugs. Fancy that. It became clear that the SourceFacilityTests passed unless run in gdb. If run in gdb a memory issue appeared because the MarketModel destructor did nothing to delete the appropriate element of the markets_ vector. Since the testing framework requires a complete TearDown() the destructors need to be complete. I added the needed feature to the MarketModel destructor in this commit. In order to do this nicely I made the markets_ vector a list instead for better removal of pointers.",buggy
+" This adds an abstract test pattern for the testing of concrete FacilityModels. It was based on the suggestion given at : http://code.google.com/p/googletest/wiki/AdvancedGuide#Creating_Value-Parameterized_Abstract_Tests  This represents a step forward toward issue118 and issue105. Documentation is forthcoming. Unfortunately this commit introduces a seg-fault at the global test environment tear-down step for the testing executable. Work on diagnosing this segfault has begun.",buggy
+" Changed construct and destruct function symbols according to the suggestion (by Steve) referred to in issue89 . This commit closes issue89.  This change was necessary in order to demonstrate that two concrete FacilityModels can tested with the same FacilityModelTests interface toward the completion of issue118 and issue105 . This demonstration is shown with the SourceFac.FacilityModelTests and the SinkFac.FacilityModelTests that run using googletests parameterized test fixture capability. This commit provides a proof of principle for the Abstract Test Pattern which will be used throughout the code for the testing of abstract interfaces.  The segfault reported in r566 was diagnosed and corrected in the FacilityModelTests copyFacility test.",buggy
+" Toward issue118 and issue105 this commit adds many concrete facility tests.",buggy
+" This adds an abstract test pattern for institutions. It also adds some concrete institution tests. Finally this commit makes apparent a memory leak in the MessageTests soon to be diagnosed.",buggy
+" Adds BuildInstTests.cpp file which was erroneously neglected in r570.",buggy
+" Fixes failing test in the message class. Does not however fix the memory leak mentioned in r570.",buggy
+" This commit adds to our current barebones database structure working towards issue124 and issue125.  I have added the following capabilities: * models now report their parent IDs bornOn dates and diedOn dates * the bookkeeper now additionally records each of these * bornOn dates are set using the Model::init function * a Model::decommission function was added to apply diedOn dates (and later decommissioning activities) * all facility models now call the FacilityModel::handleTock after their own handle tock. this is to allow decommisioning activities. ** I dont like that the order is reversed from other functions (like init -> the facility model init is called first not last) so I will look into changing this * currently decommission occurs at the end of the last handleTock of the simulation for all models * under the gregorian calendar paradigm (which may of course change) the timer can now tell if it is the last day or month of the simulation  The purpose of this commit is to have a stable output database under the current output database paradigm. It allows for material tracking throughout the simulation but assumes that this is the only tracking we wish to have (i.e. one cannot track capacity energy production etc.). Additionally it assumes the R-I-F strict parent structure (i.e. it is convoluted to try to analyze the output if a facility owns another facility).  I am working to commit the following changes: * revamp the database structure as described in the OutputDatabase wiki page ** a major decision here will be how to write to the database for each agent type. do we have the agents write to the database as things happen? does each agent type get a bookkeeper vector? Interesting questions... * create a Bookkeeper function that can take a group of H5std_strings a structure and an output path and write to the database. This will allow for models (agents) transactions and resources can all be written using the same function. * write python scripts to track material changes under this paradigm ** I am waiting untill the above is complete before writing the python scripts because I believe enough changes will occur to make any scripts under the current paradigm obsolete.",buggy
+" Preliminary examples of concrete MarketModelTests within an abstract pattern.",buggy
+" This commit adds StubModelTests and RegionModelTests.",buggy
+" * setResource method on messages now automatically clones the resource and stores the clone with the transaction.  This prevents markets messages etc. from inadvertenly changing resources that may be part of agent inventories. The Resource class now has a clone() method that must be satisfied.  * removed setQuantity from the Resource base class as it was problematic with regards to conservation of resources (i.e. stuff doesn't disappear and/or come from nothing).  * clone method on messages is fixed.  It now appropriately copies the resource in the messages transaction.",buggy
+" more bug fixes gradually approaching a compilable state.",buggy
+" core now compiles.  Concrete markets enrichment facility conditioning facility have been updated to use the new material/isovector classes. Although I have endeavored to be thorough I wouldn't bet much on the conversion being error free.  We will need to invest time writing some good tests for the concrete models.",buggy
+" Fixed typo in EnrichmentFacility destructor.",clean
+" Adds RegionModelTests and fixes some memory management issues within other tests.",buggy
+" * converted GenericRepository to use the newly refactored Material/IsoVector duo. the GenericRepository class still uses some deprecated types - notably MassHistory and CompHistory in the Component.h file.  the mapping of isotopes to quantities should be handled using the IsoVector class rather than a map<int double> as in the case of MassHistory and CompHistory.  * converted NullFacility to use the newly refactored Material/IsoVector duo.  * added setQuantity back to the Resource abstract base class. It turns out that it is required in order for market models to be able to deal with different kinds of resources.  Without it in the resource base class a market model specific to each concrete resource class would have to be created.  This is because markets need to be able to split/adjust order/request quantities for matching by changing the resource quantity of the order/request.  Without the setQuantity in the resource base class this could only be achieved via down-casting the resource object into a spcific concrete type (e.g. Material GenericResource etc.).  This would effectively make markets concrete resource specific or it would require them to have some yucky internal code to determine the proper type to cast the resource into. Neither of these option are desirable.  I reverted to setQuantity in the base resource class after realizing this in conjunction with the fact that as resources in messages are now clones changing resource quantities poses no conservation violations.",buggy
+" * made the recipe retrieval method 'recipe(std::string)' in the IsoVector class static - this was an error and the method should always have been static.  * RecipeReactor now uses the new Material/IsoVector duo (albeit clunkily). This was the trickies conversion yet and is a good candidate for new bugs.",buggy
+" * fixed bug in RecipeReactor handleTick where a new Material object was allocated but its composition and mass were not set properly for the offer.  * converted SeparationsMatrixFacility to new Material/IsoVector duo.",buggy
+" Moved abstract tests to the testing directory and added testing documentation. With a little cleanup issue105 will soon be complete!",clean
+" IsoVector now throws an exception if setMass is called before any composition has been set.  This prevents a divide by zero error.",clean
+" * added method to IsoVector that multiplies/changes its mass by a specified multiplier.  * SWUConverter now uses new Material class/Isovector duo.  * SourceFacility now uses new Material class/Isovector duo.  * SinkFacility now uses new Material class/Isovector duo.  * changes to Material class were so drastic that none of the former tests were valid.  MaterialTests.cpp has been whitewashed and is in need of new tests.",buggy
+" material class decay method is now connected to the IsoVector decay code. A last_update_time_ member variable was added to the material class.  The decay method on the material class automatically updates this var to the current sim time.  Consider renaming the Material class decay method to be something like 'updateStatus'.",buggy
+" Fixed recipereactortests and sourcefacilitytests to comply with new material/isovector classes.  Everything compiles now.",buggy
+" added overloaded == operator to IsoVector class.",clean
+" * fixed bug in the MarketModel destructor.  When removing markets from the static markets_ list the loop searching for the market that matched the market being deleted the loop didn't break after removing the market being killed.  This was causing segfaults every time a market was deleted.  * disabled writeModelLists test in BookKeeperTests.cpp because it was segfaulting and I couldn't find the cause.  * XMLConstructor of IsoVector is not tested - the InputXML class only works if you go through the load-from-file process. InputXMl needs to be revised so it can process xml for us without having curFilePtr and other member vars initialized.  * Added IsoVector tests and began populating them.  * fixed floating point precision bug in GreedyMarket that resulted in segfaulting due to zero-mass splitting of offers.  When creating concrete markets please take care to use EPS_KG and such when manipulating offer/requests quantities.",buggy
+" * improved floating point handling in IsoVector class by use of isZero method.  * Added many tests for IsoVector class.  * added more thorough argument checking and exception throwing to get and set methods in the IsoVector class.",buggy
+" This commit adds instructions on how to build and install Teuchos. It does not yet add Teuchos as a required package in CMakeLists.txt. Katy and I are discussing today the best way to implement this.",clean
+" updated configure scripts for lapack and teuchos",clean
+" This commits some changes increasing modularity of the testing framework. May correct error Robert is having in the BookKeeper tests? If so sorry for the oversight.",buggy
+" renamed trilinos file and folder",clean
+" this commit adds teuchos as a dependency. the wiki describes a tested install method at InstallingDependencies. we will need to add lapack and teuchos to cae. NOTE: teuchos requires a higher cmake dependency than we previously did. i have updated the cmake dependency on the wiki but we may need to update cmake on cae as well.",buggy
+" removed Trilinos version reporting from BookKeeper instannce function. This was debris from debugging tasks concerning Teuchos dependency.",clean
+" added shell for IsoVector decay test.",clean
+" Decouples the cmake declarations of dynamically loaded modules from the cmakelists file in the testing directory. Now all references to models stay within their modular directory.",buggy
+" Slight improvements/mods to IsoVector class/doc.  Added operator overloading tests for IsoVector class.",buggy
+" added shell for a few more IsoVector tests. minor housekeeping.  Made isZero IsoVector method public.",buggy
+" added script for finding trilinos library.",clean
+" Implemented a Message::approve() method that does a pull/push for resource transactions (issue 135 and issue 112). Killed FacilityModel [send/receive]Material methods in favor of [add/remove]Resource methods in the Model base class.  The default implementations in the model base class throw a CycOverrideException. All Material* transfers have been converted to the more generic Resource* transfers.  All book-keeping of transactions can now be encapsulated easily within the Message class and it's approve() method.",buggy
+" Adds many tests including skeletal TimeAgent and Communicator tests. Also fixes missing GenericRepository implementation of removeResource().",buggy
+" Renamed Message.approve method to approveTransfer.  Moved logician model tracking functionality to static vars/methods in the Model class.  Killed the Logician.",buggy
+" This commit adds a static output directory string for each class including TimeAgent RegionModel InstModel FacilityModel and their respective inheritency children. The string itself if private but there is a public getter function.  Additionally each string is built upon its inheritence. For example The source facility has a privte string called outputDir_. One accesses the full output string for source facility by SourceFacility::outputDir(). The return string for this function is actually FacilityMode::outputDir.append(outputDir_).  The purpose of this methodology is to allow for there to be a bookkeeper function which takes arguments of outputDir and parameterList and adds these to a container for eventual writing to the output database. Accordingly each atomic entity can decide when to ask the bookkeeper to record something (such as a state change) by prompting: BI->record(ThisClass::outputDir aParameterList).",buggy
+" Removes the removeResource function declaration introduced in r618.",clean
+" I think the double free or corruption error is a problem with my machine.  I reinstated the initialization of the static vars as it was before.",buggy
+" Indeed the test errors on GenericRepository are real - not just me.  This commit fixes the segfaulting during the teardown of the global test environment.  However - it leaves 3 static member vars uninitialized to their necessary values.",clean
+" Added branch for generic repository development and removed the generic repository from the trunk.",clean
+" Finished IsoVector tests.  The decay test is simply the prev Material class decay test adapted for IsoVector.  More rigorous decay tests are in the future still.",clean
+" added cloning and resource get/set tests to the message class.  These were new methods that had implementation more complicated than simple return/setting of values.  See issue 136.",buggy
+" Remove unused total_atoms_ member var from IsoVector.  Changed access from private to protected for some IsoVector methods and member vars involving decay functionality to allow for better decay unit testing. Added shells for more IsoVector decay tests. Moved decay IsoVector tests to their own test case because they require such different setup/teardown.",clean
+" Cleaned up some unneeded test classes.",clean
+" improved invalid isotope exception message.  Added try/catch to IsoVectorTests fixture SetUp - this makes tests fail explicitly if an uncaught exception occurs during setup.",buggy
+" refactored decay info loading and conversion between Vector and CompMap into a separate DecayHandler class.  This will allow better unit testing of the decay process without requiring us to make tests for private code.  It also seems more natural.  The DecayHandler class still needs documentation (although it will generally not be used by external developers).",buggy
+" forgot to svnadd the DecayHandler.  Here it is.  Sorry.",buggy
+" added a neglected dataset name",clean
+" Changes the Material::comp() syntax to the more truthful isoVector() syntax. Also changes situations where comp().comp() occured to iso_vector_.comp(). The former (comp().comp()) threw errors in Material::clone() function testing (added here). The latter does not throw such errors.  For reference a backtrace of the sort of errors the former threw follows (the 'identifier' in question is always different btw):  [----------] 2 tests from MaterialTest [ RUN      ] MaterialTest.Constructors [       OK ] MaterialTest.Constructors (0 ms) [ RUN      ] MaterialTest.Clone terminate called after throwing an instance of 'CycRangeException' what():  cyclus exception: Isotope identifier '574365655' is not valid.  Program received signal SIGABRT Aborted. 0x00007fff85dbc0b6 in __kill () (gdb) bt 0  0x00007fff85dbc0b6 in __kill () 1  0x00007fff85e5c9f6 in abort () 2  0x00007fff87d7e5d2 in __gnu_cxx::__verbose_terminate_handler () 3  0x00007fff87d7cae1 in __cxxabiv1::__terminate () 4  0x00007fff87d7cb16 in std::terminate () 5  0x00007fff87d7cbfc in __cxa_throw () 6  0x0000000100084be1 in IsoVector::validateIsotopeNumber () 7  0x0000000100084d2d in IsoVector::atomCount () 8  0x000000010008949b in Material::checkQuality () 9  0x00000001000e6616 in MaterialTest_Clone_Test::TestBody () 10 0x000000010159b7dd in testing::Test::Run () 11 0x00000001015a246e in testing::internal::TestInfoImpl::Run () 12 0x00000001015a25a4 in testing::TestCase::Run () 13 0x00000001015a2872 in testing::internal::UnitTestImpl::RunAllTests () 14 0x00000001015a29e9 in testing::UnitTest::Run () 15 0x0000000100020130 in main () (gdb)",buggy
+" All models are now properly book-kept.  I am still having trouble coming up with an elegant way to distinguish between templates and non-template models.",buggy
+" Fixed the template ambiguity problem - somewhat elegantly (I avoided introducing any new code/requirements into concrete model coding).  The thing that all 'real' sim agents have in common is they send/receive messages.  Model* default constructor sets an is_template_ instance var to 'true'.  If an agent ever sends/receives a message the message class sets the is_template_ var to 'false'.  It works.",buggy
+" Material state during transactions is now properly recorded in the hdf5 output.  Each material state entry has an associated transaction ID.",buggy
+" fixed bug introduced in r636 that caused segfault in message class tests.",clean
+" This removes references to the generic repository from the bookkeeper. It also removes the generic 12 and 3d writeData functions and data structures which were as yet unused.",clean
+" This also removes generic and unused readData functions from the bookkeeper.",clean
+" Move INCLUDE_DIRECTORIES to capture update from Techos search.  Allow CMAKE_MODULE_PATH to be defined on command-line and appended here.  Add FIND_TRILINOS_DIR to commandline for finding Trilinos.",clean
+" Composition (isotope quantity pairs) entries now have their own table. StateID is now recorded (it should have been before) - it is necessary because the possibility of multiple material objects (and hence material ID's) per transaction.  This completes issue 135.",buggy
+" This adds testing for the basic interface functions of the material class. Further testing is always possible but this represents a solid foundation upon which to add further test coverage for this class and closes issue134.",buggy
+" Adds ConditioningFacility tests to inform ConditioningFacility completion.",buggy
+" Improvements to the conditioning facility.",buggy
+" housekeeping.",buggy
+" removed handle code from model class.  It was unused and redundant w/ model ID and name.",buggy
+" house-keeping.  renamed some Model class methods to be more consistent.",buggy
+" added partner_ member variable (w/ get/set methods) to Message class.  This variable is supposed to be set by markets - when an offer is matched to a request.  This allows facilities receiving resources to know which of their sent messages the resources being received correspond to.  Note that currently concrete models do not set the partner variable.  This still needs to be implemented.",buggy
+" Renamed many getters to not have the 'get' prefix.  This is now the cyclus standard (and recommended in the google style guide).",buggy
+" This adds windows build instructions and nearly completes the ConditioningFacility.  * The windows build instructions support only a Cygwin based build. * This closes issue104 * The ConditioningFacility is complete except for making offers and requests. * Also this uncovered a potential new bug in the BookKeeper * That is an H5 error is thrown if no transactions take place in a simulation.",buggy
+" gave Resource class its own implementation file.  Added static ID tracking to the Resource base class (and consequently removed the Material class's own ID tracking.).  Fixed bug where mass times moles was being recorded in hdf5 instead of must moles.  Changed registerMatState to registerResourceState and modified it's internals to be able to handle non-material type (e.g. generic) resources.  Added a couple of fields to the material state table - now 'quality' for generic resources is recorded - Material resources just get 'Material' recorded in that column. Added a quality getter to the generic resource class. Other minor housekeeping.",buggy
+" Added BSD license file to the code.  I chose CNERG as both the 'owner' and 'organization' in the license. Please look it over (esp Paul).",clean
+" Minor cleanup in the RecipeReactor.",buggy
+" Tweak license info.",clean
+" Fixes rank setting in BookKeeper that caused non transacting simulations to crash. Added some offer and requesting capability to conditioning facility. More remains to complete the conditioning facility requesting behavior.",buggy
+" added gfortran linking flag to the exe for trilinos dependency",clean
+" Improvements to ConditioningFacility. Cleanup remains.",buggy
+" I'm taking out our dependencies on Build and Capacity region. They're getting in the way of a change that I'm making to our model list and they were written long ago in a poor manner. I'll revamp them when they're needed.",clean
+" forgot to take out the references to build and capacity region in the .rng file",clean
+" left out a reference later in the file...",clean
+" This commit works toward issue 124. Two major changes are involved:  1) There is now a cleaner methodology for flagging a model as a template or not. - the model class now has a registerModel() function which adds it to the model list - only facilities really use templating. accordingly regions insts etc. add themselves to the model list on init. - the agent in charge of building a facility is also in charge of adding it to the model list - when an instance of an agent is added to the model list it is taken off of the template list - the model class now has a getTemplateByName() which has identical functionality to getModelByName() but searches the template_list_  2) I've been doing a lot of reading but am still having some trouble grasping the implementation of abstracting the hdf5 writing. Accordingly I've requested a meeting with Steve. In the meantime I will make the BookKeeper changes that we know are easy to implement (cementing the core book keeping -- agent list resource list and transaction list) and beginning to implement the dynamic parameter tables via templated structures. - I have replaced the BookKeepers writeModelLists() and doModelWrite() functions with a single writeAgentList() function. The Agent table builds properly. - I added h5wrap.h from PyNE. Anthony has some nice hdf5 helper functionality there. - Note that in PyNE's material class there is a good example of chunking (i.e. expanding a Dataset and writing new rows to it). We should look at it if/when we decide we need the ability to dump data.",buggy
+" added a generic dataset writing function which takes care of the group creation/dataspace creation/dataset writing.",clean
+" streamlined the writeTransList function in the BookKeeper to match the writeAgentList",clean
+" * created separate getter/setter for isTemplate in the Model class.  The setter automatically flags/stores the model as template as appropriate.  * re added the model ID assignment to the Model constructor.  * created a generic removeFromList method in the Model class that eliminates code duplication when removing/maintaining the static model lists.  * markets and regions automatically  * killed the registerModel code in favor of the setIsTemplate method.  Markets and regions automatically are instantiated with isTemplate being false.  * the setParent method automatically sets is_template to 'false'.  * Re added the functionality where the message class marks agents as not templates if they send/receive a message.  * noticed that institutions are not added as children of a region in sim initialization phase (I'm pretty sure anyway).  This needs to be corrected.",buggy
+" fixed the static string for transaction output issue. it must have commited an earlier version of the code I was working on. Hmpf.",buggy
+" Conditioning Facility improvements.",buggy
+" message for myself",clean
+" Fixed an order splitting issue in the SourceFacility and did some ConditioningFacility cleanup.",buggy
+" switched ordering of hdf5 linking flags. cyclus compiled fine but when I was compiling a sandbox directory the ordering mattered. I don't know why (after asking Steve... he didn't know either) but if it's a compiler issue I'd rather be safe than sorry.",clean
+" * added try-catch around the TI->runSim invocation in App.cpp.  This garuntees that bookkeeping will be completed regardless of any CycExceptions that are thrown.  * house keeping  * dependency/include cleanup in some files.  * discovered need to create manual copy constructors for Material and GenericResource classes in order to prevent duplicate ID's in resources. This will be necessary for discrete resource tracking.  I created appropriate constructors.  I also modified the MaterialTests file to make sure no duplicate ID's arise from resource cloning.  * changed some ASSERT's to EXPECT's (and vice versa) in MaterialTests in order to provide more feedback when tests go wrong.",buggy
+" Had some changes in there that I forgot I was working on. Reverted with correct changes.",clean
+" reverted CMakeLists.txt to r660",buggy
+" reverted to the working version of r660 with the teuchos gfortran flag",clean
+" forgot about the hdf5 library order thanks to steve",clean
+" ignoring build debug and misc build files via .gitignore.",clean
+" readme based on 'get and build cyclus' page content - a first stab at addressing #16.",buggy
+" Changes the Material::comp() syntax to the more truthful isoVector() syntax. Also changes situations where comp().comp() occured to iso_vector_.comp(). The former (comp().comp()) threw errors in Material::clone() function testing (added here). The latter does not throw such errors.  For reference a backtrace of the sort of errors the former threw follows (the 'identifier' in question is always different btw):   [----------] 2 tests from MaterialTest [ RUN      ] MaterialTest.Constructors [       OK ] MaterialTest.Constructors (0 ms) [ RUN      ] MaterialTest.Clone terminate called after throwing an instance of 'CycRangeException' what():  cyclus exception: Isotope identifier '574365655' is not valid.  Program received signal SIGABRT Aborted. 0x00007fff85dbc0b6 in __kill () (gdb) bt #0  0x00007fff85dbc0b6 in __kill () #1  0x00007fff85e5c9f6 in abort () #2  0x00007fff87d7e5d2 in __gnu_cxx::__verbose_terminate_handler () #3  0x00007fff87d7cae1 in __cxxabiv1::__terminate () #4  0x00007fff87d7cb16 in std::terminate () #5  0x00007fff87d7cbfc in __cxa_throw () #6  0x0000000100084be1 in IsoVector::validateIsotopeNumber () #7  0x0000000100084d2d in IsoVector::atomCount () #8  0x000000010008949b in Material::checkQuality () #9  0x00000001000e6616 in MaterialTest_Clone_Test::TestBody () #10 0x000000010159b7dd in testing::Test::Run () #11 0x00000001015a246e in testing::internal::TestInfoImpl::Run () #12 0x00000001015a25a4 in testing::TestCase::Run () #13 0x00000001015a2872 in testing::internal::UnitTestImpl::RunAllTests () #14 0x00000001015a29e9 in testing::UnitTest::Run () #15 0x0000000100020130 in main () (gdb)",clean
+" All models are now properly book-kept.  I am still having trouble coming up with an elegant way to distinguish between templates and non-template models.",buggy
+" Fixed the template ambiguity problem - somewhat elegantly (I avoided introducing any new code/requirements into concrete model coding).  The thing that all 'real' sim agents have in common is they send/receive messages.  Model* default constructor sets an is_template_ instance var to 'true'.  If an agent ever sends/receives a message the message class sets the is_template_ var to 'false'.  It works.",buggy
+" Material state during transactions is now properly recorded in the hdf5 output.  Each material state entry has an associated transaction ID.",buggy
+" fixed bug introduced in r636 that caused segfault in message class tests.",clean
+" This removes references to the generic repository from the bookkeeper. It also removes the generic 12 and 3d writeData functions and data structures which were as yet unused.",clean
+" This also removes generic and unused readData functions from the bookkeeper.",clean
+" Move INCLUDE_DIRECTORIES to capture update from Techos search.  Allow CMAKE_MODULE_PATH to be defined on command-line and appended here.  Add FIND_TRILINOS_DIR to commandline for finding Trilinos.",clean
+" Composition (isotope quantity pairs) entries now have their own table. StateID is now recorded (it should have been before) - it is necessary because the possibility of multiple material objects (and hence material ID's) per transaction.  This completes issue 135.",buggy
+" This adds testing for the basic interface functions of the material class. Further testing is always possible but this represents a solid foundation upon which to add further test coverage for this class and closes issue134.",clean
+" Adds ConditioningFacility tests to inform ConditioningFacility completion.",clean
+" Improvements to the conditioning facility.",buggy
+" housekeeping.",clean
+" removed handle code from model class.  It was unused and redundant w/ model ID and name.",clean
+" house-keeping.  renamed some Model class methods to be more consistent.",clean
+" added partner_ member variable (w/ get/set methods) to Message class.  This variable is supposed to be set by markets - when an offer is matched to a request.  This allows facilities receiving resources to know which of their sent messages the resources being received correspond to.  Note that currently concrete models do not set the partner variable.  This still needs to be implemented.",buggy
+" Renamed many getters to not have the 'get' prefix.  This is now the cyclus standard (and recommended in the google style guide).",buggy
+" This adds windows build instructions and nearly completes the ConditioningFacility.  * The windows build instructions support only a Cygwin based build. * This closes issue104 * The ConditioningFacility is complete except for making offers and requests. * Also this uncovered a potential new bug in the BookKeeper * That is an H5 error is thrown if no transactions take place in a simulation.",clean
+" gave Resource class its own implementation file.  Added static ID tracking to the Resource base class (and consequently removed the Material class's own ID tracking.).  Fixed bug where mass times moles was being recorded in hdf5 instead of must moles.  Changed registerMatState to registerResourceState and modified it's internals to be able to handle non-material type (e.g. generic) resources.  Added a couple of fields to the material state table - now 'quality' for generic resources is recorded - Material resources just get 'Material' recorded in that column. Added a quality getter to the generic resource class. Other minor housekeeping.",clean
+" Added BSD license file to the code.  I chose CNERG as both the 'owner' and 'organization' in the license. Please look it over (esp Paul).",clean
+" Minor cleanup in the RecipeReactor.",clean
+" Tweak license info.",clean
+" Fixes rank setting in BookKeeper that caused non transacting simulations to crash. Added some offer and requesting capability to conditioning facility. More remains to complete the conditioning facility requesting behavior.",buggy
+" added gfortran linking flag to the exe for trilinos dependency",clean
+" Improvements to ConditioningFacility. Cleanup remains.",buggy
+" I'm taking out our dependencies on Build and Capacity region. They're getting in the way of a change that I'm making to our model list and they were written long ago in a poor manner. I'll revamp them when they're needed.",clean
+" forgot to take out the references to build and capacity region in the .rng file",clean
+" left out a reference later in the file...",clean
+" This commit works toward issue 124. Two major changes are involved:  1) There is now a cleaner methodology for flagging a model as a template or not. - the model class now has a registerModel() function which adds it to the model list - only facilities really use templating. accordingly regions insts etc. add themselves to the model list on init. - the agent in charge of building a facility is also in charge of adding it to the model list - when an instance of an agent is added to the model list it is taken off of the template list - the model class now has a getTemplateByName() which has identical functionality to getModelByName() but searches the template_list_  2) I've been doing a lot of reading but am still having some trouble grasping the implementation of abstracting the hdf5 writing. Accordingly I've requested a meeting with Steve. In the meantime I will make the BookKeeper changes that we know are easy to implement (cementing the core book keeping -- agent list resource list and transaction list) and beginning to implement the dynamic parameter tables via templated structures. - I have replaced the BookKeepers writeModelLists() and doModelWrite() functions with a single writeAgentList() function. The Agent table builds properly. - I added h5wrap.h from PyNE. Anthony has some nice hdf5 helper functionality there. - Note that in PyNE's material class there is a good example of chunking (i.e. expanding a Dataset and writing new rows to it). We should look at it if/when we decide we need the ability to dump data.",clean
+" added a generic dataset writing function which takes care of the group creation/dataspace creation/dataset writing.",clean
+" streamlined the writeTransList function in the BookKeeper to match the writeAgentList",clean
+" * created separate getter/setter for isTemplate in the Model class.  The setter automatically flags/stores the model as template as appropriate.  * re added the model ID assignment to the Model constructor.  * created a generic removeFromList method in the Model class that eliminates code duplication when removing/maintaining the static model lists.  * markets and regions automatically  * killed the registerModel code in favor of the setIsTemplate method.  Markets and regions automatically are instantiated with isTemplate being false.  * the setParent method automatically sets is_template to 'false'.  * Re added the functionality where the message class marks agents as not templates if they send/receive a message.  * noticed that institutions are not added as children of a region in sim initialization phase (I'm pretty sure anyway).  This needs to be corrected.",buggy
+" fixed the static string for transaction output issue. it must have commited an earlier version of the code I was working on. Hmpf.",clean
+" Conditioning Facility improvements.",buggy
+" message for myself",clean
+" Fixed an order splitting issue in the SourceFacility and did some ConditioningFacility cleanup.",clean
+" switched ordering of hdf5 linking flags. cyclus compiled fine but when I was compiling a sandbox directory the ordering mattered. I don't know why (after asking Steve... he didn't know either) but if it's a compiler issue I'd rather be safe than sorry.",clean
+" * added try-catch around the TI->runSim invocation in App.cpp.  This garuntees that bookkeeping will be completed regardless of any CycExceptions that are thrown.  * house keeping  * dependency/include cleanup in some files.  * discovered need to create manual copy constructors for Material and GenericResource classes in order to prevent duplicate ID's in resources. This will be necessary for discrete resource tracking.  I created appropriate constructors.  I also modified the MaterialTests file to make sure no duplicate ID's arise from resource cloning.  * changed some ASSERT's to EXPECT's (and vice versa) in MaterialTests in order to provide more feedback when tests go wrong.",clean
+" Had some changes in there that I forgot I was working on. Reverted with correct changes.",clean
+" reverted CMakeLists.txt to r660",clean
+" reverted to the working version of r660 with the teuchos gfortran flag",clean
+" forgot about the hdf5 library order thanks to steve",clean
+" ignoring build debug and misc build files via .gitignore.",clean
+" Added a Readme.",buggy
+" Fixed link an license in Readme.",clean
+" more tweaks to the readme. closes #16.",clean
+" sed replaced Message* with msg_ptr (issue #6)",buggy
+" sed added closing parens to many msg_ptr allocations (issue #6).",buggy
+" added typdef for msg_ptr. added boost smart_ptr include.  fixed gtest file that got corrupted from sed replace.  added forgotten boost namespace specifier.  see issue #6.",buggy
+" changed to boost::intrusive_ptr instead of smart_ptr (issue #6).",buggy
+" fixed more bugs w/ new smart pointer paradigm (issue #6).",buggy
+" fixed uninitialized intrusive_ptr bug in Source and Sink facility tests (issue #6).",buggy
+" switched to a dr. dobbs informed intrusive pointer base (issue #6) - see http://drdobbs.com/cpp/229218807?pgno=1",buggy
+" minor house-keep",buggy
+" Added logging output and ref count tracking for message alloc/dealloc.  added MemAlloc prefix to log messages dealing with memory allocation.  see issue #6.",buggy
+" fixed Message tests to use the new intrusive pointer paradigm (closes #6).",buggy
+" added notes for 'pushers' to the blessed repo.",buggy
+" updated pusher notes on README.",buggy
+" fixed typos and reworked heading in 'pusher' section.",clean
+" fixed bug in README rst.",clean
+" more mods to README developer instructions.",buggy
+" This reverts decommissioning related changes from commit 24d45c1cedf0ef2d1306ad87a42e574a0da58967.  Conflicts:  src/Models/Facility/ConditioningFacility/ConditioningFacility.cpp src/Models/Facility/GenericRepository/GenericRepository.cpp src/Models/Facility/NullFacility/NullFacility.cpp src/Models/FacilityModel.cpp src/Models/InstModel.cpp src/Models/Model.cpp src/Models/Model.h src/Utility/BookKeeper.cpp src/Utility/BookKeeper.h",buggy
+" manual model memory management strategy utilizing parent/child ownership paradigm.",buggy
+" removed all destructor loading/creation code - it is not needed for memory dealloc/management.  removed unused typedef for destructor function pointer.",clean
+" removed unncessary destruct functions.  Virtual destructors will allow proper memory dealloc.",clean
+" made all destructor virtual.",buggy
+" added logging output line to model destructor.",clean
+" fixed bug in hierarchy deallocation where not all children were being deallocated because the list being iterated through was modified in between iterations. added more model mem alloc logging.",clean
+" removed obsolete warning about message deallocation.",clean
+" sim model mem cleanup now is more generic and is controlled in timer class.",buggy
+" model bookkeeping now occurs in destructor and is more generic - using boost::any.",buggy
+" moved resource state bookkeep from message into bookkeeper.",clean
+" removed debug code used for msg alloc/dealloc debugging.",clean
+" kill() method now stops messages from returning to dealloced communicators. Communicators track messages that might be returned to them and kill those messages when they are deallocated. Closes #33.",buggy
+" hotfix - transaction table now only gets one entry per transaction instead of one for each resource in a transaction. This also eliminated redundant material ID data.",clean
+" added intrusive_ptr typedefs. Resource now subclasses IntrusiveBase.",buggy
+" sed replaced 'Resource*' with 'rsrc_ptr'.",buggy
+" sed replaced 'GenericResource*' with 'gen_rsrc_ptr'.",clean
+" sed replaced 'Material*' with 'mat_rsrc_ptr'.",buggy
+" all Material allocations are now inside a mat_rsrc_ptr.",buggy
+" intrusive_ptr adaptations completed for Resource objects.",buggy
+" test commit",clean
+" test commit",clean
+" test",clean
+" test",clean
+" hotfix of bookkeeper segfault on long sim runs.  Large array allocation on stack was the problem.  I moved the arrays to the heap.",clean
+" removed commented code from masstable.",clean
+" Updated material class doxygen comments. Many comment house-keeps.",buggy
+" added more granularity to the logger. There are now 5 info levels and 5 debug levels.",clean
+" added prefix arg to LOG macro.  Created a CLOG macro that shortcut-adds a 'cyclog' prefix to the log statement.",buggy
+" LOG use adapted to 2-arg macro (w/ prefix) using sed replace.",buggy
+" all mem alloc/dealloc log statements now use MLOG macro.",buggy
+" changed some LOG macros to CLOG.",buggy
+" logger output now excludes 'LEV_' prefix on LogLevels.",clean
+" cleaned up all LOG/CLOG statements in IsoVector Model and App.cpp.  I will do this for every log statement in the core.",buggy
+" tweaked logger indent/prefixing. Cleaned up and added logging in/to Material Model GenericResource and Communicator classes.",buggy
+" added virtual destructor to Resource base class - this may have been affecting proper resource object deallocation.",clean
+" more CLOG and MLOG tweaks/improvements in Message Model and IntrusiveBase classes.",buggy
+" updated/tweaked logging in Timer class.",buggy
+" more tweaks to core CLOG macros.",buggy
+" more logging tweaks",buggy
+" added scopint section to logger doxygen doc.",clean
+" added CL switch for printing only core log entries.",clean
+" fixed prefix for SourceFacility and removed unnecessary material->print() statements.",clean
+" removed cout from Message class and added trans data to logging output.",clean
+" Material class constructors now have logging output.",clean
+" cleaned up logging output for Source and Sink facilities.",buggy
+" more logging tweaks.",buggy
+" added vim cyclog goodies that allow folding by log scope. Fixed missing opening log brace in SourceFacility.",buggy
+" changed CL core-only flag to no-model and added no-mem flag.  Logger is updated to match.",buggy
+" tweaked log output in message and model class.",buggy
+" minor tweak to src and snk facility logging.",buggy
+" cleaned up source facility code. moved inventory/material generation from beginning of tock to beginning of tick.",buggy
+" fixed a missing non that changes the meaning of one of my dev instruction bullets",clean
+" removed teuchos dependency",clean
+" added the Table class to the build",buggy
+" need to write a model_is_alive function",buggy
+" removed teuchos dependency",clean
+" Changed the setParent function in the Model class to now act as an official registry of models in the simulation (they get added as rows the the agent table). I preserved Robert's functionality that root nodes have a NULL pointer to their parent but their parentID is their own ID.  Changed the setParent function in the Model class to now act as an official registry of models in the simulation (they get added as rows the the agent table). I preserved Robert's functionality that root nodes have a NULL pointer to their parent but their parentID is their own ID.",buggy
+" The Message class now creates and records Transactions in SQL",buggy
+" changed storage facility to a sink facility for nwtrb input file.",buggy
+" gave some values a constructor default to prevent the vars from storing junk.",clean
+" added missing facilities in nwtrb input file.",buggy
+" added logging to recipereactor.  added a line that checks for zero-length currCore.",buggy
+" added modified nwtrb files for recipe reactor and sim debugging.",buggy
+" the scientific notation in the recipebook was not being read properly.  I removed it.",buggy
+" fixed copy method of recipereactor - it wasn't copying the in/out recipes of the src model.",buggy
+" added more logging to recipe creation.",clean
+" Fixed recipereactor bug where month_in_cycle_ was not being reset at the end of the cycle. Added more logging to recipe reactor.",buggy
+" tweaked round-off handling in GreedyMarket to be more 'safe'. Cleaned up some GreedyMarket logging.",buggy
+" fixed material generation bug during first time step (that I introduced in SourceFacility).",buggy
+" added default commodity for market model - this allow market testing without having to 'break into' private/protected market interfaces.",clean
+" added a check ensuring resource pointer is valid before message attempts to clone it.",clean
+" added Tests that check proper splitting behavior of GreedyMarket.",buggy
+" fixed bug in Material class CheckQuality that was returning false negatives. Added material class tests to make sure this doesn't happen again.",clean
+" fixed bug where NUMISOS was too small and caused invalid write memory problems.",clean
+" removed problematic checkQuality statement from GreedyMarket offer/request matching.",clean
+" fixed sourcefacility tests to agree with new delta-t tracking paradigm.",clean
+" finalized and runnable modified nwtrb file. - 1 source 1 recipe-reactor and 1 sink.",buggy
+" removed cout left by Matt in Model.cpp that was making test output very ugly.",clean
+" modified mod-nwtrb input file to have more facilities and a longer duration.",buggy
+" performance modifications to IsoVector Material and Message class.",buggy
+" Fixed an issue where the agents table was being made twice",clean
+" cout statement taken out",clean
+" Three new tables are introduced: Resource Resource Type and Material History. Logging occurs when the generating facility sets the resource's originatorID. This is analagous to the Agent table for which logging occurs when the setParent function is called. Both occurences happen when the object is 'born' in the simulation",buggy
+" added foreign key to resource table",buggy
+" Added foreign key (and fixed primary key) on the MaterialHistory table. Note - we need a way to correctly log materials that get created and then sent. We currently make a new resource every time which invalidates the tracking by resource ID.",buggy
+" Fixed an issue where the agents table was being made twice",clean
+" cout statement taken out",clean
+" Three new tables are introduced: Resource Resource Type and Material History. Logging occurs when the generating facility sets the resource's originatorID. This is analagous to the Agent table for which logging occurs when the setParent function is called. Both occurences happen when the object is 'born' in the simulation",buggy
+" Added foreign key (and fixed primary key) on the MaterialHistory table. Note - we need a way to correctly log materials that get created and then sent. We currently make a new resource every time which invalidates the tracking by resource ID.",clean
+" All tables now defined except IsotopicStates. Note that there is some funky management of resource ids with respect to splitting etc. This should at least be discussed so that everyone is on the same page.",buggy
+" added foreign key designation to material history table",buggy
+" An isotopics state table is now created. Note that I grab the tracked isotopes from the decay handler. Is this the best way to do this?",buggy
+" All tables now create and record. Records are confirmed correct for null/test1.xml. More testing and documentation to follow. HDF5 to be replaced shortly.",buggy
+" Added stringification of string type data members they now print with opening and closing single quotes.",buggy
+" changed the way the isotopic table tracks. it now combines the stateid and isotope into a primary key as per robert's suggestion",clean
+" removed cout statements for database testing",buggy
+" made a mass sqlite table",clean
+" Added a database class with the current goal of adding sqlite functionality to the MassTable class",clean
+" successfully added sqlite capability to our MassTable class. The type of database is chosen with a preprocessor macro.",buggy
+" Added sqlite and ability to copy mass.sqlite to the make file.",clean
+" About to make massive changes to the BookKeeper class. This is a snapshot before said changes. It compiles runs and passes all tests.",buggy
+" I am in the middle of the major BookKeeper revision. I believe that I have added all the required functionality. Now I need to remove all the legacy interaction with the BookKeeper instance. In the new paradigm Agents create Tables and only Tables talk to the BookKeeper.",buggy
+" Believed to have removed everything required. Compiles but seg faults on run and tests.",buggy
+" Removed HDF5 dependencies. Still compiles but segfaults.",buggy
+" In an attempt to fix the segfault I added an intrusive pointer to the Table class. No such luck.",buggy
+" Great succes! Valgrind saves the day. No more segfaults compiles and runs. However the tables are not building properly. E.g. For /input/null/test1.xml the Agents table has only one entry: the GreedyMarket.",buggy
+" Great success! The sim runs on null/test1.xml and gives the desired output. The tests seg fault though. Time to investigate.",clean
+" Fixing seg faults using valgrind. Partially done.",clean
+" Revert Fixing seg faults using valgrind. Partially done.  This reverts commit 42d5d7131a68b392b5beff327ea874a84c13fa93.",buggy
+" reverted the last commit",clean
+" Successfully guarded table writing agaisnt non defined tables and databases.",buggy
+" more redundancy for database existance checking.",buggy
+" added some output database diagrams",clean
+" made code example for github",clean
+" returning to the original commit",clean
+" more cleanliness for presentations",clean
+" Satisfied with documentation and safety of bookkeeper class",buggy
+" More documentation written for the Table class.",buggy
+" Updated the TableClass' documentation.",buggy
+" long day... doneish with Table documentation.",buggy
+" performance modifications to IsoVector Material and Message class.",clean
+" the message class now creates a transaction table in sql language and appends rows to it",clean
+" Fixed an issue where the agents table was being made twice",buggy
+" Three new tables are introduced: Resource Resource Type and Material History. Logging occurs when the generating facility sets the resource's originatorID. This is analagous to the Agent table for which logging occurs when the setParent function is called. Both occurences happen when the object is 'born' in the simulation",buggy
+" Added foreign key (and fixed primary key) on the MaterialHistory table. Note - we need a way to correctly log materials that get created and then sent. We currently make a new resource every time which invalidates the tracking by resource ID.",clean
+" All tables now defined except IsotopicStates. Note that there is some funky management of resource ids with respect to splitting etc. This should at least be discussed so that everyone is on the same page.",buggy
+" An isotopics state table is now created. Note that I grab the tracked isotopes from the decay handler. Is this the best way to do this?",clean
+" All tables now create and record. Records are confirmed correct for null/test1.xml. More testing and documentation to follow. HDF5 to be replaced shortly.",buggy
+" rebased both origin and upstream branches and fixed all conflicts",clean
+" used the envrionment class to check for envrionment vars in the BookKeeper",clean
+" some cleaning up",clean
+" Added documenataion and more robost error checking to the Database class",buggy
+" saving progress on readme",clean
+" the message class now creates a transaction table in sql language and appends rows to it",buggy
+" updating",clean
+" Fixed an issue where the agents table was being made twice",clean
+" cout statement taken out",clean
+" Three new tables are introduced: Resource Resource Type and Material History. Logging occurs when the generating facility sets the resource's originatorID. This is analagous to the Agent table for which logging occurs when the setParent function is called. Both occurences happen when the object is 'born' in the simulation",buggy
+" added foreign key to resource table",clean
+" Added foreign key (and fixed primary key) on the MaterialHistory table. Note - we need a way to correctly log materials that get created and then sent. We currently make a new resource every time which invalidates the tracking by resource ID.",clean
+" Fixed an issue where the agents table was being made twice",clean
+" cout statement taken out",clean
+" Three new tables are introduced: Resource Resource Type and Material History. Logging occurs when the generating facility sets the resource's originatorID. This is analagous to the Agent table for which logging occurs when the setParent function is called. Both occurences happen when the object is 'born' in the simulation",buggy
+" added foreign key to resource table",clean
+" Added foreign key (and fixed primary key) on the MaterialHistory table. Note - we need a way to correctly log materials that get created and then sent. We currently make a new resource every time which invalidates the tracking by resource ID.",clean
+" All tables now defined except IsotopicStates. Note that there is some funky management of resource ids with respect to splitting etc. This should at least be discussed so that everyone is on the same page.",buggy
+" added foreign key designation to material history table",clean
+" An isotopics state table is now created. Note that I grab the tracked isotopes from the decay handler. Is this the best way to do this?",clean
+" All tables now create and record. Records are confirmed correct for null/test1.xml. More testing and documentation to follow. HDF5 to be replaced shortly.",clean
+" Added stringification of string type data members they now print with opening and closing single quotes.",clean
+" changed the way the isotopic table tracks. it now combines the stateid and isotope into a primary key as per robert's suggestion",clean
+" removed cout statements for database testing",clean
+" made a mass sqlite table",clean
+" Added a database class with the current goal of adding sqlite functionality to the MassTable class",buggy
+" successfully added sqlite capability to our MassTable class. The type of database is chosen with a preprocessor macro.",buggy
+" Added sqlite and ability to copy mass.sqlite to the make file.",clean
+" About to make massive changes to the BookKeeper class. This is a snapshot before said changes. It compiles runs and passes all tests.",buggy
+" I am in the middle of the major BookKeeper revision. I believe that I have added all the required functionality. Now I need to remove all the legacy interaction with the BookKeeper instance. In the new paradigm Agents create Tables and only Tables talk to the BookKeeper.",buggy
+" Believed to have removed everything required. Compiles but seg faults on run and tests.",buggy
+" Removed HDF5 dependencies. Still compiles but segfaults.",clean
+" In an attempt to fix the segfault I added an intrusive pointer to the Table class. No such luck.",buggy
+" Great succes! Valgrind saves the day. No more segfaults compiles and runs. However the tables are not building properly. E.g. For /input/null/test1.xml the Agents table has only one entry: the GreedyMarket.",buggy
+" Great success! The sim runs on null/test1.xml and gives the desired output. The tests seg fault though. Time to investigate.",buggy
+" Fixing seg faults using valgrind. Partially done.",clean
+" Revert Fixing seg faults using valgrind. Partially done.  This reverts commit 42d5d7131a68b392b5beff327ea874a84c13fa93.",clean
+" reverted the last commit",clean
+" Successfully guarded table writing agaisnt non defined tables and databases.",buggy
+" more redundancy for database existance checking.",clean
+" added some output database diagrams",clean
+" made code example for github",clean
+" returning to the original commit",buggy
+" more cleanliness for presentations",clean
+" Satisfied with documentation and safety of bookkeeper class",buggy
+" More documentation written for the Table class.",clean
+" Updated the TableClass' documentation.",clean
+" long day... doneish with Table documentation.",clean
+" performance modifications to IsoVector Material and Message class.",buggy
+" the message class now creates a transaction table in sql language and appends rows to it",clean
+" Fixed an issue where the agents table was being made twice",buggy
+" Three new tables are introduced: Resource Resource Type and Material History. Logging occurs when the generating facility sets the resource's originatorID. This is analagous to the Agent table for which logging occurs when the setParent function is called. Both occurences happen when the object is 'born' in the simulation",buggy
+" Added foreign key (and fixed primary key) on the MaterialHistory table. Note - we need a way to correctly log materials that get created and then sent. We currently make a new resource every time which invalidates the tracking by resource ID.",clean
+" All tables now defined except IsotopicStates. Note that there is some funky management of resource ids with respect to splitting etc. This should at least be discussed so that everyone is on the same page.",clean
+" An isotopics state table is now created. Note that I grab the tracked isotopes from the decay handler. Is this the best way to do this?",buggy
+" All tables now create and record. Records are confirmed correct for null/test1.xml. More testing and documentation to follow. HDF5 to be replaced shortly.",buggy
+" rebased both origin and upstream branches and fixed all conflicts",clean
+" used the envrionment class to check for envrionment vars in the BookKeeper",clean
+" some cleaning up",clean
+" Added documenataion and more robost error checking to the Database class",buggy
+" saving progress on readme",clean
+" commit didnt go through?",buggy
+" saving progress on readme",clean
+" More work on readme",clean
+" Rough draft of readme example finished.",clean
+" cleaning up readme",clean
+" cleaning up readme",clean
+" cleaning up readme",clean
+" cleaning up readme",clean
+" Wrote some Table tests to be retro fitted to work on Database and BookKeeper tests. Please note that there is a commented out error throw in the updating of row primary keys. This needs to be sorted out.",buggy
+" added the TableTest files",buggy
+" added a test suite for the Database class",buggy
+" Now have a full test suite for classes: Table Database BookKeeper. A final round of cleanup should be performed. However full functionality now exists",buggy
+" This is a the last commit of the new database patch. Two things should be noted first: 1) I've introduced an environment variable requirement of 'CYCLUS_OUT_DIR' and 2) a seg fault occurs *only* when using log level 5 (I have made a corresponding issue).",buggy
+" Cleaned up recipe reactor.  changed protected to private for many vars. Exposed pertinint vars through public getters/setters. renamed some vars. Consolidated typedefs.",buggy
+" added extract and absorb methods to generic resource.  Changed visibility of some member vars from protected to private.",buggy
+" removed unused channel class.",clean
+" added sqlite3 to required libraries in readme",clean
+" added specific exception for missing env variable. exceptions are caught and default values used if env variables don't exist.  There are other locations that should catch this exception too.",buggy
+" fixes #56. I removed the logging from IntrusiveBase class.  I think there was some funky interplay between the templating boost library and logging.  I'm not sure of the exact cause but the logging in IntrusiveBase is not really necessary anymore.",clean
+" added boost/filesystem library. Env class now uses it to manage cyclus absolute/relative paths.  getCyclusPath now robustly returns the directory of the cyclus exec as an absolute path.",buggy
+" ENV singleton removed in favor of pure static class Env.",buggy
+" All CYCLUS_OUT_DIR checks were replaced with getCyclusPath (now that it is robust).",buggy
+" tweaked log statement and missing file exception message.",clean
+" Moved the ROW_THRESHOLD definition from the Table class to the BookKeeper. The Table class now queries the Book Keeper to get this value.",buggy
+" Moved state-recording initiation of IsoVector objects into the Material class and removed it from the IsoVector constructors. re-removed performance killing print() calls that must have been added by conflict resolution by matt.",buggy
+" Model level Stub files checked.",clean
+" Checked all Stub files. No substantive changes were required outside of clearing out old database information and removing unneccesary includes. Compliance of using namespace std when needed was also included. This closes #5.",buggy
+" performance enhancements to IsoVector and Material class.",buggy
+" Did some doxygen updating by hand. It got tedious. I'm making a script.",buggy
+" working on script",clean
+" script is pretty much ready to go",clean
+" finished IsoVector moving on",buggy
+" Finished documentation in main src folder",buggy
+" Updated documentation in the Utility folder",buggy
+" Updated all Converter documentation",buggy
+" Updated documenatation for all Facility models",buggy
+" Updated documentation for Inst models",buggy
+" Updated documentation for Markets.",buggy
+" updated Model's documentation",buggy
+" Updated documentation for Regions",buggy
+" Updated TimeAgent documentation removed TimeAgent.cpp",clean
+" Finished updating documentation for Stubs and cleaned up other messes made in the documenatation update process. The process is now done closes 3.",buggy
+" removed dependencies directory. it is no longer needed.",clean
+" moved IntrusiveBase to Utility dir and added some comments to it.",buggy
+" Conformed the IntrusiveBase comments to standard",buggy
+" Updated the static doxygen files to point to the cyclus wiki",clean
+" removed the testing doxygen page because it exists on the website.",clean
+" previously meant to remove the tutorial page. reverting and re-applying changes.",clean
+" made a tools directory for various clean-up/update scripts we may use",clean
+" Naughty Matt. Re-added more performance mods to IsoVector that were removed by Matt durring conflict resolution.",buggy
+" added beginnings of tests for material store.",buggy
+" added header shell for MaterialStore.  renamed a few things in MaterialStoreTests.",buggy
+" added good comments to several MaterialStore methods in header file.",clean
+" finished commenting the MaterialStore public methods.",buggy
+" progress on MaterialStore tests.  Some tweaking to header comments as well.",buggy
+" removed Over/Under fancyness because it is not necessary - if no splitting is required than the removeNum or removeOne methods should be used.",buggy
+" added tests for removeQty and renamed some things.",buggy
+" added tests for removeNum and removeOne.",buggy
+" added tests for addOne.  Added new DupMat exception type.  renamed some tests.",buggy
+" finished addAll tests.",buggy
+" removed obsolete stuff from MaterialStore header. Started MaterialStore implementation.",buggy
+" added MaterialStore and tests to the build. Fixed compile errors - it now compiles.",buggy
+" split setcapacity exception tests into two to isolate problems more.",buggy
+" bit more on MaterialStore implementation.  Refactored more of its tests.",buggy
+" finished the quantity method of MaterialStore.",clean
+" work on removeQty. changed mats_ to std::list.",buggy
+" finished addOne on MaterialStore.",clean
+" created abstract base class for material stores. Renamed current implementatino to DeckStore.",buggy
+" tweaked Material extracting. almost finished DeckStore implementation.",buggy
+" fixed remaining bugs in DeckStore implementation.",clean
+" DeckStore now passes all tests.",clean
+" changed 'add' to 'push' and 'remove' to 'pop' in DeckStore and MatStore.",buggy
+" renamed and cleaned up DeckStore and MatStore stuff.",buggy
+" simplified DeckStore popQty",clean
+" added res<-->mat casting helper functions to MatStore class.",clean
+" implementing DeckStore on SourceFacility.",buggy
+" SourceFacility now uses DeckStore bug free and passes its tests.",buggy
+" The null facility is not a non facility... so I'm giving it a real prefix (rather than 'none'). It was a funny joke but exclamation parts can be hard to grep...",clean
+" implemented DeckStore in SinkFacility.",buggy
+" Added error checking/exception catching to approveTransfer method in Message class.",clean
+" temp  more work conforming NullFacility to use DeckStore 's. Doesn't compile.  finished implementing DeckStore in NullFacility but it behaves differently than before...",buggy
+" added debug try-catch.",buggy
+" temp in debugging.",buggy
+" Finished DeckStore in null facility.  Null facility now does not make any offers for material from as yet unmatched offers (it used to before). Added logging errors if resource transfer problems occur.",buggy
+" Tried using BookKeeper::nTables() rather than db_->nTables() where possible.",buggy
+" Null pointer in instance creation.",buggy
+" Closes issue #61 by initializing the db_ with a null pointer.",clean
+" Changed indentation for StubFacility.rng. Doesn't change behavior merely aesthetics.",clean
+" Adds a StubFacilityInput.xml file to assist with issue #24 concerning the creating of input stubs in addition to tests...",buggy
+" uses stub insts markets regions for stub input.",buggy
+" Made recipes optional (as they should be) and finalized StubFacilityInput.xml",clean
+" Corrected comment.",buggy
+" Adds Stub*Input.xml files contributing to issue #24.  The way I have chosen to do this is quite redundant.  However putting these files in the folders with the models decreases the burden on the developer in comparison with the option of adding just one StubInput.xml file in the core/input/ directory.  I couldn't decide which of these options was best so I just picked this one. Any thoughts? Is redundancy preferable to an extra step in development or is it preferable to keep the input files out of the src directory?",buggy
+" Changed my mind less redundancy is almost always better.",clean
+" renamed DeckStore to ResourceBuff and changed it to just deal with rsrc_ptr instead of Materials. Deleted MatStore.h.",buggy
+" fixed tests and added define and exceptions from old MatStore.h into ResourceBuff.h.",buggy
+" renamed deck store tests to MatBuffTests",clean
+" worked out many bugs. ResourceBuff no longer requires extract/absorb methods.",buggy
+" updated models and fixed testing bugs to comply with new resource/mat buff paradigm.",buggy
+" some small changes and notes added to database related items",buggy
+" updated readme",clean
+" removed some superfulous wording",buggy
+" fixed bail bug when running tests in gdb (was a cyclus path error in Env class).",buggy
+" make .gitignore a bit smarter.",clean
+" Added some small clarifications to workflow description.",clean
+" sed replaced @brief with ''. Switched GenResource exceptions to be class specific and cleaned up their document.",buggy
+" pushition fix as well as unlimited capacity bug fix.",buggy
+" moved the cmakelists file for the build region to NoBuild.txt so that it is not pulled into the build by the sudirectory adding loop to be added in the above cmakelists files.",clean
+" moved the cmakelists file for the CapacityRegion to NoBuild.txt so that it is not pulled into the build by the sudirectory adding loop to be added in the above cmakelists files.",clean
+" This adds an ADD_ALL_SUBDIRECTORY(*) sort of functionality to the CMakeLists files in the source tree. For example the Models directory will ADD_SUBDIRECTORY for all subdirectories of Model/ that contain CMakeLists.txt files.",buggy
+" removed extraneous print statements in build.",clean
+" added some datatypes",buggy
+" adds datatyping to some rng files that did not have any.",buggy
+" missing slash in sourcefacility.rng ;",buggy
+" missing slashes in swueuf6converter.rng",buggy
+" debugging debug",clean
+" updated MassTable brief description",clean
+" added table stuff. ;",buggy
+" Table entry is added any time stuff is conditioned.",buggy
+" removed now deprecated hdf5 input files for conditioning facility. When module level dependencies make more sense these can be reinstated.",clean
+" typo in error message wrong file format.",buggy
+" conformed all doxygen documentation to the standard as stated on the website",clean
+" Revert conformed all doxygen documentation to the standard as stated on the website  This reverts commit 73dee2cd0aa5f686a29a0136b655418d3c796d66.",buggy
+" Conformed all doxygen comments to the standard as stated on the website and added a script that will perform this task automatically. This script has been added in a new folder named 'auto_cleanup'. If theres a better place for it please let me know.",buggy
+" Close to finished with BuildInst. One test still failing.",buggy
+" Finished BuildInst waiting to hear back on build test question",clean
+" Institutions no longer copy their parent when copied from another institution. This step broke tests and I'm not convinced its the correct way to go.",buggy
+" removed teuchos dependency",clean
+" minor simplifications to table interface. Added defineTable(columns keys) function",buggy
+" constructed the BuildRegion's rng file",buggy
+" added CMakeLists file for this version of BuildRegion",clean
+" Finished a rough draft of the BuildRegion class documentation.",buggy
+" adds a more useful log tag.",buggy
+" moved logging and writing to table closer to the conditioning behavior.",buggy
+" minor simplifications to table making function.",clean
+" Made more sophisticated ConditionedResources table.",buggy
+" cleanup.",clean
+" This adds some documentation for the ConditioningFacility table. Though this class only supports csv input files at the moment this work closes issue #12 .",buggy
+" set javadoc autobrief to YES in order for the briefs to be picked up without the brief keyword. Fixes annihilation of briefs that occured unintentionally during the documentation overhaul in commit 4155787860a800af5c33aeefd0ff06522ed8c3e7 . For briefs to be picked up from the \brief free syntax the JAVADAC_AUTOBRIEF config variable must be yes. Done and done!",clean
+" prepping for doxygen line length update",buggy
+" Shortened all doxygen line lengths",buggy
+" more progress on buildregion",buggy
+" changed loading paradigm to go facilities - insts - regions. changed fixed inst instmodel and regionmodel to comply",buggy
+" Paradigm shift: I have separated a module's construction step from its inialization step. Previously some modules would be initalized during their construction; now all modules exist for some distinct period as a template (i.e. constructed but not initialized) in the simulation before being 'born' via the setParent() method. Accordingly I elimated explicit calling of setIsTemplate(false) in both the RegionModel and MarketModel classes in favor of a generic init() method which calls the setParent() method.",clean
+" modularized RegionModel's init functionality",buggy
+" Finished first draft of BuildRegion header and implementation file. Still have to write the init function for XML input and construct its test suite.",buggy
+" BuildRegion tests complete. Initial input file using BuildInst complete. Moving on to BuildRegion's init function and input file using BuildRegion.",buggy
+" More progress made. Only steps remaining are to populate the builders_ member and to write the sortOrders function.",buggy
+" Moved avaiable prototype structures from BuildInst to InstModel so that BuildRegion can have access to them.",buggy
+" Moved appropriate tests from BuildInst to InstModel. I reformulated InstModelTests to use a FakeInstModel rather than the GetParam function pointer in order to wrap the addPrototype function.",buggy
+" Have finished implementation file and all tests for BuildRegion. Compiles and passes all tests. Just need to check agaisnt test input file.",buggy
+" BuildRegion successfully completed. Compiles and passes all tests. Correctly runs buildtest1.xml",buggy
+" Fully separated out init() functions from init(cur) functions. Any init() function now simply initalizes any members as is required. Increased BuildInst and InstModel performance by changing prototypes_ to a pointer.",buggy
+" Updated files to remove Doxygen errors.",buggy
+" added init() virtual function to Model class and now have all Model tests call that init function",buggy
+" cleaned up some Test files to conform to our initialization paradigm. Regions and Markets both now have an initSimInteraction() function which handles their setParent()-ing among other things. They too now follow the naked init() paradigm.",buggy
+" Fixes a segfault in the BuildInst tests found only on some architectures (mine that is a mac with the gnu compiler... )",buggy
+" Ok I moved Katy's change back keeping the init functions out of constructors. I also attempted to fix Katy's problem with the tests by explicitly calling the init function in the test (albeit its constructor but I claim this is not the same). I have no solid reason for not wanting initialization functions to partly reside in a Model's constructor. I pretty much only have.. err 'feelings' in that I feel like members which must use placement new should do so in an initialization function and that initalization functions should be kept separate from constructors (in the core). I feel like this will save us headaches later on - we'll know exactly when and where all placement news and other similar initializations occur and that they were called at a specific time decoupled from anything else.",buggy
+" Ok changed the inits again after a conference with Animal1. Every model class still has the init() function which instantiates any publicly accessible members with new; however this init function is now called in the constructor. Furthermore the init() function is no longer virtual. Every class is responsible for its own init() function.",buggy
+" initial batch reactor functions complete: init() init(xmlptr) copy()",buggy
+" removing extraneous files",clean
+" BatchReactor header and implementation file rough drafts complete. Next: writing tests and input file.",buggy
+" BatchReactor works as intended. Tests still need to be made -> I will write a ticket. Also bug found with GreedyMarket -> if a request is larger than an offer nothing happens. We should discuss if this is the right behavior. Take for example a SinkFacility with infinite capacity.",buggy
+" adding batch reactor and build input files",buggy
+" removing extraneous files",clean
+" Fixed extraneous Model::init in ConverterModel",clean
+" fixed an issue where BuildRegion only read one entry from the demand schedule.",buggy
+" adding input file to check decommissioning and rebuilding",buggy
+" Fix Doxygen warning",clean
+" resource book-keeping has been simplified and is now initiated by the message class exclusively during transactions. OriginatorID has been removed from interfaces implementations and the output db as per discussion during cyclus meeting - facilities are black boxes and the core is only concerned with bk at trans time. fixes #90.",buggy
+" Added 2 tests for message kill()ing. approveTransfer now checks if 'this' is killed before it initiates the transfer. fixes #95",buggy
+" Fixed build issue in which FacilityTestSource was being reset erroneously by the ConditioningFacility CMakeLists.txt file.",clean
+" temp - I am going to class.",buggy
+" fixed issue where stateID's weren't being incremented properly sometimes - resulting in duplicate pk's in the output db.",clean
+" Fixes issues with segfaulting when models 'delete this' by changing the way children are iterated over in InstModel. Fixed duplicate pk for resource states by eliminating code that checked for the state already existing.  This should resolve all your issues matt.",buggy
+" all input files for Geniusv2 benchmarks added",buggy
+" fixed isotope issue in buildtest's recipebook",clean
+" reverted test.recipebook.xml must have been mangled in a previous commit",buggy
+" fixed problem matt saw regarding decomissioning of reactors in his buildtest3.xml.  The problem was an artifact of looping over a vector that was being modified in the process.",buggy
+" Added beginnings of output tools script based heavily on GENIUS post-processing work by Arnaud Kyle and Katy.",clean
+" Script spits out zeros but runs with new_query=Query('cyclus.sqlite''material') ; new_query.getData()",clean
+" fixed issue with cycle timing in the batch reactor p1v1.xml in the vision v1 benchmarks now correctly matches the expected hand calculation",buggy
+" The BatchReactor now offers the correct recipe. However because we do no checking of identical recipes it now takes the simulation very long to run. This should be a priority change in the future. Also a bug has been fixed in the pushOne() method of the ResourceBuffer.",buggy
+" beginnings of collapsing isos to elements.",clean
+" Added resource query type. Testing still required.",clean
+" adds some functions for file_io developed by Arnaud",clean
+" This adds a quick script for pulling the total resource amounts received by some agent. For the usual case in which the resources are materials in units of kg this script creates an output file with just one column of cumulatively summed kg amounts corresponding one value per 12 timesteps.",clean
+" added capacity factor to p5v1",buggy
+" changed member var pointers to non-pointer vals and corresponding manip methods to be pass by ref. Fixes memory leak (new without delete).",buggy
+" renamed 'print' method to 'str' in all models",buggy
+" replaced 'void str()' with 'std::string str()'",buggy
+" it compiles now but there are segfaulting problems when running the tests.",buggy
+" still trying to figure out segfaulting.",buggy
+" fixed the segfaulting problems.  Still a failed BatchReactor tick test.",buggy
+" fixed issue with exp input",clean
+" ugh.. refixed exp input file",clean
+" temp  - started working on implementing code to reduce duplicate composition recording.",buggy
+" finished - I think - I haven't checked for bugs yet.",clean
+" fixes bug where ModelTests failed on InstModel concrete models because of uncaught exception due to NULL parent.",buggy
+" ugh.. refixed exp input file",buggy
+" Fixed Batch Reactor Tests",buggy
+" Moved things to a more reasonable directory structure. This contributes to Issue #62 . The code does not build with this commit.",clean
+" Cleaned things that were commented out and deprecated.",clean
+" Code compiles and runs with new directory structure.",clean
+" Cleans up the main CMakeLists file by generating CMakeLists file in the new (and some old) subdirectories. This will keep clutter out of the main file.",buggy
+" Typo in Timerr.cpp",clean
+" Added CPack to cyclus. It successfully automatically builds a beautiful MacOSX disk image file as well as some tarballs containing that disk image. All you have to do is 'make package'. All that said the cyclus and cyclusUnitTestDriver that it installs are missing all of the files and data we need to run cyclus including but not limited to the mass.sqlite files and all the rng files.",buggy
+" added readme and license which are used in the package building process. Added a configuration file to help separate cpack stuff from cmake stuff but that's not fully functional just yet.",buggy
+" Sets all components in a list.",buggy
+" adds some configuration of the rng files that is hierarchical and module blind.",buggy
+" the string is compiled and added in the right place. There are just some semicolons introduced by cmake which don't jive with the rng schema.",buggy
+" Semicolon issue fixed with string replace.",buggy
+" fixed tick iteration to robustly handle 'delete this' from children.",clean
+" housekeeping. Added helpful comments to addChild and setParent methods.",buggy
+" made regionmodel iteration robust to handle 'delete this' from children.",clean
+" added tests that check for robust child iteration of inst and region model class. fixes #99.",buggy
+" removed name field from ResourceBuff.  Closes #103.",buggy
+" Adresses issue 101.  Adds a single test that ensures ResourceBuff allows unlimited resource pushing after a makeUnlimited call.",clean
+" This adds a catch statement for any type of CycException that is raised during file loading. CycIOExceptions are not the only kind that can be raised. This fixes #116 .",buggy
+" Improved some log statements.  Fixed some test segfaulting at higher log levels caused by failed dynamic_casting to Model*. Moved isDead impl to cpp file.",clean
+" added test that checks that messages are killed if a communicator in their path_stack is deleted. Note that this test actually discovered an error that I also fixed.  Adresses issue 34.",buggy
+" improved log output by removing abbreviations as per Katy's suggestion.",clean
+" initial staging for iso-mat-streamline. constructors and operators complete.  updated IsoVector  updated IsoVector  operators decay and tests needed  constructors and operators look up to snuff. I took out the primary key stuff and will take care of that with the database refactor. still need to write tests.  decay lineage formulation coded. still need multiplicative operators memory checks tests and documentation  upgraded isovector memory management",buggy
+" added a new singleton instance called RecipeLogger who manages logging recipes  removed extraneous files",buggy
+" staging for final isovector work. testing of recipelogger complete.  changed to using shared pointers for compositions and compmaps. recipelogger appears to be done so testing and documentation need to be written. then on to adjusting the much simplified isovector.  updated make process to write and run new recipe tests  wrote tests for isotopic definitions... still have a lot of thinking to do about this topic..  adding some tests for Isotopic Definitions. name will be changed soon.",buggy
+" Added a new class Composition. This class will hold unique instances of composition maps created in the simulation and will be pointed to by database storage.  Good work made towards composition and recipe logger class. All now appear to be sufficiently defined. Note that it is important to have both an IsoVector and Composition so that the IsoVector can handle decay by replacing its current composition with the child of that composition and being able to log both the parent and the child externally.  fixed compilation erros in Composition  updating work  move work done  moved IsoVector's decay related methods to Composition.  more work done. Composition is turning into IsoVector by any other name. still need to check +-==;mixseparate;print methods.",buggy
+" made the decay handler compatible with CompMapPtrs.",clean
+" mix and separate are now defined in Composition  finished all Composition operators  all Composition operators now compile  all Composition printing functionality now compiles",clean
+" Changed Composition class name back to IsoVector",buggy
+" IsoVector RecipeLogger and DecayHandler all compile. Testing documentation then on to the Material class.  Making tests",buggy
+" Rethought IsoVector copying/assignment to do so correctly would require the CompMap to be stored in the RecipeLogger so I'm moving all lineage/id related members into an expanded CompMap class.  progress made. IsoVector rough draft complete does not yet compile.  All IsoVec-CompMap-RecipeLogger changes compile. Time for code review and test writing.",buggy
+" Code review complete. Testing and documentation to follow. Then integration of Material members with new Iso/CompMap paradigm; then integration of agent members.  Some documentation written  added compmap copy constructor and fixed a typedef issue... not sure why my compiler at home didnt pick it up  documentation written for CompMap and IsoVector",buggy
+" updated gtest to v1.6.0",clean
+" Initial CompMap tests added  headway made on tests constructors and map interface complete  comp map class now fully tested  writing isovector tests  forgot header file",buggy
+" IsoVector tests complete. I have yet to write a decay test as I'm not sure decay is working correctly. This can be done in parallel with the once-through work.",buggy
+" studying Material method usage trying to minimize external changes",clean
+" ResourceBuff no longer has knowlege of derived classes or Materials. All such information has been transfered to MatBuff",buggy
+" Have transfered quantity responsibility to Resource/Material class  Understanding reach of material/isovector",buggy
+" More Material changes. Talked with Steve got a lot of good pointers. Will make CompMap immutable.",clean
+" resource buffer now tests the new paradigm  forgot to add a file",buggy
+" Partway through Material test completion  finished more material tests. need to work out how the extract test will function... maybe I'll collapse some of the absorb set up into a function.",buggy
+" added a function to isovector that will report the total fraction of intersecting isotopes. useful for material's serpation functionality",buggy
+" this rounds out material testing. I need some eyes to look over extraction tests and it should be noted that not all corner cases have been tested. I will leave this as a ticket.  staging larger changes for Material-IsoVector.. moving non-critical facilities out of build",buggy
+" BatchReactor fixed",buggy
+" recipe logger updated",clean
+" Null sink and source facilities fixed. I am leaving RecipeReactor alone. It takes mass through its recipe which is no longer defined behavior. It is likely this will be replaced by an iteration of the BatchReactor.  batch reactor tests header file added",buggy
+" Null market passes tests",buggy
+" ConverterMarket passes tests",buggy
+" Greedy tests pass... I believe I'm ready to merge. Oh happy day.",buggy
+" mirroring new file structure. moved all resource code to a resources folder  added cmakelists file  moved config files to config folder  moved over global cmakelists file  moved over utility's cmakelist file  making Input file  finalized Input file  Added cyclus.rng.in and moved Message.h/cpp to Models  added recipe logger to cmakelists",clean
+" conformed resource buff tests to new paradigm",clean
+" header file update",clean
+" progress made on isovector refactor. still need to do constructors operators and decay. then testing.",clean
+" updated IsoVector",clean
+" updated IsoVector",clean
+" operators decay and tests needed",clean
+" constructors and operators look up to snuff. I took out the primary key stuff and will take care of that with the database refactor. still need to write tests.",clean
+" decay lineage formulation coded. still need multiplicative operators memory checks tests and documentation",clean
+" upgraded isovector memory management",clean
+" added a new singleton instance called RecipeLogger who manages logging recipes",clean
+" removed extraneous files",clean
+" staging for final isovector work",buggy
+" changed to using shared pointers for compositions and compmaps. recipelogger appears to be done so testing and documentation need to be written. then on to adjusting the much simplified isovector.",clean
+" updated make process to write and run new recipe tests",clean
+" wrote tests for isotopic definitions... still have a lot of thinking to do about this topic..",buggy
+" adding some tests for Isotopic Definitions. name will be changed soon.",clean
+" Added a new class Composition. This class will hold unique instances of composition maps created in the simulation and will be pointed to by database storage.",buggy
+" Good work made towards composition and recipe logger class. All now appear to be sufficiently defined. Note that it is important to have both an IsoVector and Composition so that the IsoVector can handle decay by replacing its current composition with the child of that composition and being able to log both the parent and the child externally.",buggy
+" fixed compilation erros in Composition",clean
+" updating work",clean
+" move work done",clean
+" moved IsoVector's decay related methods to Composition.",clean
+" more work done. Composition is turning into IsoVector by any other name. still need to check +-==;mixseparate;print methods.",clean
+" made the decay handler compatible with CompMapPtrs.",clean
+" mix and separate are now defined in Composition",clean
+" finished all Composition operators",clean
+" all Composition operators now compile",clean
+" all Composition printing functionality now compiles",clean
+" Changed Composition class name back to IsoVector",clean
+" IsoVector RecipeLogger and DecayHandler all compile. Testing documentation then on to the Material class.",clean
+" Making tests",clean
+" Rethought IsoVector copying/assignment to do so correctly would require the CompMap to be stored in the RecipeLogger so I'm moving all lineage/id related members into an expanded CompMap class.",clean
+" progress made. IsoVector rough draft complete does not yet compile.",buggy
+" All IsoVec-CompMap-RecipeLogger changes compile. Time for code review and test writing.",buggy
+" Code review complete. Testing and documentation to follow. Then integration of Material members with new Iso/CompMap paradigm; then integration of agent members.",clean
+" Some documentation written",clean
+" added compmap copy constructor and fixed a typedef issue... not sure why my compiler at home didnt pick it up",clean
+" documentation written for CompMap and IsoVector",clean
+" updated gtest to v1.6.0",clean
+" Initial CompMap tests added",clean
+" headway made on tests constructors and map interface complete",clean
+" comp map class now fully tested",clean
+" writing isovector tests",clean
+" forgot header file",clean
+" IsoVector tests complete. I have yet to write a decay test as I'm not sure decay is working correctly. This can be done in parallel with the once-through work.",clean
+" studying Material method usage trying to minimize external changes",clean
+" ResourceBuff no longer has knowlege of derived classes or Materials. All such information has been transfered to MatBuff",clean
+" Have transfered quantity responsibility to Resource/Material class",clean
+" Understanding reach of material/isovector",buggy
+" More Material changes. Talked with Steve got a lot of good pointers. Will make CompMap immutable.",clean
+" resource buffer now tests the new paradigm",clean
+" forgot to add a file",clean
+" Partway through Material test completion",clean
+" finished more material tests. need to work out how the extract test will function... maybe I'll collapse some of the absorb set up into a function.",clean
+" added a function to isovector that will report the total fraction of intersecting isotopes. useful for material's serpation functionality",clean
+" this rounds out material testing. I need some eyes to look over extraction tests and it should be noted that not all corner cases have been tested. I will leave this as a ticket.",clean
+" staging larger changes for Material-IsoVector.. moving non-critical facilities out of build",clean
+" BatchReactor fixed",clean
+" recipe logger updated",clean
+" Null sink and source facilities fixed. I am leaving RecipeReactor alone. It takes mass through its recipe which is no longer defined behavior. It is likely this will be replaced by an iteration of the BatchReactor.",clean
+" batch reactor tests header file added",clean
+" Null market passes tests",clean
+" ConverterMarket passes tests",clean
+" Greedy tests pass... I believe I'm ready to merge. Oh happy day.",clean
+" mirroring new file structure. moved all resource code to a resources folder",clean
+" added cmakelists file",clean
+" moved config files to config folder",clean
+" moved over global cmakelists file",clean
+" moved over utility's cmakelist file",clean
+" making Input file",clean
+" finalized Input file",clean
+" Added cyclus.rng.in and moved Message.h/cpp to Models",clean
+" added recipe logger to cmakelists",clean
+" SWU converter added",buggy
+" converter market added",clean
+" Conditioning Facility added",clean
+" started looking into enrichment facility and realized I need to understand its implementation better to change it over. Accordingly I will keep it out of the build for now and will re-insert it when/if needed as dictated by the once-through benchmarks.",buggy
+" null facility generates no offers if stocks+inventory are empty.",buggy
+" added line of deliniation",clean
+" MarketModel now has its own exception type in marketForCommod. method doc now mentions the exception.",clean
+" Made some cleanups that I noticed a need for while reviewing @rwcarlsen's last pull request.",clean
+" Removed unused printTrans method from message class. Created case-specific messaging exceptions in the message header file (removed CycMessageException from CycException.h). Consolidated duplicate code in the three constructors. Renamed a few methods and variables.  Improved some comments.",clean
+" cleaned up/improved message class comments more.",clean
+" renamed some_variables to someVariables.",clean
+" moved private members and methods down lower in the message header.",clean
+" moved implementation of many message methods to cpp file.",clean
+" deleted unused message 'reverse' method. reordered message methods more nicely.",clean
+" changed var names back to use_underscores",buggy
+" updated comments with directives.  However - left transaction related comments alone becuase they will be overwritten with changes/new-improved comments in my transaction class refactor which is nearly done.",clean
+" reinstantiated some adjustments overwritten in merge.",clean
+" moved logger doc from class file to site.",clean
+" updated cli usage help output to clarify verbosity arg",clean
+" This removes the repository input files from the core. They're not supposed to be here.",clean
+" removed unnecessary init methods. Everything in them belonged in constructors.",buggy
+" cleaned up includes in message class.",buggy
+" added include so converterModel no longer 'borrows' the include from Message.h",clean
+" created transaction class and moved trans-related methods out of Message class and into Transaction class.",buggy
+" got rid of transaction static factory methods - they were a bad idea.  Added a TransType enum.",buggy
+" much progress converting existing models to use the new Transaction class.",buggy
+" more work converting models to use new transaction class.",buggy
+" Eliminated some code duplication in RecipeReactor.  RecipeReactor updated to use new Transaction class.",buggy
+" added clone method to transaction class - used by Message class clone method.  Remaining models configed to work with new transaction class.",buggy
+" transaction market() method has code that makes it clear that it throws an exception.",clean
+" renamed somVars to some_vars and cleaned up/improved comments with directives.",clean
+" moved approveTransfer method to transaction class to facilitate messageless transactions among other things.",buggy
+" updated models to call approveTransfer in transaction class instead of message class.",buggy
+" removed test checking affects of message killing on approve transfer because the interaction between the two is now inappropriate with separate message and transactino classes.",clean
+" fixed greedy market tests to use new transacting technique.",buggy
+" sed replaced add/removeResource methods with new signature (using Transaction).",buggy
+" more sed replacements to make add/RemoveResource method bodies comply with new signatures.",buggy
+" fixed quirky bugs resulting from sed replacements.",buggy
+" Added link to git workflow tutorial.",clean
+" Added run_all_inputs python script to the Testing folder and added CMake step to copy it during the build.",buggy
+" made skeletal run_all_inputs file added workflow path class for TestFile.",buggy
+" Makes certain the full file path is saved in the files list.",buggy
+" added more modularity and test structure as well as docstrings",buggy
+" The os and subprocess modules of cyclus have changed often between versions of python. This aims for something version 2.6 compatible.",buggy
+" fixed cli verbosity option parsing error.",clean
+" Cleared some errors concerning the use of Popen",buggy
+" got output part of io_tuple for return value",buggy
+" More correctly grabs output from io_tuple",buggy
+" Current version works but only from the cyclus build directory.",buggy
+" Adds a summary at the end of the script",buggy
+" Now the configure step sets up the cyclus executable and input file paths.",buggy
+" Fixed relative path issues",buggy
+" added copying of recipebook and facility catalogs to current working directory",buggy
+" adds cleanup to catalog moving functionality.",buggy
+" reduced verbosity level unless specified.",buggy
+" Fixes verbosity flag option.",buggy
+" shell for matchWith method.",clean
+" finished implementing matchWith",buggy
+" updated models to use new matchWith instead of setRequester etc.",buggy
+" improved matchWith doc comment.",clean
+" message class now auto-sets next dest to curr owner's parent or receiver if parent == curr owner.",buggy
+" removed now unnecessary setNextDest calls from models - using the new auto setting message functionality\!",clean
+" updated message header documentation.",clean
+" improved style safety in setNextDest method by reording some lines.",buggy
+" added some help",buggy
+" fixes improper exception handling for NULL parent.  I thought root model nodes had themselves as their parent - apparently they now have been changed to hold a NULL parent.",buggy
+" Adds better docstrings. Not yet beautiful but now functional and readable.",buggy
+" fixed some print_usage issues",buggy
+" fixing usage message indentation.",buggy
+" typo funciton=function . Fixed now thanks Robert.",buggy
+" prefer cleaner run() to run_tests(). Good suggestion @rwcarlsen .",buggy
+" Prefer no_errors to test_no_errors. Another cleanliness suggestion by @rwcarlsen .",buggy
+" removed function placeholder test_expected rather than renaming it. It was sloppy to leave a placeholder there an artifact from my development process.",buggy
+" uses os.path.join.",buggy
+" changed filename to run_inputs.py  so that it's shorter.",buggy
+" Remove human-modified date stamp from README.rst  It doesn't make sense to have a human-modified date stamp in a revision controlled file when the primary modes for viewing that file (cli & github) already give ready access to change date.",clean
+" improved message comments and deleted unused partner_ member.",clean
+" added notes field to Message class.",clean
+" added some destinations... simpler version than the itk system",clean
+" Added cyclus directory to destination",clean
+" changed share to Data for now",clean
+" Starting to mimic prefered install structure in all builds",buggy
+" Added notion of build root directory now that the cyclus path is in the bin directory within the build root.",buggy
+" Cleaned up oddly formatted log message.",clean
+" Finds libraries correctly in traditional libMyNewModel.so/dylib locations.",clean
+" demonstrated moving libs to lib/Model/Facilty/NewFacility/libNewFacility.so(dylib). Used Batchreactor. Now do it to everything and link them up. . .",clean
+" demonstrates correct installation of the BatchReactor library to /cyclus/lib/Models/Facility/BatchReactor/BatchReactor.so(.dylib)",clean
+" added some macros for adding a cyclus module.",buggy
+" Simplified library loading and installation by including the cyclusModuleMacros cmake file and using the appropriate macros in each of the CMakeLists files for each of the dynamically loadable modules.",clean
+" fixing rng file installations.",buggy
+" Some installation and path finding changes to commit before heading off to work... Not a working commit... broken.",buggy
+" cleanup",clean
+" Cleaned up path issues in env.",buggy
+" Final cleanup to allow commandline optional output directory.",buggy
+" fixed broken inhereted StubCommModelTests.",buggy
+" Reduced code by making cmake macro more generic.",buggy
+" Something about the cyclusunittestdriver is broken in the linking step.",buggy
+" Fixes path to masstable bug introduced in commit #af5cd56",clean
+" fixes installation order of gtest.",clean
+" making it easier to define tables.",buggy
+" Renamed addColumn to addField with a new signature. Updated all table class usage to comply with new addField signature.",buggy
+" fixed all bugs and deleted unused setPrimaryKey(column) func.",buggy
+" Fixed failing DatabaseTests caused by re-structuring of cyclus executable. Needed build path rather than cyclus path.",clean
+" Fixed failing BookKeeperTests caused by re-structuring of cyclus executable. Needed build path rather than cyclus path .",clean
+" Changes the default testing files creation directory to the current working directory. Allows tests to pass even if the test executable is in a root-only writable directory (i.e. the installation location). I also added some cleanup in the tests which doesn't jive exactly with the BookKeeper and Database tests. I'll make an issue out of them.",buggy
+" keeps DatabaseTests from deleting the file if the file has not yet been written.",buggy
+" keeps BookKeeperTests from deleting the file if the file has not yet been written.",buggy
+" Simplifies the main CMakeLists.txt file by adding one in the Config directory",buggy
+" Made it so that the installed version of the run_inputs.py script is configured to use the installed cyclus executable.",buggy
+" Fixes the installation of the rng files to place them in the lib directory.",buggy
+" Fixes the rng files in the build directory so that they're placed in the lib directory.",clean
+" These changes facilitate make test by registering more tests with the ctest framework .",buggy
+" puts the CMakeLists.txt files for defunct modules back in their proper place. Now that the cmakelists contents are simpler commenting those contents is a preferred method of disabling the building of unwanted modules.",buggy
+" stdio.h didn't provide the correct remove function after some googling cstdio does.",buggy
+" taking this step-by-step creating a minimally new input file to test building before I go into strategies",clean
+" updated build input decks",buggy
+" removed minimally small input deck",clean
+" uncommented the decay-related functions in timer",clean
+" added all required supply/demand functionality",buggy
+" fixed publi:c typo",buggy
+" Changed Product to Commodity",buggy
+" header file now conforms to implementation for function parameters",clean
+" overloaded function operator to ease use",clean
+" addressed copy/paste typos and documentation issues as brought up by katy",clean
+" added table that records generic resource qualities.  killed method that allows generic resource quality mutation.",buggy
+" Adds some installation of header files into the PREFIX/cyclus/include install directory",buggy
+" Reducing redundant header dependencies",clean
+" Reducing redundant header dependencies. This time intrusive base pointer.",clean
+" Transaction does not need table if it has Resource .",clean
+" Adding include files to the include directory.",buggy
+" Removed command that decends into Models directory. We'll have to make those their own project and separate them officially in issue #66 #190 and finally #191.",clean
+" Put the add_subdirectory(models) command back in...",buggy
+" commented out the part where we build the shared libraries...",buggy
+" Separated core library added FindCyclusCore.cmake file.",buggy
+" fixed sourcefile path finding in models directory",clean
+" Some attempts at including the right headers.. .",buggy
+" It's building again.. next step full separation?",buggy
+" Fixed FindCyclusCore.cmake so that it finds stuff better...",buggy
+" Rearranged to put core in its own directory.",buggy
+" Fixed misplacement of rng files.",clean
+" Didn't need to require cycluscore.",clean
+" Helps the installed version of the Unit Test Driver to link properly to the gtest library.",clean
+" Fixed missing tests problem.",clean
+" Cleanup",buggy
+" didn't need to install the interface libraries...",clean
+" Moved build version of run_inputs.py destination directory..",buggy
+" adds cmakelists for the core.",clean
+" Renamed core to Core",clean
+" fixed instances of core so that they are now Core",buggy
+" Fixed issue of broken configuration of the suffix.h file that @gidden mentioned. Please give it a clean check.",clean
+" Moved supply and demand stuff to the right folder.",clean
+" This fixes the boost library finding issue noted by @gidden and @carlsen. Unfortunately seven of the BookKeeperTests and DatabaseTests are now failing.",clean
+" removed checkQuantity checkQuantityGT and checkEquality methods",buggy
+" fixed failed material test bug",clean
+" fixed bug where Database and BookKeeper tests were failing due to undeleted test files.",buggy
+" isolated 'alive' changes to their own public method. setParent invokes this method.",buggy
+" fixed bug where attempts were made to reinsert agents into db.",clean
+" Fixed linking problem in installed executables.",clean
+" made receiveMessage method private (as it should have been). made registerMarket method public to better allow for code-based simulation configuration.",clean
+" added @param to receiveMessage",clean
+" adds ability for models to peek at supply/demand balance of commodities mid-simulation",clean
+" added param doc to tallyOrder signature.",clean
+" This may fix issue #228 for the CAE machines. Please check it.",clean
+" added a building manager",buggy
+" successfully linked cyclopts and included coin in the cyclus build. NOTE: this requires two environment variables now: COIN_ROOT_DIR and CYCLOPTS_ROOT_DIR",clean
+" added a test input file. defines a new growth inst... seeing a pattern here.",buggy
+" modified growth test input file",buggy
+" copied build inst into a growth inst folder. they'll nominally be the same with some capacity demand info",clean
+" updated cmakelists. at work i don't have to link but at home i do. i don't claim to understand why there's a difference.",clean
+" removing growthinst. it wasn't part of this commit package to begin with.",clean
+" line lengths limited to 80",clean
+" moved cyclopts and coin status checking to findcoin and findcyclopts",clean
+" updated the find coin and cyclopts cmake files to match those in the example of cyclopts",clean
+" It looks like the pull request #198 didn't actually include the new files in the build. This adds them to the build. The new build has not been tested as of this commit. There may be unresolved issues yet unnoticed because the pull request previously didn't include building the actual files into cyclus.",buggy
+" Removed buildmanager from the build. It needs a patch.",clean
+" There is no reason to go futzing around for the absolute cyclus path when we can just find it during configuration. I have made it so that Env.cpp is produced during the configure step from Env.cpp.in and contains the absolute path to the build directory whether being built locally or installed. I don't think there are any unforseen negative consequences of this. However it's possible that I've overlooked some. Also I only implemented this in the getBuildPath method. It's likely that the getCyclusPath method should also be implemented in this way.",buggy
+" Fixed path in DecayHandler.",buggy
+" adds a getInstallPath to the Env to be applied during the configure step.",buggy
+" fixes bug where split generic resources were not having quality recorded in output db.",clean
+" Moved concrete model directories (converter inst region facility market stub etc.) out of the Core/Models directory to begin testing separability.",clean
+" Added a readme to the models directory to make everyone aware of the goings on.",buggy
+" Adds a CMakeLists file to the soon-to-be Cycamore project directory.",buggy
+" Adds some CMake support macros adjusts CyclusModuleMacros to be appropriate for Cycamore... thus CycamoreModuleMacros .",buggy
+" moved Models into its own cycamore directory. Too much fuss was being caused by the flattened directory structure.",clean
+" Moved CMake directory out of Models into top directory.",clean
+" copied Models/CMakeLists.txt to the top cycamore directory in order to separate it into two.",buggy
+" split the cmakelists files in two.",buggy
+" added Testing and doc directories to cycamore top level directory.",buggy
+" Moves the interface testing files (acceptance tests) to the cycamore tree.",buggy
+" fixed macro to direct down to the models directory added models directory to cycamore build.",buggy
+" moved references to the interface tests out of the cyclus directory. They are now solely referenced in the cycamore tree.",buggy
+" Made it so that a copy of the cyclus.rng.in file is installed next to the share/cyclus.rng file.",clean
+" added shared directory finder in findCyclusCore and added cyclus.rng.in installation from the cycamore tree..",buggy
+" linking concrete modules to cycluscore.",buggy
+" Needed to install gtest.h so that CycamoreUnitTestDriver can find it.",buggy
+" Needed to install Test*.h so that cycamore's concrete model tests can find them.",buggy
+" Linked concrete modules to the cyclus core libraries.",buggy
+" Installs all the shared cyclus data files into cycamore's share directory. It would be better to make a symbolic link or embed that finding in the Cycamore paths but I don't know how to do that.",buggy
+" Adds the parameterized tests to the test core. Model separation complete?",buggy
+" Improved FindCyclusCore to use environment variables.",clean
+" changed FindCyclusCore.cmake to Findcycluscore.cmake so cmake could find the file. Added a PATH_SUFFIX for the libs in findcycluscore",buggy
+" removed an unnecessary lookup from cycamores findcmakelists file and updated the findcycluscore file after having added the path suffix to the lib lookup",clean
+" Actually just noticed that the cyclus.rng file should be from the install path rather than the build path.",clean
+" Removed deprecated references to INTERFACE_LIBRARIES. Thanks for noticing that @gidden !",buggy
+" Removed unnecessary duplicate FindCyclusCore",clean
+" Rearranging the hints makes the environment variable trump all other installations.",buggy
+" conforms build manager to updated supply demand manager and limits line lengths to 80 chars.",buggy
+" odd linking error...",clean
+" ok linking error resolved. because buildmanager is in core/utility cycluscore must link to cyclopts and coin. however when we make the module toolkit repo we can unlink them if preferred.",clean
+" split the symbolic function header file into a header file and implementation file added the impl to cmakelists",buggy
+" cleaned up previous commit now compiles and runs tests",clean
+" added abstract factory and concrete factories",clean
+" adds a basic factory utility that can provide any basic symbolic functions",clean
+" commented out the overloaded function operator; paul had concerns about this previously. if we get enough use cases we can uncomment.",clean
+" split the symbolic function factories into their own header files",buggy
+" starting to fix public minfrac variable.",buggy
+" cleaned up Transaction constructor;",buggy
+" cleans up minfrac stuff",buggy
+" Trying to fix failing constructor test.",buggy
+" Fixes broken test. Largely this was an issue with the test rather than the constructor. That said I was forced to be more formally correct with the constructor in order to track down the issue in the test. Success.",buggy
+" This should fix the cycamore build issue",buggy
+" This removes cycamore from the cyclus repository tree. Cycamore is now located in the cyclus/cycamore repository. This should satisfy issue #191.",clean
+" this removes the inputs and the run_inputs.py script from the cyclus core build addressing issue #250 .",clean
+" Add variable to allow document only build of cyclus core. [hack]",clean
+" added some documentation on the testing shceme and the pull request system.",buggy
+" Fixing some unindented code blocks",clean
+" Fixing some unindented code blocks",clean
+" Was using sphinx syntax in the readme... sigh.. it's fiday.",clean
+" Was using sphinx syntax in the readme... sigh.. it's fiday.",clean
+" getting rid of suggestions that people push their code directly.",clean
+" moves the input directory out of the cyclus core repository",clean
+" fixed the rng file to allow for no extra blank lines when configuring.",buggy
+" reinstated model tests.",buggy
+" added the cpp and h files for interface acceptance tests to the installation step of the cyclus core.",clean
+" added stub and stubcomm interface tests for what it's worth.",buggy
+" Fixes typo in StubCommModelTests .",clean
+" added a new get_xpath function for all classes of get_xpath functions. This new function type takes an xml xpath context as an argument to allow for snippets to be used to test init functions. All functions that previously were defined now call this new function providing the singleton's current context as its argument. Additionally I have changed all context and node arguments to actually be references to the contexts and nodes.",clean
+" provides a getter function for the xml context",clean
+" fixed genrepo circular messaging problem but now have segfault in message tests.",buggy
+" fixed bug where autoset next dest was not being invoked at all the right times. Cleaned up/simplified message internals.",clean
+" finished up equality issues",clean
+" added printing capability to symbolic functions and querying of demand functions to supply demand manager. also cleaned up line lengths",buggy
+" small changes to function calls in Model's setParent so that I can do it without invoking other sim stuff for testing. functionality has not changed.",buggy
+" changes the name of the RecipeLogger to RecipeLibrary",buggy
+" completes name change",buggy
+" more changes of the 'daughters' naming convention'",buggy
+" finishes renaming from log to record and daughter to child on the way to issue #127 ...",buggy
+" changed decay_chains_ to decay_hist_ ... made more sense to me less ambiguous. probably does the trick with issue #127 .",buggy
+" Update src/Core/Utility/RecipeLibrary.h  Tweaked include include barriers.",clean
+" Updated documentation errors - till one error that I don't know what to write.",buggy
+" Fixes param description of parent in IsoVector::executeDecay and fixes compile error caused by renaming of paramter p to commodity in SupplyDemand::CommodityInformation /Users/khuff/repos/cyclus/src/Core/Utility/SupplyDemand.h:120:14: error: use of undeclared identifier 'p' commodity_(p) demand_(fp) supply_(0) {producers_ = std::vector<Producer>();}",clean
+" Update src/doc/CMakeLists.txt  Sneaking in an alternative target for documentation so that ${REPONAME}doc resolves to a valid target.",clean
+" added header file for MarketPlayer",buggy
+" created MarketPlayer class",buggy
+" added bare market player manager files. currently compiles.",buggy
+" finished market player manager class. need to write tests for both.",buggy
+" added decreasing functionality for the supply demand manager and provided tests for the class. fixes #275 and fixes #276",buggy
+" added some touchups related to comments on pull request #281",buggy
+" includes cycexception in sdmanagertests.",buggy
+" adds a notion of facility lifetime to the FacilityModel class. This is queried during the init() function. If no such value is present the lifetime is default set to the simulation time. In order to achieve this behavior the XMLInput class was modified to throw exceptions rather than print to stderr. The FacilityModel class catches such exceptions. After getting its lifetime the FacilityModel class determines its decommission date. A virtual decommission function is provided whose default behavior is to call delete on itself if the current time is greater than or equal to the decommission date.",clean
+" added build date and made the decommission date setter function more reasonable",clean
+" fixes situation in which delete var1 var2 var3 is used. Since delete has higher precedence than  the expression only deletes var1.",clean
+" updated build manager to use a pointer to its sdmanager. also added tests for the build manager. fixes #273 and fixes #277.",buggy
+" fixed delete comma separated list issue",clean
+" tests written for market player class and market player manager class",buggy
+" now installs new test header files",clean
+" updated manager to be able to be inherited (empty constructor)",clean
+" this updates findCOIN to match findCOIN in the cyclopts repository. It helps add options for specifying nonstandard build locations.",clean
+" fixes seg fault issue. the correct condition to check for is 'xmlXpathNodeSetIsEmpty(result->nodesetval)'. additional changes were required to make other input conform.",buggy
+" updated rng file",clean
+" updated sdmanager to internally keep track of supply",clean
+" added a more robust supply test",clean
+" Add missing header files to install list.",clean
+" made setparent virtual",buggy
+" Added a note regarding setParent being virtual and other discussions in issue #307.",buggy
+" updated paul's doc_fix branch",clean
+" updated inheritable classes without virtual destructors",clean
+" another destructor update and moved virtual-ity from setParent to doSetParent. this will be revised upon the completion of #307.",buggy
+" what to do if your core changes have broader impacts.",clean
+" the rng file doesn't need to exist here. It is created from the cyclus.rng.in file.",clean
+" adds incommodity and outcommodity according to desire in #323",clean
+" oops bad copy pasting also ref's available so element defs not necessary.",clean
+" adds new columns agent_type model_type and prototype to the agent table.",buggy
+" adds marketID column to transactions table it references the ID for the market in the markets table.",buggy
+" MarketID references ID in agents table. There is no market table.",buggy
+" adds commodity column to transaction table.",buggy
+" moved decay(months) to make it protected rather than public.",clean
+" adds some tests not yet passing.",buggy
+" moves the decay method into protected scope.",clean
+" Working tests for XMLQueryEngine in CMake and build.",clean
+" Adding first version of XMLQueryEngine with tests.",buggy
+" Add a few comments to XMLQueryEngine",clean
+" Fix comment typo.",clean
+" a good start on #345",clean
+" added cpp files for region and market",clean
+" adds a post install script...",buggy
+" installation of rng files commencing.",buggy
+" fixes some compile errors",clean
+" removes postinstall nonsense. Just adds rngs directly to rng.in.",buggy
+" fixed rngs to have text entries.",clean
+" better to leave the headers intact.",clean
+" some massaging of the rng schemas.",clean
+" fixes a number of rng issues.",clean
+" this adds an input file for demonstration and a TestConverter for clarity.",buggy
+" partially through sim init upgrade",buggy
+" reworked sim initialization order and separated function names into more reasonable descriptors. fixes #317 and part of #318.",clean
+" changes terminology about how concrete models enter the simulation. regions now 'enter the simulation' at the end of their initialization step. fixes #318.",clean
+" updated the way insts add facilities as children to match prototype paradigm. cleaned up the InstModel interface but more to come on next commit. Fixes #320.",buggy
+" added capability for inst models to build prototypes at the beginning of the simulation. fixes #319.",clean
+" updated core to new no copy/no deep copy paradigm. still need to do testing.",clean
+" updated tests to remove testing the copy paradigm.",clean
+" added missing header files and cleaned up code. removed itLives() method and references to it as it was obsolete. code compiles and tests pass.",clean
+" updated pull request adding back in a map for already loaded modules",clean
+" intermediate commit adds XMLFileLoader to CMakeLists.",clean
+" First intermediate commit of XMLFileLoader capability.",clean
+" Someone expressed a preference for alphabetizing source files in the CMake lists.",clean
+" Intermediate commit of tests - some don't behave.",buggy
+" Fixed a test. Additional methods are responsible for loading simulation data so need to be connected to test.",clean
+" adds a notion of incommodities and outcommodities to the FacilityModel.",clean
+" null pushback is a bad idea... segfault.",clean
+" adds some comments about the whys and the wherefores of adding commodity lists to the facilities.",clean
+" I used the command 'git revert -n -m1 HEAD~4..HEAD' to get to a point in the code yesterday when cycamore built successfully against cyclus.",clean
+" implemented now trying to compile.",buggy
+" checkisomass test compiles",clean
+" more tests compiling",clean
+" all tests compile",clean
+" test improvements",buggy
+" switches terminology to be correct in the code though table columns still don't match.",clean
+" adds mat tests",buggy
+" adds tests that find a mass table bug. #360",clean
+" fixes mass table bug tests need to be slightly adjusted.",buggy
+" allows the guestimate for atomic masses in the tests to be near the integer value.",buggy
+" only have time to test this at the moment.",clean
+" tests pass",clean
+" created tests requiring an exception to be thrown if you try to extract more than is available from a material.",buggy
+" adds tests to make sure default constructor creates a zero vector",buggy
+" the normalize() function doesn't really need to throw an exception if it normalizes the zero comp. It actually behaves fine.",clean
+" this does a little bit better job of testing comp equality in the test. Utilizes compEquals.",buggy
+" adds a  test addressing the issue expressed in #367",clean
+" fixes part of #367. The return value is now the correct extracted (rather than remainder) material",buggy
+" minor typo fix.",buggy
+" now the extract method throws an exception when too much of some isotope is being extracted from another isovector/material",clean
+" first shot at new subtraction operator makes tests fail. Are tests wrong?",clean
+" fixes confusing names in isovector tests to slightly more meaningful names with less redundancy... this will help me parse the tests as they stand.",clean
+" isotopes.size()-1 was too verbose.",clean
+" rolls back changes to IsoVector preferring to leave the changes to extract out of the isovector class... material conservation belongs in the material class where notions of total mass are available.",clean
+" operator declarations.",buggy
+" rolled back isovectortest changes",clean
+" rolled back isovectortest changes",buggy
+" fixed extract method in material class to accept a compmap and to bypass the isovector class entirely to avoid isovector::separate function which is not what we want with material extraction.",buggy
+" added test to make sure that exception isn't thrown when a zero mass is found for some isotope.",clean
+" added test to make sure that exception isn't thrown when a zero atom fraction is found for some isotope.",clean
+" added tests of setQuantity",buggy
+" removes massify resulting in not normalizing during the extraction.",clean
+" extraction tests pass.",buggy
+" added informative comments.",buggy
+" added @throws directives where appropriate",buggy
+" Update src/Core/Resources/Material.h  Doxygen hotfix",clean
+" Adds a test concerning differing composition extraction a little more in detail catches a bug and fixes it.",buggy
+" added unnormalizeComp function to help fix failures in extraction for differing compositions",buggy
+" added further test to detect failures in extraction for differing compositions",clean
+" changed material tests to reflect the discussion in pull request #373",buggy
+" actually let's go with @rwcarlsen's suggestion.",buggy
+" implements changes they pass the tests.",clean
+" moves unnormalizeComp to private.",clean
+" makes sure the comp to be removed is both in mass form and normalized.",clean
+" swapped A and Z column data in mass.sqlite",clean
+" added proper indentation to code (formatting change only)",clean
+" added individual col selects from mass.sqlite",buggy
+" gets rid of testing.dox",clean
+" adds the document outline discussed on 10/2 about the domain model",clean
+" Revert I used the command 'git revert -n -m1 HEAD~4..HEAD' to get to a point in the code yesterday when cycamore built successfully against cyclus.  This reverts commit 4b3c2a01c2d5aa84ba685e9b615b56b0e09a52af.",buggy
+" hotfix to fix small things from recent commits",clean
+" Adding notes on changes necessary for new XML handling.",clean
+" cleaned up XML files",buggy
+" updated the query engine tests to be more easily readable",clean
+" added a base class for query engines",buggy
+" updated xml query engine to be derived from base class. could probably use some conceptual cleaning up.",buggy
+" small tweak in query engine destructor",clean
+" updated recipe library to load recipes with a query engine. fixes #356",buggy
+" Updating Timer for new simulation input paradigm.  Changed Timer::load_simulation() signature * commented old call out of InputXML * added call to XMLFileLoader  In addition this changes the Cyclus RNG schema.",buggy
+" someone my deletes were missing... fixed it",buggy
+" cleaned up the code a bit taking out input xml's call to the load recipes. note that the last commit fixes #355.",buggy
+" An intiald attempt at tests for the QueryEngine abstract interface.",clean
+" Extended interface to be able to query the name of the current element. Changed some variable names for clarity.",buggy
+" Removed some old commented code. Updated getElementName to match QueryEngine interface.",clean
+" Add generic exception to QueryEngine.",buggy
+" Update ConverterModel to use QueryEngine instead of XML.",clean
+" Update InstModel to QueryEngine.",clean
+" update RegionModel to use QueryEngine",clean
+" Update MarketModel to use QueryEngine",buggy
+" Update XMLQueryEngine tests for changed QE interface.",clean
+" Attempt to modify InputXML to use XMLFileLoader for continuous validity - not sure this is working",clean
+" Update Model for QueryEngine and push top level calls to load entities back to XMLFileLoader.",buggy
+" Update StubCommModel for QueryEngine.",clean
+" Rename variables to refer to Prototypes rather than the Facililties.",buggy
+" Update FacilityModel for QueryEngine",clean
+" updated pauls work a bit",clean
+" pauls work now compiles",clean
+" updated query engines to get node names only from the surface level",buggy
+" updating model files query engine interaction",buggy
+" added simulation initialization functionality to the model class",buggy
+" switched file handling to the xml file loader",buggy
+" quick fixes to app",clean
+" updated models to now enter the simulation after being loaded",buggy
+" updated the file loader to only load modules. catalog support has been taken out for now. the input xml class has been fully replaced by the xml file loader class. fixes #358.",buggy
+" removed notion of prehistory. that's now taken care of by our init process",clean
+" updated error class in the xml engine",clean
+" updated xml engine documenatation and removed empty constructor",clean
+" some work done on testing the xml engine/loading. it's not working as I expected so I'll have to review perhaps retool.",clean
+" added libxml++ dependency",clean
+" updated cmakelist file",clean
+" staging for changes to xml query engine and file loader to use libxml++",buggy
+" added an xml parser",buggy
+" update",clean
+" finally builds and runs on CAE",clean
+" framework provided for testing the xml parser",clean
+" added a relax ng validator based on libxml++'s validator",buggy
+" removed extraneous files",clean
+" re-added the libxml2 dependency",clean
+" updated parser to use the relax ng validator",clean
+" added documentation to the validator",clean
+" added cyclus errors to the validator and parser. parser tests done for now",buggy
+" new xml query engine implementation rough draft complete",buggy
+" completed tests for the query engine",buggy
+" just a little clean up",clean
+" rough draft for file loader complete. need to write tests.",buggy
+" xml file loader now runs and is tested. caveat to be worked on",buggy
+" added construction wrappers for all table pointers",buggy
+" preparing for constructor/destructor/library update",buggy
+" moved xml file loader test setup/teardown impl to cpp file",buggy
+" initial work on a dynamic module class",buggy
+" updated the dynamic module class",buggy
+" rough draft of dynamic lib overhaul done. need to migrate to cmake config-ed.",clean
+" updated dynamic module",buggy
+" moved derived functionality to the configure step",buggy
+" took out old classes from their cmakelists",clean
+" removed old files",clean
+" new dynamic loading paradigm now in place",clean
+" new dynamic loading update fully implemented. dynamic libraries are now tracked by objects to guarantee their opening and closing properly. all models now get deleted through the proper destructor handle",buggy
+" changed core models to have extern destructors",clean
+" final touches. changes didnt fix our problem though.",clean
+" ready to talk to the scientists... computer scientists.",buggy
+" Rough draft fix for tests dying. I'll look to see if we need any more build system cleaning up.",buggy
+" updating file loader tests",clean
+" cleaned up file loader tests and added tests for schema application and throws",clean
+" added error checking to dlclose and made dynamic module constructor initialize all members",buggy
+" cleaned up initialization lists and removed static member variables",clean
+" removed implementation file from being compiled with the test driver",clean
+" cleaned up comments looking for errors",clean
+" added the construct sim step to the file loader tests to make sure everything works as expected",clean
+" final commit here making sure we install all test header files",clean
+" added model test files back to being installed.",clean
+" commented out old tests for inst models... this will need to be revised in tandem with the cycamore update",clean
+" added a little python script to find and replace text",clean
+" replaced mangled constructor/destructor names",clean
+" updated test inst to work with cycamore",clean
+" updated market interface to allow testing in cycamore",clean
+" added ability to query about facility lifetime",clean
+" working on integrating core with cycamore to run a simple input.",buggy
+" reworking clone functionality to make it more core-central",buggy
+" more core updates",clean
+" should be final core commit matching cycamore and cyclus core with the new input/init paradigm",clean
+" moved tabs to spaces in rng files",clean
+" updated simulation entering process",clean
+" added some error checking to the module construction/destruction step and moved facility decommissioning into the inst model class so derived modules dont have to run facility model's handle tock",clean
+" added decommission protection to facilities",clean
+" added building protection",clean
+" removed canbuild from model interface",clean
+" separated out the commodity class from the supply demand header file",buggy
+" added a mixin class for producers of commodities",buggy
+" added back the separated out commodity class",buggy
+" added a mixin for managers of commodity producers",clean
+" actually adding the files..",buggy
+" moved commodity information storage in the commodity producer class to its own structure and reformulated tests accordingly. in this update i add a notion of cost to commodity information struct. additional additions should be simple.",buggy
+" updated tests for commodity-related utility classes",buggy
+" added test helper files",buggy
+" added a builder class which simply provides an interface to entities that can be built",buggy
+" finished implementation for builder and builder manager update. tests to follow",buggy
+" updated builder interface for clairty",buggy
+" finished building manager work with tests",buggy
+" added requisite inst model functionality to allow for registration needs",buggy
+" added define guards to the commodity test helper class",clean
+" got rid of a cout",clean
+" moved commodity producer methods to take const parameters",buggy
+" added ability to copy produced commodities from a source",buggy
+" updated resource buffer api to be more intuitive",clean
+" fixed facility lifetime bug",clean
+" updated lifetime member",buggy
+" separated out loading functionality",clean
+" reverting previous lifetime change to avoid seg faulting. facility decommissioning timing will have to be addressed in the near future.",clean
+" removed superfluous conditional check",clean
+" added a table for simulation time-related information",buggy
+" added some logging functionality to see what's happening during build decisions",buggy
+" Move location of domain model documentation.",clean
+" added an isMaterial function to the Material class",clean
+" updated the cast checking after re-reading boost's website",clean
+" added limits and enrichment helper functions",buggy
+" added pass-by-const-reference",clean
+" updated documentation",buggy
+" updated namespace names",buggy
+" this renames the cyclopts Limits.h file to go along with the pull request in cyclopts of the same name.",clean
+" removed integer arguments to value function calls from symbolic functions in favor of implicit casts",clean
+" added single piecewise functions",clean
+" update piecewise functions to take a starting point",clean
+" working out piecewise function series issues",buggy
+" piecewise symbolic functions done they need factories and tests.",clean
+" update to piecewise functions",clean
+" finished piecewise functions and a factory for such functions. need to write tests.",buggy
+" tests added for all types of symbolic functions",buggy
+" fixed bug where continuous piecewise functions were behaving as expected",clean
+" fix Doxygen errors",buggy
+" reverted faulty commit with 'git revert -m 1 SHA'",clean
+" Revert Merge branch 'hotfix-revert' into develop  This reverts commit 8a08567b83517dbec510a5928b731b7a447133ea reversing changes made to f175f068009db4bfd9d00da08765a2a6e39eebb4.",buggy
+" modified comp map functionality to return a fraction of 0 if the proposed isotope was not in the map",clean
+" added some logging to the the uranium_assay method in the enrichment namespace and corrected the swu calculation and test thereof",clean
+" corrected a bug in the recipe library method that loads resources at the beginning of the simulation. it now correctly gets the full isotopic composition. logging was also added.",buggy
+" added some extra logging to the generic resource checkQuality method",clean
+" added logging to Material's checkQuality method",clean
+" updated gitignore",clean
+" moved define macros for epsilon values into inline functions in CycLimits; changed resulting usage accordingly",buggy
+" updated enrichment-related comments to add unit specifications and changed curly braces to match google's style guide",buggy
+" moved curly braces in assay constructor.",clean
+" used sqlite begin/end transaction structure to speed up database writes to disk",buggy
+" making methods that must be implemented PURE VIRTUAL",clean
+" added cloneModuleMembersFrom to the DieModel in the InstClassTests",clean
+" changed composition lineage tracking to use int instead of double for times",buggy
+" a global list of active material objects is now maintained (so auto sim-wide decay can work)",buggy
+" house-keeping",clean
+" fixed CompMap lineage test to use int instead of double for time",clean
+" updated doc comments",clean
+" started to create decay tests via mocking isovect/material classes but ran into problems with value-variables",buggy
+" fixed global materials list instability by removing smart-pointer usage. Added decay logistics tests checking basic timer material isovector and compmap functionality. Timer now resets its listener lists upon initialization - necessary for testing anything temporal in nature",clean
+" removed unnecessary fixture",buggy
+" addressed @gidden's comments. Moved decay interval checking into Timer class. Minor commenting and tweaks",clean
+" updated how facilties are decommissioned (after instmodel passes all facilities a tock) and how facilities register their decommissioning date e.g. a facility with a lifetime of 1 will only last one tick and one tock.",clean
+" fixed an issue where the decommission date was not being set correctly",clean
+" updated the inst model tests. It's not clear to me why these weren't failing in this patch before I merged in updates to develop. In any case the failing test needs to be reviewed to match the current paradigm.",clean
+" updated inst model tests to match decommissioning paradigm",clean
+" made a more reasonable entry threshold for tables in the database",buggy
+" cleans up the colon.",clean
+" updated headings to conform to the standard described in: http://sphinx-doc.org/rest.html#sections",buggy
+" updated the find cyclopts cmake file to add a cyclopts_root_dir variable and updated the readme for installation instructions",buggy
+" fixed spelling errors and rst typo in the license section",clean
+" re-fix rst typo",clean
+" revamped the readme to match the cyclopts install guid style. updated findcyclopts and findcoin cmake files",buggy
+" fixed typos and cleaned up links",clean
+" added dependency note on boost system",clean
+" version de-bump of COIN Cbc",clean
+" adds a use-cases rough draft (based on fcs requirements).",buggy
+" added outline changes that occured in the hangout notes.",clean
+" heading misalignment.",clean
+" added materials and resources rst files a start.",buggy
+" added materials and isotopics documentation",clean
+" more material isotopic documentation",clean
+" adds a start to the mat description.",buggy
+" first material draft",clean
+" adds resource page.",clean
+" adds a resources page builds the site.",clean
+" fixes wrong subheading symbols.",clean
+" Rebuilt HTML with update to doxygen URL.",clean

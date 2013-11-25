@@ -1,0 +1,557 @@
+% 1. Title : cyclus.spam.test
+%
+%
+% 2. Sources:
+%    (a) Creator : Zach Welch
+%    (b) Date 2013-11-25
+@RELATION BUGGY
+@ATTRIBUTE Comment STRING
+@ATTRIBUTE classification {clean,buggy}
+
+@DATA
+" updated readme",buggy
+" fixes readme?",clean
+" added a test for the behavior that shouldn't give nan. It currently fails. Now to make it pass.",buggy
+" decided the test should give 0 instead of 1. Fixes nan's returned.",buggy
+" applied katy's atom fraction nan patch with slight implementation tweaks also included a guard in the mass fraction function",clean
+" added the build date to the initialization list in facility model because it is invoked by the str() member",clean
+" added all members to the timer's initialization list because they can be queried by modules in tests",clean
+" made the dynamic module class exception safe by moving exception-throwing operations out of the constructor and destructor. accordingly these operations must be called by the calling entity in this case by the static Model methods that open and close modules.",buggy
+" added opening/closing methods to the appropriate Model class methods and/or made new ones where necessary",clean
+" adjusted App.cpp to call the module unloading method recently added to the Model class",clean
+" added tests to check dynamic loading model construction thereafter and cloning of facilities",buggy
+" I propose we take out the facility model tests for now. First of all they're the source of errors related to #131. Secondly it's not at all clear how this interplays with our dynamic loading framework. I think one of us needs to sit down and think hard about how we want these to work and provide the group with a proposal and example.",clean
+" changed commenting out the tests to disabling them",clean
+" On the fresh VM the current develop HEAD causes segfaults in the building manager problem test. it's caused by cyclopts/coin-related issues that may or may not be our fault (I don't know if coin-or libraries are well tested). In any case I'm due to write at test suite for Cyclopts which is the topic of cyclus/cyclopts#16 and cyclus/cyclopts#20. These are both blocking my path for my GLOBAL paper and will therefore be resolved in the near future. When they are we can reasses this test.",clean
+" I'm disabling the decay tests as they currently stand due to the seg fault issue described in #445. This will allow us to readminister the VM with all tests guaranteed to pass while noting which tests we need to revisit",clean
+" updated the createDB interface to use default arguments rather than define three overloaded functions",buggy
+" added output to the end of the exe that says whether the run was successful or not",buggy
+" updated tests to reflect createDB function parameter swap",buggy
+" simplified resource buff interface - removed limited/unlimited related functionality. If 'unlimited' capacity is needed just use a really big capacity",clean
+" added BUFF_INFINITY macro const to be the new 'unlimited' capacity",clean
+" changed BUFF_INFINITY to a static const and made it use double max.",clean
+" this makes it so that the input file can be but does not have to be specified on the command line in the -o output/file/path.",clean
+" single BI call.",buggy
+" extraneous try",clean
+" fixed an indent and added a comment",buggy
+" fixed bug that was noticed by @gidden in which providing just the filename borked.",buggy
+" moved license to a separate file to reduce readme clutter",clean
+" event skeleton  added event manager",buggy
+" adapting matt's sqlite code to be an EventBackend  more work on sqliteBackend",buggy
+" eventmanager and sqlite backend nearing completion",buggy
+" conslidation of path and name for sqlitebackend. remove/overwrite existing db",buggy
+" fixed table creation to introspect field value types",buggy
+" moved new output db event stuff into utility folder and added files to build:  fixed all compile bugs. There is a linking bug still lurking...  linker error due to missing destructor def - fixed",buggy
+" updated most core classes to use new event recording paradigm - still compile bugs  fixed compile tests in core classes. Created AgentDeaths table to handle permanent record nature of new output paradigm  removed all old output paradigm files and usage  added missing record invocations on events. Fixed event-manager bug where event group/creator were being queried incorrectly  modified doc comment",buggy
+" refactored sqlite3 interaction into an sqliteDb class. Masstable and SqliteBackend now use sqliteDb class  added missing files SqliteDb.cpp and .h  fixed compile bugs",buggy
+" fixed bug where records weren't dumped on EM->close(). minor tweaks",buggy
+" fixed sqlitebackend bug where cmds weren't being cleared on a flush",buggy
+" fixed sqlitebackend bug - string insertions weren't being escaped with double-quotes. Removed debugging code",buggy
+" fixed printed output path for successful run",clean
+" fixed model naming bug where sqlite doesn't like dash. Made events more robust by recording event creator id and impl instead of holding a potentially deleted model reference",clean
+" added sqlite TRANSACTION wrapping of flushed commands to speed things up",clean
+" renamed 'group' to 'title in Event classes. Made addEvent private and EventManager is a friend of Event",clean
+" added lots of documentation  more comment additions",buggy
+" Removed unnecessary timestamp shortcut from Event class.  Added comments to Event class",clean
+" added doc comments to sqliteback and tweaked a few comments  comment cleanup. Added doc comments to sqlitedb class",clean
+" added Event and EventManager tests",buggy
+" tmp - adding sqlitedb tests. cleaned up and improved some comments and formatting  tmp more work on sqlitedb tests  finished sqlitedb tests  added SqliteBack regression test",buggy
+" added and improved doc comments added SqliteBack.h to Cmake install list alphabetized cmake file lists added missing testdb delete",buggy
+" fixed doc comment typo and added not about singleton hate",buggy
+" fixed commend line length",clean
+" fixed some line lengths and moved ValMap to Event.h",buggy
+" used constructor initializer list in Event. Small tweaks",clean
+" initializer list for sqlitedb and removed unnecessary+unsafe sqlite db close code from destructor.",clean
+" used astyle cmd to auto-format everything.  It works nicely.",clean
+" added astylerc file for use with astyle cmd that helps auto-format code to our standard.",clean
+" deleted bad EventManager test",clean
+" eliminated unnecessary pointer usage from EventManagerTests",buggy
+" changed set_dump_freq to take 0 or neg values - they just mean flushing every event.",clean
+" simplified newEvent function signature - events now just use title for namespacing instead of name()",clean
+" sed simplified all newEvent calls",buggy
+" changed communicator message tracking to use sets for speedy membership lookups",buggy
+" Resource now keeps a running tally of its inventory quantity - much faster",buggy
+" changed EventList to be a vector - constant time for size retrieval - much faster",clean
+" shortcut string val conversion and reordered if chain to be more optimal",clean
+" added parallel list and sequence tracking of resource buff resources for both LIFO and speedy membership lookups",buggy
+" Adds libxml++ to the list of dependencies. The Cyclus build requires it but it hadn't been in the readme.",clean
+" adds comment per review request by @gidden",clean
+" Boost capitalization matters on a mac. I've fixed this before so I'm not sure why it's reappeared. I hope everyone can keep an eye on it and not change Boost back to BOOST.",clean
+" adds comment",clean
+" This removes copied file IsoVectorTests.cpp_cp. Fixes #467.",clean
+" Sometimes you only want to read. This adds a readonly flag to the SqliteDb constructor and open() function.",clean
+" shortens long line.",clean
+" adds close for cleanup where sqlite3_open may have returned an error. Caught by @gidden",clean
+" changes 0 to NULL for compatibility with google style guide",clean
+" added robert's install script",clean
+" made some quality of life improvements to @rwcarlsen's initial work. existing directories are now checked for and approriate actions are taken. also moved a lot of repeated functionality into functions.",clean
+" added a checkout statement to make sure you pull for the correct branch",clean
+" utilizes the cyclus::eps_rsrc() value to avoid exceptions being thrown because of floating point errors in material amounts.",clean
+" added some clarity to extract source block",buggy
+" removed superfluous semicolon",clean
+" adds a test I was curious about.",buggy
+" adds another expect_float_equal to the zeromat extraction test.",clean
+" allows extraction in grams and adds a test accordingly.",buggy
+" edits the extract_in_grams test for readability",clean
+" edits the extract_in_grams test for readability",clean
+" adds isovector comparison tests these fail as @gidden predicted explaining a lot of drama I was seeing in actual simulations.",clean
+" this fixes all compiler-related errors for me iso vectors still don't equate to equal",clean
+" added an isovector test to confirm the == operator works as intended",clean
+" added simple test to diagnose the problem",buggy
+" changed from testing equality of pointers to equality of underlying compositions",clean
+" added isotopic checks to other absorb tests just in case",clean
+" While utilizing different units has helped using a relative epsilon has proven vastly superior to using an absolute epsilon. With the two combined almost no errors are thrown when very similar materials are extracted from one another. This is related to @gonuke's suggestion the last time we talked about this issue in Madison. Thanks @gonuke :) .",clean
+" updated the extract function to compare relative amounts for the final isotopic amount as it does for the removal amount. I also updated the language of the variables to clarify what's going on. the previous implementation had both removal and remainder variables using rem_. It got really confusing...",buggy
+" adds test that fails for inexact extraction even within cyclus::eps_rsrc()",buggy
+" added two more tests for inexact sizes and compositions combined",buggy
+" these tests are more informative with a composition that has more than one entry.",clean
+" clarifying comments",clean
+" this fixes the extract_complete_inexact_comp test",clean
+" other inexact tests now pass too. This required checking for the situations in which final_amt was either very small and negative or zero",clean
+" more explicit checks are simpler. Checks specifically whether final_amt is zero and uses more accurate variable name rel_err",clean
+" diff function.",clean
+" adds initial threshold methods for material and compmap classes.",clean
+" const correctness and almostEqual functions.",buggy
+" compiles but fails some extraction tests.",buggy
+" diff tests pass",buggy
+" test tweaks",clean
+" test tweaks",clean
+" more extract tests passing again.",clean
+" diff close comp test added and passes.",clean
+" passes more tests.",buggy
+" inexact comp and size ok",clean
+" adds notion of units to the unnormalizeComp method",clean
+" all extraction tests pass",clean
+" shortened filename namespace for ease of use",clean
+" updated XMLFileLoader and XMLParser moving throwable code out of constructors/destructors and made functional arguments const where possible",buggy
+" Updated Env and DynamicModule to find module libraries in the envrionemnet",buggy
+" @rwcarlsen updated work in the previous commit and adds tests for the envrionment and dynamic module classes",buggy
+" updated findModuleLib's implementation to explicitly look in the cyclus install path first provided a functional interface to the name of the module environment variable cleaned things up a bit and added some clarifying comments",buggy
+" removed dynamic module destructor per @rwcarlsen's request",clean
+" changed nonstandardpath finding tests to use home dir eliminating sudo need for tests to pass",buggy
+" EventManager generates uuid for each simulation that can by used as desired by backends. SqliteBack now generates a short int id associated with the sim uuid and tags every row entry with the short sim id.",buggy
+" fixed comments cleaned includes fixed SqliteBack regression test",buggy
+" addressed many of gidden's suggestions.  Removed SqliteBack's dependency on singleton EventManager and added multisim test.",buggy
+" Separated the abstract base class EventBackend from the header file of the EventManager. Now Backends can be instantiated without also instatiating the EventManager singleton.",buggy
+" adds a bunch of threshold tests.",buggy
+" threshold tests pass",buggy
+" adds and passes almostEqual test.",buggy
+" adds almostequal threshold throwing test. passes.",buggy
+" extra spaces?",clean
+" took some hints from http://www.ualberta.ca/~kbeach/comp_phys/fp_err.html#testing-for-equality",clean
+" makes unnormalizeComp public.",clean
+" more formal almostequal method",clean
+" deals with zeroentry case.",buggy
+" adds arithmetic class to the build.",buggy
+" adds CycArithmetic class",clean
+" adds CycArithmetic tests",buggy
+" kahansum equals zero for empty vec.",buggy
+" implements more accurate summation in the normalization function in the comp map class",clean
+" prefer prepended iterator",buggy
+" prefer prepended iterator",buggy
+" prefer prepended iterator",buggy
+" prefer prepended iterator",buggy
+" prefer prepended iterator",buggy
+" prefer prepended iterator",buggy
+" Passing references to boost shared pointer instances is ill-advised and disables the guarntee that the shared pointers were created in order to fulfill. This upgrades all functions in which a const CompMap& is passed rather than a CompMapPtr. http://stackoverflow.com/questions/327573/c-passing-references-to-boostshared-ptr.",buggy
+" adds tests for zero absorption.",buggy
+" adds tests for zero absorption.",clean
+" typo",clean
+" revert to cyc_rsrc",clean
+" watch out for == between compmap and compapptr",buggy
+" adds ability to optionally specify simulation id prefix in input file. Fixes #482.",buggy
+" added interleaves to both the region and institution definitions. this helps with automation of input file creation where an xml tree structure may not have a specified order.",clean
+" removes eps_rsrc from absorb function. doesn't belong.",clean
+" I think this test demonstrates how absorbing these three materials fails. This is a serious problem. I haven't looked into it at all but I wanted to submit this test as a pull request so that I can link it to an issue I'll describe. I hope it can be reviewed by someone else in case I'm missing something. @gidden  @rwcarlsen ?",buggy
+" This test shows that it doesn't have to be three materials. It just has to be such that the absorber material and the absorbed material have different quantities and the absorber material has a subset of the materials in the absorbed material.",buggy
+" This additional expectation shows the way in which the other isotopes are altered incorrectly as well.",clean
+" it was actually just the ratio which was completely backwards. I'm alarmed that this hasn't broken more stuff.",clean
+" performance enhancements to decay by reducing function calls and use of std::vector::at in LMatrix",buggy
+" increased performance of events/eventmanager by changing stl containers and reducing safety (e.g. no more schema checking). Events can have a maximum of 10 entries each (e.g. call addVal 10 times).",buggy
+" fixed sqliteback tests. renamed Event::List to Event::Vals",buggy
+" more performance enhancements to events",clean
+" Fix doxygen error",buggy
+" fixes #491 by adding a post processing step inside the SqliteBack class's close method. Fixed deprecated doc comment. Fixed segfault issue relating to dynamically unloading of libraries before the event manager recorded its events. The const char* passed to addVal method was trying to access memory that was cleaned up when externally loaded agents were unloaded.  swapped Agent and Agents table names to preserve more original schema",clean
+" added some details about resource tracking and conservation",clean
+" minor material cleanup",buggy
+" fixed formatting if not content.",clean
+" starts to emphasize the actual cyclus concepts.",clean
+" made more rearrangements",clean
+" added material already on the website preserving history",clean
+" moved some site material into the domain model doc.",clean
+" moved my changes into the site version of the resource description.",clean
+" removed my resources doc.",clean
+" moved combined file into position resources.rst",clean
+" merged old resources explanation on the website with new resources explanation for domain model doc",clean
+" combines my materials.rst document with the materials_and_isotopes.rst document that was on the website.",clean
+" removes the materials.rst document that is now in materials_and_isotopes.rst",clean
+" blending mats and mat&isos",clean
+" added boldness to use cases",clean
+" reduced stringency of note-to-self",clean
+" boldness formatting.",clean
+" disruption underline?",clean
+" disruption underline?",clean
+" provides the metrics skeleton we started to tease out during the first bit of the pow wow",clean
+" added some information from the discussion of use cases in the pow wow.",clean
+" fixed refs.",clean
+" range of users",clean
+" moved intro up into old doc",clean
+" First addition of the history/motivation section of the DMD.  Still needs some work on some of the less specific choices.",clean
+" adds markets notes.",buggy
+" adds a note about solving simple problems with a simple heuristic.",clean
+" fixes math formatting",clean
+" fixes alpha and \alpha",clean
+" added heading.",clean
+" moved heading.",clean
+" moved from markets to sim overview",clean
+" adds some of the discussion to the sim_env_overview",clean
+" adds some of the discussion to sim_env",clean
+" captures some resources discussion",clean
+" captures some resources discussion",clean
+" adds discussion of constraints etc.",clean
+" fixing resources to conform with discussion.",clean
+" added skeleton description of messaging",clean
+" adds metrics document",clean
+" changes filename of materials_and_objects",clean
+" Moved Timer info to its own file and started putting in links from overview.",clean
+" Change file capitalization",clean
+" messages are send direct and will be received",clean
+" Added pages for agents in general.",clean
+" added resource exchange (bids RFB ... descriptions). Shell for glossary",buggy
+" added a gitignore",buggy
+" added overview and motivation section to the resource exchange with sources",clean
+" fixed line lengths in resource_exchange.rst",clean
+" updated resource exchange",clean
+" consolidated Matt's work in timer.rst and migrated it into resource_exchange.rst.  Added more terms to glossary.",clean
+" updated resource_exchange.rst to adhere to line lenghts of <=80.",clean
+" signifigant updates to the timer page",clean
+" added reference for cardinal utility",clean
+" timer rough draft finished",clean
+" spell checked timer.rst",clean
+" added a rough draft of the institution document. not much to say here as of yet because we have few if any use cases to describe.",clean
+" added a rough draft of the region document. not much to say here as of yet because we have few if any use cases to describe.",clean
+" fixed gitignore placing it in the src folder",clean
+" added the Env.cpp configurable file to gitignore",clean
+" added reference labels to the timer and referenced some in institution.",clean
+" add and cleaned up existing language in the resource exchange document",clean
+" I think this completese the Resources document",clean
+" makes some headway updating the materials doc.",clean
+" drafted out facility descrip",clean
+" drafted out agent and message documents a bit more. changed a couple of headings",clean
+" referenced the use cases.",clean
+" completes material merge",clean
+" added refs to use cases in metrics section",buggy
+" fixes itemization",clean
+" converted old use case numbers to refs.",clean
+" fixes compmapptr passing thanks @gidden",buggy
+" copy constructor fixed. Thanks @gidden.",buggy
+" fixed drama with tests. Missing asterisk. Can no longer compare compmapptr with compmapptr...",clean
+" here's a simple test demonstrating that I implemented the simple Kahan summation algorithm correctly and that it's better than naive summation. (requested by @gidden)",buggy
+" doxygen seemed not to understand using namespace std Thats weird because we use it all over the place...",buggy
+" doxygen seemed not to understand using namespace std Thats weird because we use it all over the place...",buggy
+" removed 10 col performance limit on tables for release",clean
+" Setup python script and change readme",clean
+" Editing README",clean
+" Change setup.py to pass user input to cmake unchanged README to reflect updated best practice",clean
+" Resolves absolute paths creates separate build dir",buggy
+" some robustness fixes",clean
+" changes func signature to explicit namespaces so that the older version of doxygen stops throwing errors at @gonuke",buggy
+" Added release notes",clean
+" moved sqliteback allocation to the stack. closes #513.",clean
+" removed double allocation",clean
+" Added release notes",clean
+" updated release notes",clean
+" created hdf5 backend - seems to be working. Probably could use some performance tweaking.",buggy
+" refactored hdf5 back by splitting large code into smaller functions.",buggy
+" rewrote hdf5 backend to use C API. Made Sqlite destructor virtual",buggy
+" added custom backend specification to App.cp via output file extension",clean
+" added hdf5back test",buggy
+" adds better doc comment to hdf5back class. Uncomments the db file deleting line.",clean
+" changed hdf5 ext to .h5. Hdf5Back constructor takes std::string",clean
+" fixed null-padding on strings issue. changed set to group so Anthony is happy.",clean
+" added cmake_prefix_path access for building cyclus in cnerg's cae space",clean
+" updated the description because the information about optional parameters and parameters in general comes with the help description. it now points people to the cyclus website if additional information is needed.",clean
+" more than 80 chars in my haste.",clean
+" updated readme's boost version",clean
+" added a message to determine which libraries were being used",clean
+" found out that boost has a installed called bjam. bjam has an option --layout which can take the form tagged. tagged adds -mt and -<version_number> to a library. if multithreading is on (which it is by default) it must find a library with the -mt tag. I was able to turn off multi threading for it to find the boost libraries installed in filespace/groups/cnerg/cyclus_dependencies. I'd like to leave the comment there for posterity. this set of commits closes #521.",clean
+" switched event class to use a tweaked boost::spirit::hold_any allowing non-explicit construction instead of boost::any. 30% performance boost of total inpro_low runtime.",clean
+" speed up event class by reserving capacity for event vals",clean
+" added shortcut to void* in any.hpp. Simplified hdf5 backend fillBuff",clean
+" Added modified warning to any.hpp. added comment about event vals vector reserve",clean
+" changed c cast to static_cast",clean
+" wrote custom pool allocator new and delete for Event class.  Created a producer/consumer type memory reuse vector in EventManager to prevent new/delete calls",buggy
+" made eventmanager handle insertion of uuids into all events. backends now need to check for and handle boost::uuids::uuid value type",buggy
+" fixed enum element style",clean
+" added hdf5 dep to readme instructions. fixes #520.",clean
+" I think that I got them all..",clean
+" Actually have them all and they all work.",clean
+" made ~/.local the default install directory in the setup.py",clean
+" added uninstall target. closes #268.",buggy
+" updated setup with localdir as default for some params",buggy
+" fixed name erro",clean
+" created csv backend.",buggy
+" first cyclus ns changes.",buggy
+" added ns to roesources.",clean
+" more ns fixes",buggy
+" more ns fixes",buggy
+" fixed more error everything is broken",buggy
+" more ns fixes",buggy
+" fixed query engine errors",clean
+" Stupid forward decls",clean
+" More namespace updates",buggy
+" Many testing fixes",buggy
+" fixes everything",buggy
+" ns updates finished now to mereg",buggy
+" modified XML loading to dynamically build the master schema by searching for installed modules",buggy
+" removed cyclus.rng.in generation - now done dynamically in cyclus core",clean
+" made buildSchema private. Used Model class module type list instead of custom one.",buggy
+" fixes indent errors in DynamicModule.h described in #530.",clean
+" 'public protected private indent one space'",clean
+" updates cyclus core to reflect cyclopts/cyclopts#33",clean
+" Added cyclus::Blob type as a supported backend type for all backends. Removed unnecessary streaming operators in any.hpp.",buggy
+" fixed Blob.hpp and other formatting. Added tests for each backend for the new blob type.",clean
+" updated primary files used in this branch/PR to use google styleguide for indent/naming",buggy
+" fixes include order switch indentation and adds missing map includes to csvback",buggy
+" added include guards as per style guide",buggy
+" made input file recorded after schema validation",clean
+" style in your face",buggy
+" style out your nose",clean
+" style out our ears",clean
+" die die die",clean
+" something clever",clean
+" and then there was light",clean
+" make cyclus up to date with cyclopts google style compliance",buggy
+" reverted some documentation overwrites and added some compliance",buggy
+" Fixed some merge conflict",clean
+" fixes a few things anthony missed",clean
+" hotfix. Anthony's namespace merging wiped out my schema building invocation in XMLLoader.",clean
+" updated findcyclopts",clean
+" eliminated super-specific crazy exceptions. Created a few basic exception types to be used throughout cyclus core. Shortened exception class names",buggy
+" fixed remaining build/run issues",buggy
+" removed exception silencing from sqliteback",clean
+" renamed Error class files and formatted them according to style guide",buggy
+" resolve rebase compile errors",buggy
+" changed namespace names closes #531",buggy
+" renamed most funcs to CapCase",buggy
+" moved cyclopts files into Core directory with history",buggy
+" cyclopts now builds as part of cyclus",clean
+" updated readme and setup script",clean
+" made cyclopts a subproject whose headers are now called by cyclopts/header.h",clean
+" removed cyclus_tools in favor of explicit includes of variable and function. made cyclopts_limits limits.",clean
+" added blas and lapack dependency for coin. tag: squash",clean
+" cyclopts headers now install in cyclopts directory",clean
+" removed blas link unnecessary.",clean
+" cyclopts testing now exists is subdirectory of Testing",clean
+" removed find cyclopts",clean
+" test update. tag: move and squash",clean
+" added cyclus namespace on top of cyclopts namespace",buggy
+" fixed line length for Utility files touched in this PR",clean
+" updated line lengths for header files in cyclopts",buggy
+" removed using namespace std from cyclopts files",buggy
+" fixed line lengths of cyclopts implementation files",clean
+" fixed line lengths in header files in cyclopts",clean
+" fixed header file guards in cyclopts",clean
+" added a test",clean
+" added overarching but simple integration test for cyclopts",clean
+" renamed integration tests to properly reflect that they are in fact testing the cbc solver. updates cbc solver documentation.",clean
+" made variable tests less namespace verbose",clean
+" made addconstituent public removing need for friend class",clean
+" updated solver interface documentation",clean
+" prepended cyclopts to test name for easy regexp selection",clean
+" added tests for the function base class updated documentation and made slight API changes based on documentation",buggy
+" made constraint iterator access const as it should have been",clean
+" added tests for objective and constraint functions updated documentation",clean
+" finished variable-related tests updated related api and updated documentation. this last commit closes all code-related issues in cyclus/cyclopts#37.",buggy
+" flattened all directories removed extraneous file renamed all files and updated files regarding name changes",buggy
+" updated macros to install in correct place",clean
+" fixed many typedefs to be CapCase",buggy
+" fixed compile error and more sed replaces for typedef names",clean
+" fixed all compile errors",buggy
+" fixed implementation issues",buggy
+" updated enrichment function names",clean
+" ran all files in Core dir through astyle for style guide formatting",buggy
+" updated test files so cycamore can build",clean
+" fixes master schema building",clean
+" fixes doc errors should clear up @gonuke's cron job errors",clean
+" abs() -> fabs() types they are a-changing.",clean
+" literal 0 -> 0.0 for fp compares",clean
+" made implicit cast a static cast",clean
+" added a 1 variable test that should pass and a test that uses variable bounds. changed test names to better reflect the testing taxonomy",clean
+" removed bounded 2 variable test starting simple with 1 variable",clean
+" added some more simple tests for the cbc solver. two have been intentionally disabled because the maximization direction for the objective function does not appear to be working. I have double checked that the optimization direction for maximization is correct (it's 1.0) from the coin documentation. I'll investigate further.",clean
+" moved variable bound introspection based on a VariablePtr into non member non friend functions in variable.h/cc.",clean
+" removed variable bound introspection from the cbc solver. CI should build without issue now.",clean
+" readded disabled tests which now pass",clean
+" added disabled building manager test",clean
+" re-disabled test... need more time to investigate",buggy
+" everything compiles except tests",buggy
+" added tests and tried to consolidate iso_vector comp_map and material test content into material composition and comp_math tests.",buggy
+" fixed material and matquery tests",buggy
+" finished remaining compile errors - now to fixing failed tests",buggy
+" fixed absorb and extract errors in material class",buggy
+" moved unique id and bumping implementation into resource class",buggy
+" fixed comp_math add and sub funcs. material tests all pass",clean
+" moves resource-specific param recording into resource class and resource implementations now only record their special state.",buggy
+" doc fix",clean
+" finished converting compmath tests",clean
+" moved resource table all to res_tracker",buggy
+" polished resource class doc comments",clean
+" polished doc comments on generic_resource material res_tracker and composition classes. Added more complete error check to GenericResource::Absorb",buggy
+" fixed var name mistake in res_tracker",clean
+" polished doc comments for compmath namespace",clean
+" made mat_query a proper implementation file. Removed contains for now and added almostEq to it.",buggy
+" added mat_query tests and polished mat_query doc comments",clean
+" changed Composition::Vect to CompMap",buggy
+" fixes var names and comments to not refer/suggest anything 'vector' ish w.r.t. CompMap code. Change nextId to next_id",buggy
+" fixed gcsg names in decay_handler and renamed class to decayer. fixed filename comments in generic_resource and improved a couple of guards",clean
+" adds comments about composition decay chaining. Remove leftover recipe_lib constructor from debugging",clean
+" added missing neg quantity check",clean
+" unadded redundant neg comp element check. Added test to check for exception throwing",clean
+" fixed var name style",clean
+" moved setup.py to install.py",clean
+" changes for making debian packages",clean
+" Moving include files to include/cyclus",clean
+" started outline for a simulation context",clean
+" more work converting core to use context - still doesn't compile",buggy
+" everything compiles but tests segfault",buggy
+" fixed segfault issue. fiddled with includes and forward declarations",buggy
+" removed EM macro and simplified recipe library and changed it to recipe namespace",buggy
+" moved control param xml parsing into xml_file_loader out of timer. Added timer init method to context.",clean
+" updated prototype registration and model creation to use context. recipe library become so small I moved it into xml_file_loader. renamed xml_file_loader methods according to GCSG and added a LoadAll method.",buggy
+" removed unncessary model registration from context - because markets will soon be superseded by CEP18 anyway.",clean
+" updated model tests",buggy
+" updated facility model tests and fixed model tests",clean
+" made a separate test context for easier testing and updated appropriate model test files",clean
+" updated facility tests to take the context constructor argument",clean
+" renamed externed construct/destruct functions to be CapCase",buggy
+" style guide name changes.",clean
+" style guide names",buggy
+" added clarification to recipe add/get usage closes #568",clean
+" added clarification to recipe add/get usage",clean
+" updated market model tests for context usage",clean
+" removed try/catch blocks for fac model query engine usage",clean
+" added tests for null queries",clean
+" moved the optional element query into its own nonmember nonfriend templated function for easier one-line usage.",clean
+" added cyclus namespace qualifier to new function usage",clean
+" removed build dead code and mistakenly commited cyclus.rng file",clean
+" undisabled building manager bug",clean
+" removed singleton references in documentation",clean
+" added file and cli flag for retrieving cyclus core and dependency versions. Fixes #578.",clean
+" added tests for the optional query interface",clean
+" fixed seg fault due to double delete in tear down",clean
+" move clone method into model class. Killed Clone[stuff] methods into single virtual clonefrom method. Change EnterSimulation[bla] methods into a single virtual Deploy method. Moved DynamicModule Init method into constructor. Removed redundant info from facility class (build date etc.).",buggy
+" updated tests to compile with new cloning and deploy semantics",buggy
+" updated test models.  2 tests still failing",clean
+" fixed dynamic loading tests - removed redundant test with env class tests. Simplified dynamicModule further. Trying to fix inst class tests - still broken.",buggy
+" fixed inst class tests",clean
+" removed unnecessary externed Destruct funcs",clean
+" removed cruft from model class. fixed to not record on undeployed decommission. improved var/accessor names",clean
+" constructor initializer list",clean
+" fixed inst model tests and fixed duplicate id bug in model class if implicit copy-constructor is used",clean
+" fixed resource table name",clean
+" improved clone and initfrom doc comments",buggy
+" doc improvement",clean
+" fixed remaining coin and init issues",clean
+" made clone methods CapCase",clean
+" initfrom to CapCase",clean
+" renamed id parentid member vars and accessors",clean
+" have a working version of a ctest fix. need to clean it up and add python as a dependency before sending a PR",buggy
+" adds a script to generate test names and adjust build system to add those tests to the make test target appropriately. fixes #176.",clean
+" added python as a dependency",clean
+" made print function python3-compliant",clean
+" added from future import",clean
+" updated readline to use the decode method. the script is now python2/3 compliant. note that I tested with python3.3.",clean
+" main now returns 0",clean
+" added robustness in the environmental tests by resetting the environment variable and the dynamic loading tests by making sure to delete and close opened library modules.",clean
+" removed pesky cout",clean
+" test driver now adds the build directory to the cyclus module path. fixes #592. note that this overwrites the global module variable only for the test driver's environment.",clean
+" adjusted env var setting to append the current var if it was set",clean
+" removed extraneous string var",clean
+" removed disabled tests from being found by the find test script. closes #591.",clean
+" moved Testing dir to tests dir. Moved test modules into tests dir. Moved app.cc into new cli dir",clean
+" moved Core source files into base src/ directory.",clean
+" removed unnecessary Config dir. Deleted duplicate (and outdated) LICENSE and README files.",buggy
+" removed coin include prefix which causes problems on utk's darwin system",clean
+" as @gonuke suggested adding a preprocessor directive was the right way to go. tested with coin-2.3 on insam",clean
+" fixed begincode error",clean
+" I believe that this will fix the warning stemming from logger.h but I do not see the warning on my machine so I can't be sure",clean
+" finishes remaining doxygen warnings",clean
+" i think moving loglevel and the macros into the same namespace encapsulation is more promising... still unable to confirm.",clean
+" create cyclus.h. added missing header install",clean
+" down-selected includes in cyclus.h.  Removed remaining vestiges of converter models",clean
+" added cli flag for printing cyclus include dir",clean
+" fixes build error for macs moves mac linker flag to top of cmake file to set the flag for all compiled libraries in the build",clean
+" removed verbose linking flag",clean
+" moved all dynamic loading into xml_file_loader. Added a method for listing installed/discoverable dynamic modules to env class. added rng schema methods to test models and removed rng files from them. removed rng installation from cmake module macro. added master and module schema dumping to cyclus binary. added schema model test (that schema parses). moved heavy stuff out of xml-file-loader constructor. renamed LoadAll to LoadSim.",buggy
+" this should make CI pass... not sure if its what we want though.",clean
+" added initial stub directory and adjusted cmake files to include their tests.",clean
+" made mock fac/inst/region/market classes to be used with testing. added the stub facility in a new stub namespace and related tests.",clean
+" updated namespace name to reflect directory name",clean
+" removed any stubs that aren't facs regions insts or models",clean
+" added stub inst and region. updated stub facility.",clean
+" added stub market",clean
+" added include guards",clean
+" redisabled facility tests as that 's a larger issue than this PR",clean
+" encapsulated stubs namespace in cyclus namespace per gcsg",clean
+" currently builds cycluscore from top-level directory",clean
+" actually adds top level cmake file..",buggy
+" added cli to at the top of the directory structure",clean
+" gtest library builds",clean
+" enabled testing in new build environment. simplified test module directory structure and building.",buggy
+" a little cleaning before stubbing",clean
+" moved stub directory to top level made stubs a separate library incorporated stub tests into cyclus unit tests",clean
+" removed cyclus namespace from stubs",clean
+" docs currently build",buggy
+" docs now in the top level directory and a little clean up. fixes #602",clean
+" made model test files install to share dir fixes #559",clean
+" updated install script with new structure",clean
+" added hard coded version and more robust --tags flag to git describe for version.",clean
+" made timer ticker registering more robust. Search env var dirs before install dirs for dyn modules. change default dyn module install dir to lib/cyclus instead of lib/Models",buggy
+" made timer init method not reset previous timer config (e.g. listeners) - this caused confusion and debugging for me in the past",buggy
+" fixed some gcsg issues and a typo",clean
+" change module install dir to not be split into separate fac reg inst subdirs. Still need to fix schema building and env class and dynamic_loading class correspondingly. made Env::ListModules more robust and include CYCLUS_MODULE_PATH env var dirs in search. Made BuildMasterSchema not care about model type namespacing subdirs.",clean
+" renamed cyclopts to optim",clean
+" Update copyright years in license",clean
+" moved all files out of optim dirs into their respective top levels",clean
+" move symbolic functions into a different class name",clean
+" removed reference to include.h",clean
+" removed cyclus:: from building manager",clean
+" removed cylus:: prefix from non-optim files",buggy
+" removed cyclus:: prefix from optim header files",clean
+" removed explicit namespace usage in implementation files for function and building manager",clean
+" put variable implementation file in cyclus namespace",clean
+" put cbc solver impl in cyclus namespace",clean
+" put solver impl under cyclus namespace",clean
+" removed extraneous cyclus namespace from commodity_producer impl",clean
+" moved solver interface impl under cyclus namespace",clean
+" removed extraneous cyclus namespace from hdf_back impl",clean
+" removed extraneous cyclus namespace from comp_math impl",clean
+" removed extraneous cyclus namespace from fac_model impl",clean
+" removed additional cyclus:: prepends from implementation files",clean
+" moved VariablePtr to Variable::Ptr",clean
+" moved function type pointers to function::ptr",clean
+" solverptr to solver::ptr",clean
+" moved all symfunctionptr to symfunction::ptr",clean
+" alphabetized cyclus.h",clean
+" fixed logger macro issue from namespace removal and added a test to catch it at compile time in the future",clean
+" added header_impl file",clean
+" sorted lists of files/includes alphabetically",clean
+" added timestamp to resource table.  fixed bugs in transaction and resource tracking recording.  Transaction and transfered resource data must be recorded AFTER resource is extracted from supplier and BEFORE resource(s) are added to requester.",clean
+" cleaned up resource buf interface. Added some basic templating to eliminate need for separate mat_buff",clean
+" changed resource creation to take this ptr instead of context ptr. Removed context arg from Material::CreateUntracked. Made untracked resources have an id of zero instead of an id of garbage. fixed mat doc comments to use new res_buf method names.",clean
+" removed supply_demand and action_building namespace. closes #248.",clean
+" Update README.rst with additional information about dependencies and correct call of installation.",clean
+" Add links to get sample input files. Updated dependency list.",clean
+" Simplifying names and correcting some rst grammar.",clean
+" Combiined cyclopts dependency list into cyclus dependency list.",clean
+" Remove indirect dependencies",clean
+" record agent that creates each resource in output db",clean
+" added draft of release notes.",clean
+" version bump + diff stats",clean
+" initial gh-pages commit",clean
+" nightly build",clean
+" nightly build",clean
+" nightly build",clean
+" nightly build",clean
+" nightly build",clean
