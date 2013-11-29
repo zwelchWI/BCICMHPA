@@ -16,6 +16,7 @@ def usage():
         --start-date YYYY/MM/DD  ex: 1776/1/14
    	--end-date   YYYY/MM/DD
 	-o  or --out-file C	set arff filename
+        -t  or --td-numeric   store time/date attribs as numerics instead of enum list
         --extensions		comma separated list of extensions
 		LinesAdded
                 LinesRemoved
@@ -46,9 +47,9 @@ def main():
 
     try:
         options, remainder = getopt.getopt(sys.argv[1:],
-            'hu:p:d:H:o:',["help","db-user=","db-passwd=",
+            'hu:p:d:H:o:t',["help","db-user=","db-passwd=",
 		"db-database=","db-host=","start-date=","end-date=",
-		"out-file=","extensions="])
+		"out-file=","extensions=",'td-numeric'])
 	#fix later
     except getopt.GetoptError, err:
         print str(err)
@@ -64,7 +65,7 @@ def main():
     start_date = None
     end_date = None
     extensions = [] 
-
+    tdnum = False
     for opt, arg in options:
         
         if opt in ('-u','--db-user'):
@@ -88,7 +89,8 @@ def main():
             csv_name = arg
         elif opt in ('--extensions'):
             extensions = arg.split(',')
-
+        elif opt in ('-t','--td-numeric'):
+            tdnum = True
         else:
             assert False, "unhandled option "+opt
     csv = open(csv_name,'w')
@@ -100,6 +102,9 @@ def main():
 
     
     #we really aught to consider a streaming option if this gets too big
+
+    
+
 
     time_query=""
     if start_date is not None and end_date is not None:
@@ -128,6 +133,11 @@ def main():
     buggy=None
     buggy_data=None
 
+    db.query('select DISTINCT email from people')
+    users = db.use_result()
+    user_data = users.fetch_row(maxrows=0)
+
+
 
 
     header = '% 1. Title : '+csv_name.rstrip('.arff')+'\n'
@@ -147,16 +157,39 @@ def main():
         if ext == 'LinesRemoved':
             csv.write('NUMERIC\n')
         if ext == 'TimeHour':
-            csv.write('NUMERIC\n')
+            if tdnum:
+                csv.write('NUMERIC\n')
+            else:
+                csv.write('{')
+                for ndx in range(23):
+                    csv.write(str(ndx).zfill(2)+',')
+                csv.write('23}\n')
+
         if ext == 'TimeMin':
-            csv.write('NUMERIC\n')
-
+            if tdnum:
+                csv.write('NUMERIC\n')
+            else:
+                csv.write('{')
+                for ndx in range(59):
+                    csv.write(str(ndx).zfill(2)+',')
+                csv.write('59}\n')
         if ext == 'Day':
-            csv.write('NUMERIC\n')
-
+            if tdnum:
+                csv.write('NUMERIC\n')
+            else:
+                csv.write('{')
+                for ndx in range(1,31):
+                    csv.write(str(ndx).zfill(2)+',')
+                csv.write('31}\n')
+ 
         if ext == 'Month':
-            csv.write('NUMERIC\n')
-
+            if tdnum:
+                csv.write('NUMERIC\n')
+            else:
+                csv.write('{')
+                for ndx in range(1,12):
+                    csv.write(str(ndx).zfill(2)+',')
+                csv.write('12}\n')
         if ext == 'Year':
             csv.write('NUMERIC\n')
         if ext == 'DayOfWeek':
@@ -166,7 +199,10 @@ def main():
                 csv.write(day+',')
             csv.write(str(d[-1])+'}\n')
         if ext == 'User':
-            csv.write('STRING\n')
+            csv.write('{')
+            for user in user_data[:-1]:
+                csv.write(user[0]+',')
+            csv.write(user_data[-1][0]+'}\n')
         if ext == 'Comment':
             csv.write('STRING\n')
         if ext == 'CommentLength':
