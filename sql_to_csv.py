@@ -4,6 +4,7 @@ import getopt
 from datetime import date
 import _mysql
 
+
 def usage():
     '''prints the acceptable list of command line options to the user'''
     print '''-------------------------------------------------------
