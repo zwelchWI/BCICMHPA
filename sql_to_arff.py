@@ -3,7 +3,10 @@ import os
 import getopt
 from datetime import date
 import _mysql
-
+import subprocess
+from progressbar import AnimatedMarker, Bar, BouncingBar, Counter, ETA, FileTransferSpeed, FormatLabel, Percentage, \
+    ProgressBar, ReverseBar, RotatingMarker, \
+    SimpleProgress, Timer
 def usage():
     '''prints the acceptable list of command line options to the user'''
     print '''-------------------------------------------------------
@@ -30,7 +33,9 @@ def usage():
 		Comment
 		CommentLength
 		NumFiles
-		
+                Diction
+		Style
+                Queequeg
         def user         : root
         def password     : ""
         def db name      : cvsanaly
@@ -66,6 +71,7 @@ def main():
     end_date = None
     extensions = [] 
     tdnum = False
+    diction=False
     for opt, arg in options:
         
         if opt in ('-u','--db-user'):
@@ -151,7 +157,8 @@ def main():
 
 
     for ext in extensions:
-        csv.write('@ATTRIBUTE '+ext+" ")        
+        if ext != 'Style':
+            csv.write('@ATTRIBUTE '+ext+" ")        
         if ext == 'LinesAdded':
             csv.write('NUMERIC\n')
         if ext == 'LinesRemoved':
@@ -209,10 +216,34 @@ def main():
             csv.write('NUMERIC\n')
         if ext == 'NumFiles':
             csv.write('NUMERIC\n')
+        if ext in ('Diction','Queequeg'):
+            csv.write('{pass,fail}\n')
+        if ext == 'Style':
+            csv.write('@ATTRIBUTE Kincaid NUMERIC\n')
+            #kincaid is a navy measurment of readibility
+            csv.write('@ATTRIBUTE Flesch NUMERIC\n')
+            #Flesch 0-100 difficult to easy readability 
+            csv.write('@ATTRIBUTE Lix NUMERIC\n')
+            #Lix is a measure of grade school reading level
+            csv.write('@ATTRIBUTE AvgWordLength NUMERIC\n')
+            #average word length
+            csv.write('@ATTRIBUTE ShortSentencePerc NUMERIC\n')
+            #percentage of sentences at most 11 words
+            csv.write('@ATTRIBUTE LongSentencePerc NUMERIC\n')
+            #percentage of sentences at least 26 words
+ 
+ 
 
-    num_buggy = 0
     csv.write('@ATTRIBUTE classification {clean,buggy}\n\n@DATA\n')
+        
+    num_buggy = 0
+    widgets = ['Progress: ', Percentage(), ' ', Bar(marker=RotatingMarker()),
+               ' ', ETA()]
+    pbar = ProgressBar(widgets=widgets, maxval=len(commit_data)).start()
+    ndx = 0
     for commit in commit_data:
+        pbar.update(ndx)
+        ndx = ndx + 1
         #print out the data
         date_time = commit['commit_date']
         cdate=date_time.split()[0]
@@ -254,8 +285,49 @@ def main():
                 csv.write(str(len(commit['message']))+',')
             if ext == 'NumFiles':
                 csv.write(commit['file_count']+',')
-
-
+            if ext == 'Diction':
+                dfile = open('dict.txt','w')
+                dfile.write(commit['message'])
+                dfile.close()
+                diction = subprocess.Popen('diction dict.txt|grep dict.txt',shell=True,stdout=subprocess.PIPE)
+                out,err=diction.communicate()
+                if len(out) == 0:
+                    csv.write('pass,')
+                else:
+                    csv.write('fail,')
+            if ext == 'Style':
+                sfile = open('style.txt','w')
+                sfile.write(commit['message'].upper()+'.')
+                if any(c.isalpha() for c in commit['message']) is False:
+                    sfile.write(' A.\n')
+                sfile.close()
+                style = subprocess.Popen('style style.txt',shell=True,stdout=subprocess.PIPE)
+                out,err=style.communicate()
+                outlines = out.split('\n')
+                #kincaid is a navy measurment of readibility
+                csv.write(outlines[1].split(':')[1].strip()+',')
+                #Flesch 0-100 difficult to easy readability 
+                csv.write(outlines[4].split(':')[1].split('/')[0].strip()+',')                
+                #Lix is a measure of grade school reading level
+                csv.write(outlines[6].split(':')[1].split('=')[0].strip()+',')                
+                #average word length
+                csv.write(outlines[10].split()[4].strip()+',')
+                #percentage of sentences at most 11 words
+                csv.write(outlines[12].split('%')[0].strip()+',')
+                #percentage of sentences at least 26 words
+                csv.write(outlines[13].split('%')[0].strip()+',')
+            if ext == 'Queequeg':
+                qfile = open('queequeg.txt','w')
+                qfile.write(commit['message'])
+                qfile.close()
+                quee = subprocess.Popen('qq queequeg.txt|wc -l',shell=True,stdout=subprocess.PIPE)
+                out,err=quee.communicate()
+                if len(out) == 1:
+                    csv.write('pass,')
+                else:
+                    csv.write('fail,')
+                
+                 
         if commit['id'] in buggys:
             csv.write('buggy')
             num_buggy = num_buggy+1
@@ -264,7 +336,7 @@ def main():
         csv.write('\n')
 
     csv.close()
-    print 'Num results ',len(commit_data)
+    print '\nNum results ',len(commit_data)
     print 'Num buggy ',num_buggy
     print '% Buggy ',float(num_buggy)/float(len(commit_data))
 if __name__ == "__main__":
