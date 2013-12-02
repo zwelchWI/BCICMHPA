@@ -98,6 +98,7 @@ def main():
         elif opt in ('-t','--td-numeric'):
             tdnum = True
         else:
+            usage()
             assert False, "unhandled option "+opt
     csv = open(csv_name,'w')
     
@@ -160,12 +161,12 @@ def main():
         if ext != 'Style':
             csv.write('@ATTRIBUTE '+ext+" ")        
         if ext == 'LinesAdded':
-            csv.write('NUMERIC\n')
+            csv.write('numeric\n')
         if ext == 'LinesRemoved':
-            csv.write('NUMERIC\n')
+            csv.write('numeric\n')
         if ext == 'TimeHour':
             if tdnum:
-                csv.write('NUMERIC\n')
+                csv.write('numeric\n')
             else:
                 csv.write('{')
                 for ndx in range(23):
@@ -174,7 +175,7 @@ def main():
 
         if ext == 'TimeMin':
             if tdnum:
-                csv.write('NUMERIC\n')
+                csv.write('numeric\n')
             else:
                 csv.write('{')
                 for ndx in range(59):
@@ -182,7 +183,7 @@ def main():
                 csv.write('59}\n')
         if ext == 'Day':
             if tdnum:
-                csv.write('NUMERIC\n')
+                csv.write('numeric\n')
             else:
                 csv.write('{')
                 for ndx in range(1,31):
@@ -191,14 +192,14 @@ def main():
  
         if ext == 'Month':
             if tdnum:
-                csv.write('NUMERIC\n')
+                csv.write('numeric\n')
             else:
                 csv.write('{')
                 for ndx in range(1,12):
                     csv.write(str(ndx).zfill(2)+',')
                 csv.write('12}\n')
         if ext == 'Year':
-            csv.write('NUMERIC\n')
+            csv.write('numeric\n')
         if ext == 'DayOfWeek':
             d=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
             csv.write('{')
@@ -213,23 +214,23 @@ def main():
         if ext == 'Comment':
             csv.write('STRING\n')
         if ext == 'CommentLength':
-            csv.write('NUMERIC\n')
+            csv.write('numeric\n')
         if ext == 'NumFiles':
-            csv.write('NUMERIC\n')
+            csv.write('numeric\n')
         if ext in ('Diction','Queequeg'):
             csv.write('{pass,fail}\n')
         if ext == 'Style':
-            csv.write('@ATTRIBUTE Kincaid NUMERIC\n')
+            csv.write('@ATTRIBUTE Kincaid numeric\n')
             #kincaid is a navy measurment of readibility
-            csv.write('@ATTRIBUTE Flesch NUMERIC\n')
+            csv.write('@ATTRIBUTE Flesch numeric\n')
             #Flesch 0-100 difficult to easy readability 
-            csv.write('@ATTRIBUTE Lix NUMERIC\n')
+            csv.write('@ATTRIBUTE Lix numeric\n')
             #Lix is a measure of grade school reading level
-            csv.write('@ATTRIBUTE AvgWordLength NUMERIC\n')
+            csv.write('@ATTRIBUTE AvgWordLength numeric\n')
             #average word length
-            csv.write('@ATTRIBUTE ShortSentencePerc NUMERIC\n')
+            csv.write('@ATTRIBUTE ShortSentencePerc numeric\n')
             #percentage of sentences at most 11 words
-            csv.write('@ATTRIBUTE LongSentencePerc NUMERIC\n')
+            csv.write('@ATTRIBUTE LongSentencePerc numeric\n')
             #percentage of sentences at least 26 words
  
  
