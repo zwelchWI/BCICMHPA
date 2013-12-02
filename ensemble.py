@@ -5,6 +5,7 @@ from progressbar import AnimatedMarker, Bar, BouncingBar, Counter, ETA, FileTran
     ProgressBar, ReverseBar, RotatingMarker, \
     SimpleProgress, Timer
 import subprocess
+import time
 
 
 def usage():
@@ -15,6 +16,8 @@ def usage():
         --train=file		training file
 	--test=file		testing file
         --classifiers		comma separated list of classifiers
+	--args			Comma separated list of classifiers
+        --classConfig		file
         -------------------------------------------------------'''
 	
 
@@ -23,7 +26,7 @@ def usage():
 def main():
     try:
         options, remainder = getopt.getopt(sys.argv[1:],
-            'h',["help","train=","test=","classifiers="])
+            'h',["help","train=","test=","classifiers=","classConfig="])
 	#fix later
     except getopt.GetoptError, err:
         print str(err)
@@ -35,6 +38,7 @@ def main():
     trainFile = None
     testFile  = None
     classifiers = []
+    args = []
     for opt, arg in options:
         if opt in ('-h','--help'):
             usage()
@@ -45,10 +49,34 @@ def main():
             testFile = arg
         elif opt in ('--classifiers'):
             classifiers = arg.split(',')
+        elif opt in ('--args'):
+            args = arg.split(',')
+        elif opt in ('--classConfig'):
+            configFile = open(arg,'r')
+            lines = configFile.readlines()
+            configFile.close()
+            for ndx in range(len(lines)):
+                data = lines[ndx].split('=')
+                if len(data) > 1:
+                    try:
+                        if data[0].lower() == 'classifier':
+                            classifiers.append(data[1].strip())
+                            data = lines[ndx+1].split('=')
+                            args.append(data[1].strip())
+                    except:
+                        print 'ERROR, INVALID configFile'
+                        print 'classifier=<classifierName>'
+                        print 'args=<possibly empty list of args for model building>'
+                        sys.exit(1)
         else:
             usage()
             assert False, "unhandled option "+opt
+
+    if len(args) == 0:
+        for cl in classifiers:
+            args.append('')
  
+
     if trainFile is None:
         print 'Train File not specified'
         usage()
@@ -62,14 +90,15 @@ def main():
     actual = []
     predictions = []
     #collect predictions
-    for cl in classifiers:
+    og_cl = list(classifiers)
+    for cl in og_cl:
         pred = []
         bldCmd='java -cp /usr/share/java/weka.jar:/usr/share/java/libsvm.jar '
-        bldCmd=bldCmd+cl+' -t "'+trainFile+'" -T "'+trainFile+'" -d "test"'
+        bldCmd=bldCmd+cl+' -t "'+trainFile+'" -T "'+trainFile+'" -d "test" '+args[classifiers.index(cl)]
         print bldCmd
         buildOut = subprocess.Popen(bldCmd,shell=True,stdout=subprocess.PIPE)
 
-
+        time.sleep(1)
         testCmd= 'java -cp /usr/share/java/weka.jar:/usr/share/java/libsvm.jar '+cl+' -p 0'
         testCmd=testCmd+'  -l "test" -T "cyclus.test.numeric.arff"'
         print testCmd
@@ -82,8 +111,12 @@ def main():
             if len(outlines[5:-2]) > len(actual):
                 actual.append(vals[1].split(':')[1])
             pred.append(vals[2].split(':')[1])
-        predictions.append(pred)
-
+        if len(pred) > 0:
+            predictions.append(pred)
+        else:
+            args.remove(args[classifiers.index(cl)])
+            classifiers.remove(cl)
+            
 
     ens_pred = []
     for ndx in range(len(actual)):
@@ -120,8 +153,8 @@ def main():
         print 'Accuracy '+str(float(num_correct)/len(actual))
         print ''
 
-
-
+    print 'Number of classifiers used in Ensemble :'+str(len(classifiers)-1)+'/'+str(len(og_cl))
+    print 'Classifiers input but not used :'+ str([str(X) for X in og_cl if X not in classifiers])
 if __name__ == "__main__":
     main()
 
