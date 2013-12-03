@@ -222,15 +222,15 @@ def main():
         if ext == 'Style':
             csv.write('@ATTRIBUTE Kincaid numeric\n')
             #kincaid is a navy measurment of readibility
-            csv.write('@ATTRIBUTE Flesch numeric\n')
+          #  csv.write('@ATTRIBUTE Flesch numeric\n')
             #Flesch 0-100 difficult to easy readability 
-            csv.write('@ATTRIBUTE Lix numeric\n')
+         #   csv.write('@ATTRIBUTE Lix numeric\n')
             #Lix is a measure of grade school reading level
-            csv.write('@ATTRIBUTE AvgWordLength numeric\n')
+          #  csv.write('@ATTRIBUTE AvgWordLength numeric\n')
             #average word length
-            csv.write('@ATTRIBUTE ShortSentencePerc numeric\n')
+          #  csv.write('@ATTRIBUTE ShortSentencePerc numeric\n')
             #percentage of sentences at most 11 words
-            csv.write('@ATTRIBUTE LongSentencePerc numeric\n')
+           # csv.write('@ATTRIBUTE LongSentencePerc numeric\n')
             #percentage of sentences at least 26 words
  
  
@@ -308,15 +308,15 @@ def main():
                 #kincaid is a navy measurment of readibility
                 csv.write(outlines[1].split(':')[1].strip()+',')
                 #Flesch 0-100 difficult to easy readability 
-                csv.write(outlines[4].split(':')[1].split('/')[0].strip()+',')                
+                #csv.write(outlines[4].split(':')[1].split('/')[0].strip()+',')                
                 #Lix is a measure of grade school reading level
-                csv.write(outlines[6].split(':')[1].split('=')[0].strip()+',')                
+                #csv.write(outlines[6].split(':')[1].split('=')[0].strip()+',')                
                 #average word length
-                csv.write(outlines[10].split()[4].strip()+',')
+                #csv.write(outlines[10].split()[4].strip()+',')
                 #percentage of sentences at most 11 words
-                csv.write(outlines[12].split('%')[0].strip()+',')
+          #      csv.write(outlines[12].split('%')[0].strip()+',')
                 #percentage of sentences at least 26 words
-                csv.write(outlines[13].split('%')[0].strip()+',')
+           #     csv.write(outlines[13].split('%')[0].strip()+',')
             if ext == 'Queequeg':
                 qfile = open('queequeg.txt','w')
                 qfile.write(commit['message'])

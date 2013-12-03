@@ -18,6 +18,7 @@ def usage():
         --classifiers		comma separated list of classifiers
 	--args			Comma separated list of classifiers
         --classConfig		file
+  	-v			verbose
         -------------------------------------------------------'''
 	
 
@@ -26,7 +27,7 @@ def usage():
 def main():
     try:
         options, remainder = getopt.getopt(sys.argv[1:],
-            'h',["help","train=","test=","classifiers=","classConfig="])
+            'hv',["help","train=","test=","classifiers=","classConfig="])
 	#fix later
     except getopt.GetoptError, err:
         print str(err)
@@ -39,6 +40,7 @@ def main():
     testFile  = None
     classifiers = []
     args = []
+    verb = False
     for opt, arg in options:
         if opt in ('-h','--help'):
             usage()
@@ -51,6 +53,8 @@ def main():
             classifiers = arg.split(',')
         elif opt in ('--args'):
             args = arg.split(',')
+        elif opt in ('-v'):
+            verb = True
         elif opt in ('--classConfig'):
             configFile = open(arg,'r')
             lines = configFile.readlines()
@@ -91,20 +95,35 @@ def main():
     predictions = []
     #collect predictions
     og_cl = list(classifiers)
+    widgets = ['Progress: ', Percentage(), ' ', Bar(marker=RotatingMarker()),
+               ' ', ETA()]
+
+    pbar = ProgressBar(widgets=widgets, maxval=2*len(og_cl)).start()
+    ndx = 0
+
     for cl in og_cl:
+        pbar.update(ndx)
+        ndx = ndx + 1
+ 
         pred = []
         bldCmd='java -cp /usr/share/java/weka.jar:/usr/share/java/libsvm.jar '
         bldCmd=bldCmd+cl+' -t "'+trainFile+'" -T "'+trainFile+'" -d "test" '+args[classifiers.index(cl)]
-        print bldCmd
+        if verb:
+            print bldCmd
         buildOut = subprocess.Popen(bldCmd,shell=True,stdout=subprocess.PIPE)
+        pbar.update(ndx)
+        ndx = ndx + 1
+ 
 
         time.sleep(1)
         testCmd= 'java -cp /usr/share/java/weka.jar:/usr/share/java/libsvm.jar '+cl+' -p 0'
         testCmd=testCmd+'  -l "test" -T "cyclus.test.numeric.arff"'
-        print testCmd
+
+        if verb:
+            print testCmd
         testOut = subprocess.Popen(testCmd,shell=True,stdout=subprocess.PIPE)
         out,err=testOut.communicate()
- 
+        time.sleep(1) 
         outlines = out.split('\n')
         for line in outlines[5:-2]:
             vals = line.split()
@@ -134,6 +153,7 @@ def main():
 
 
     for clndx in range(len(classifiers)):         
+ 
         num_correct = 0
         num_actual_buggy = 0
         num_pred_buggy = 0
@@ -144,6 +164,7 @@ def main():
                 num_pred_buggy = num_pred_buggy+1
             if actual[ndx] == predictions[clndx][ndx]:
                 num_correct = num_correct+ 1
+        print ''
         print 'CLASSIFIER: '+classifiers[clndx]
         print '-------------------------------'
         print 'Number predicted buggy '+str(num_pred_buggy)
@@ -151,8 +172,15 @@ def main():
         print 'Number correct: '+str(num_correct)
         print 'Total data '+str(len(actual))
         print 'Accuracy '+str(float(num_correct)/len(actual))
-        print ''
-
+        if 'trees' in classifiers[clndx]:
+            bldCmd='java -cp /usr/share/java/weka.jar:/usr/share/java/libsvm.jar '
+            bldCmd=bldCmd+classifiers[clndx]+' -t "'+trainFile+'" -T "'+testFile+'" '+args[clndx]
+            if verb:
+                print bldCmd
+            buildOut = subprocess.Popen(bldCmd,shell=True,stdout=subprocess.PIPE)
+            out,err=buildOut.communicate()
+            print out
+       
     print 'Number of classifiers used in Ensemble :'+str(len(classifiers)-1)+'/'+str(len(og_cl))
     print 'Classifiers input but not used :'+ str([str(X) for X in og_cl if X not in classifiers])
 if __name__ == "__main__":
