@@ -115,9 +115,9 @@ def main():
         ndx = ndx + 1
  
 
-        time.sleep(1)
+        time.sleep(2)
         testCmd= 'java -cp /usr/share/java/weka.jar:/usr/share/java/libsvm.jar '+cl+' -p 0'
-        testCmd=testCmd+'  -l "test" -T "cyclus.test.numeric.arff"'
+        testCmd=testCmd+'  -l "test" -T "'+testFile+'"'
 
         if verb:
             print testCmd

@@ -218,7 +218,7 @@ def main():
         if ext == 'NumFiles':
             csv.write('numeric\n')
         if ext in ('Diction','Queequeg'):
-            csv.write('{pass,fail}\n')
+            csv.write('numeric\n')
         if ext == 'Style':
             csv.write('@ATTRIBUTE Kincaid numeric\n')
             #kincaid is a navy measurment of readibility
@@ -290,12 +290,9 @@ def main():
                 dfile = open('dict.txt','w')
                 dfile.write(commit['message'])
                 dfile.close()
-                diction = subprocess.Popen('diction dict.txt|grep dict.txt',shell=True,stdout=subprocess.PIPE)
+                diction = subprocess.Popen('diction dict.txt|grep dict.txt|wc -l',shell=True,stdout=subprocess.PIPE)
                 out,err=diction.communicate()
-                if len(out) == 0:
-                    csv.write('pass,')
-                else:
-                    csv.write('fail,')
+                csv.write(out.strip()+',')
             if ext == 'Style':
                 sfile = open('style.txt','w')
                 sfile.write(commit['message'].upper()+'.')
@@ -323,10 +320,7 @@ def main():
                 qfile.close()
                 quee = subprocess.Popen('qq queequeg.txt|wc -l',shell=True,stdout=subprocess.PIPE)
                 out,err=quee.communicate()
-                if len(out) == 1:
-                    csv.write('pass,')
-                else:
-                    csv.write('fail,')
+                csv.write(out.strip()+',')
                 
                  
         if commit['id'] in buggys:
