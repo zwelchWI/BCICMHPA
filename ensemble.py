@@ -6,6 +6,7 @@ from progressbar import AnimatedMarker, Bar, BouncingBar, Counter, ETA, FileTran
     SimpleProgress, Timer
 import subprocess
 import time
+from datetime import datetime
 
 
 def usage():
@@ -104,26 +105,27 @@ def main():
     for cl in og_cl:
         pbar.update(ndx)
         ndx = ndx + 1
- 
+        a = datetime.now() 
         pred = []
         bldCmd='java -cp /usr/share/java/weka.jar:/usr/share/java/libsvm.jar '
         bldCmd=bldCmd+cl+' -t "'+trainFile+'" -T "'+trainFile+'" -d "test" '+args[classifiers.index(cl)]
         if verb:
             print bldCmd
         buildOut = subprocess.Popen(bldCmd,shell=True,stdout=subprocess.PIPE)
+        buildOut.communicate()
         pbar.update(ndx)
         ndx = ndx + 1
  
-
-        time.sleep(2)
+    
         testCmd= 'java -cp /usr/share/java/weka.jar:/usr/share/java/libsvm.jar '+cl+' -p 0'
         testCmd=testCmd+'  -l "test" -T "'+testFile+'"'
-
         if verb:
             print testCmd
         testOut = subprocess.Popen(testCmd,shell=True,stdout=subprocess.PIPE)
         out,err=testOut.communicate()
-        time.sleep(1) 
+        b = datetime.now() 
+        print '\n'+cl+' ' +str((b-a).seconds)+' sec\n'
+ 
         outlines = out.split('\n')
         for line in outlines[5:-2]:
             vals = line.split()

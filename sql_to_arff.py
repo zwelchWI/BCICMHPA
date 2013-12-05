@@ -209,7 +209,7 @@ def main():
         if ext == 'User':
             csv.write('{')
             for user in user_data[:-1]:
-                csv.write(user[0]+',')
+                csv.write(user[0].replace(' ','')+',')
             csv.write(user_data[-1][0]+'}\n')
         if ext == 'Comment':
             csv.write('STRING\n')
@@ -251,7 +251,8 @@ def main():
         ctime=date_time.split()[1]
         cdates = cdate.split('-')
         ctimes = ctime.split(':')
-
+        if commit['email'] == '':
+            continue
         for ext in extensions:
             
             if ext == 'LinesAdded':
@@ -273,7 +274,7 @@ def main():
                 d=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
                 csv.write(d[dow]+',')
             if ext == 'User':
-                csv.write(commit['email']+',')
+                csv.write(commit['email'].replace(' ','')+',')
             if ext == 'Comment':
                 lines = commit['message'].splitlines()
                 messg = ''
