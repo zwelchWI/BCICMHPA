@@ -15,7 +15,7 @@ def usage():
         Usage
         -h  or --help           print list of commands
         --file1=file		file1
-	--file2=file		file2
+	--attrib=attrib		attrib
 
         --outfile=combine.arff
   	-v			verbose
@@ -27,7 +27,7 @@ def usage():
 def main():
     try:
         options, remainder = getopt.getopt(sys.argv[1:],
-            'hv',["help","file1=","file2=","outfile="])
+            'hv',["help","file1=","attrib=","outfile=","classConfig="])
 	#fix later
     except getopt.GetoptError, err:
         print str(err)
@@ -37,10 +37,10 @@ def main():
 
 
     file1 = None
-    file2  = None
+    attrib  = None
     classifiers = []
     args = []
-    combine='combine.arff'
+    combine='removed.arff'
     verb = False
     for opt, arg in options:
         if opt in ('-h','--help'):
@@ -48,10 +48,10 @@ def main():
             sys.exit(2)
         elif opt in ('--file1'):
             file1 = arg
-        elif opt in ('--file2'):
-            file2 = arg
+        elif opt in ('--attrib'):
+            attrib = arg
         elif opt in ('--outfile'):
-            combine = arg
+            combine=arg
         else:
             usage()
             assert False, "unhandled option "+opt
@@ -62,8 +62,8 @@ def main():
         print 'File 1 not specified'
         usage()
         sys.exit(1)
-    if file2 is None:
-        print 'File 2 not specified'
+    if attrib is None:
+        print 'Attrib not specified'
         usage()
         sys.exit(1)
 
@@ -71,44 +71,36 @@ def main():
     f1 = open(file1,'r')
     f1Lines=f1.read()
     f1.close()
-    f2 = open(file2,'r')
-    f2Lines = f2.read()
-    f2.close()
 
 
     outFile=open(combine,'w')
-
+    startAttribLine=1
     header1  = f1Lines.split('@DATA\n')[0]
     header1Lines = header1.split('\n')
-    for line in header1Lines[:-3]:
-        outFile.write(line+'\n')
+    for ndx in range(len(header1Lines[:-1])):
+        if attrib not in header1Lines[ndx]:
+            outFile.write(header1Lines[ndx].strip()+'\n')
+        else:
+            attribNdx=ndx-startAttribLine
 
+        if 'RELATION' in header1Lines[ndx]:
+            startAttribLine=ndx+1
+
+    outFile.write('@DATA\n')
     
+    print attribNdx
 
-    header2 = f2Lines.split('@DATA')[0]
-    header2 = header2.split('@RELATION BUGGY\n')[1]
-
-    outFile.write(header2+'@DATA\n')
 
     data1 = f1Lines.split('@DATA\n')[1]
     data1Lines = data1.split('\n')
-    data2 = f2Lines.split('@DATA\n')[1]
-    data2Lines = data2.split('\n')
 
-
-    print len(data1Lines)
-    print len(data2Lines)
 
     for ndx in range(len(data1Lines)):
         line1 = data1Lines[ndx].split(',')
-        line2 = data2Lines[ndx].split(',')
-        if line1[-1] != line2[-1]:
-            print 'Question Yo data'
-            print ndx
-            break
-        for datum in line1[:-1]:
-            outFile.write(datum+',')
-        outFile.write(data2Lines[ndx]+'\n')
+        for  linendx in range(len(line1[:-1])):
+            if linendx != attribNdx:
+                outFile.write(line1[linendx]+',')
+        outFile.write(line1[-1]+'\n')
     outFile.close()
     
 
