@@ -1,0 +1,131 @@
+\relax 
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Image Analogy}}{1}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Artistic Example}}}{1}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Target Image}}}{1}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Output Image}}}{1}}
+\citation{analogy}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{2}}
+\citation{analogy}
+\citation{analogy}
+\citation{watercolor}
+\citation{brush}
+\citation{animate}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{3}}
+\citation{diffusion}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Image Analogy}{4}}
+\newlabel{fig:Manetorig}{{2(a)}{4}}
+\newlabel{sub@fig:Manetorig}{{(a)}{4}}
+\newlabel{fig:Manetgen}{{2(b)}{4}}
+\newlabel{sub@fig:Manetgen}{{(b)}{4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Detail of Manet's \emph  {Still Life with Melon and Peaches}}}{4}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Original Image}}}{4}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Generated ``Source'' Image}}}{4}}
+\newlabel{fig:Manet}{{2}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Feature Vectors}{5}}
+\citation{analogy}
+\citation{analogy}
+\citation{analogy}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Feature Matching using Gaussian Pyramids and Neighborhoods. source:\nobreakspace  {}\cite  {analogy}}}{6}}
+\newlabel{fig:feat}{{3}{6}}
+\citation{ann}
+\citation{cohere}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Finding Matches}{7}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Coherence Search}}{7}}
+\newlabel{fig:coherePic}{{4}{7}}
+\newlabel{eq:coh}{{2}{7}}
+\citation{flann}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Algorithm}{8}}
+\citation{analogySite}
+\citation{analogySite}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Implementation and Test Plan}{9}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Results}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Adding Coherence}{10}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Adding Coherence Search}}{10}}
+\newlabel{tab:COH}{{1}{10}}
+\newlabel{fig:COHaewc}{{5(a)}{11}}
+\newlabel{sub@fig:COHaewc}{{(a)}{11}}
+\newlabel{fig:COHtiwc}{{5(b)}{11}}
+\newlabel{sub@fig:COHtiwc}{{(b)}{11}}
+\newlabel{fig:COHnoCwc}{{5(c)}{11}}
+\newlabel{sub@fig:COHnoCwc}{{(c)}{11}}
+\newlabel{fig:COHCwc}{{5(d)}{11}}
+\newlabel{sub@fig:COHCwc}{{(d)}{11}}
+\newlabel{fig:COHaesf}{{5(e)}{11}}
+\newlabel{sub@fig:COHaesf}{{(e)}{11}}
+\newlabel{fig:COHtisf}{{5(f)}{11}}
+\newlabel{sub@fig:COHtisf}{{(f)}{11}}
+\newlabel{fig:COHnoCsf}{{5(g)}{11}}
+\newlabel{sub@fig:COHnoCsf}{{(g)}{11}}
+\newlabel{fig:COHCsf}{{5(h)}{11}}
+\newlabel{sub@fig:COHCsf}{{(h)}{11}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Differences in Output Quality Based on Use of Coherence Search}}{11}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Artistic Example}}}{11}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Target Image}}}{11}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {No $K$}}}{11}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {$K = 2$}}}{11}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(e)}{\ignorespaces {Artistic Example}}}{11}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(f)}{\ignorespaces {Target Image}}}{11}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(g)}{\ignorespaces {No $K$}}}{11}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(h)}{\ignorespaces {$K = 2$}}}{11}}
+\newlabel{fig:COH}{{5}{11}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Using Gaussian Pyramids}{11}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Increasing Pyramid Levels}}{12}}
+\newlabel{tab:PYR}{{2}{12}}
+\newlabel{fig:PYRSRC}{{6(a)}{12}}
+\newlabel{sub@fig:PYRSRC}{{(a)}{12}}
+\newlabel{fig:PYRTAR}{{6(b)}{12}}
+\newlabel{sub@fig:PYRTAR}{{(b)}{12}}
+\newlabel{fig:PYR1}{{6(c)}{12}}
+\newlabel{sub@fig:PYR1}{{(c)}{12}}
+\newlabel{fig:PYR2}{{6(d)}{12}}
+\newlabel{sub@fig:PYR2}{{(d)}{12}}
+\newlabel{fig:PYR3}{{6(e)}{12}}
+\newlabel{sub@fig:PYR3}{{(e)}{12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Increasing Gaussian Pyramid Levels}}{12}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Artistic Example}}}{12}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Target Image}}}{12}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {One Level (No Pyramid)}}}{12}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {Two Levels}}}{12}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(e)}{\ignorespaces {Three Levels}}}{12}}
+\newlabel{fig:PYR}{{6}{12}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Varying Coherence Parameter}{13}}
+\newlabel{fig:K1}{{7(c)}{14}}
+\newlabel{sub@fig:K1}{{(c)}{14}}
+\newlabel{fig:K2}{{7(d)}{14}}
+\newlabel{sub@fig:K2}{{(d)}{14}}
+\newlabel{fig:K3}{{7(e)}{14}}
+\newlabel{sub@fig:K3}{{(e)}{14}}
+\newlabel{fig:K4}{{7(f)}{14}}
+\newlabel{sub@fig:K4}{{(f)}{14}}
+\newlabel{fig:K5}{{7(g)}{14}}
+\newlabel{sub@fig:K5}{{(g)}{14}}
+\newlabel{fig:K6}{{7(h)}{14}}
+\newlabel{sub@fig:K6}{{(h)}{14}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Increasing Gaussian Pyramid Levels}}{14}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Artistic Example}}}{14}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Target Image}}}{14}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {$K=2$}}}{14}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {$K=7$}}}{14}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(e)}{\ignorespaces {$K=10$}}}{14}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(f)}{\ignorespaces {$K=12$}}}{14}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(g)}{\ignorespaces {$K=15$}}}{14}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(h)}{\ignorespaces {$K=20$}}}{14}}
+\newlabel{fig:K}{{7}{14}}
+\citation{analogy}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Computation Time}{15}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Increasing Target Size}}{15}}
+\newlabel{tab:INCTAR}{{3}{15}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Increasing Source Size}}{15}}
+\newlabel{tab:INCSOU}{{4}{15}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Concluding Remarks}{15}}
+\bibcite{analogy}{1}
+\bibcite{analogySite}{2}
+\bibcite{texSynth}{3}
+\bibcite{ann}{4}
+\bibcite{flann}{5}
+\bibcite{cohere}{6}
+\bibcite{watercolor}{7}
+\bibcite{diffusion}{8}
+\bibcite{brush}{9}
+\bibcite{animate}{10}
+\@writefile{toc}{\contentsline {section}{Bibliography}{16}}

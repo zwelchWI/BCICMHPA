@@ -1,0 +1,438 @@
+\documentclass[letterpaper,12pt]{article}
+% define the title
+\author{Zach Welch}
+\date{}
+\title{Imitating Artistic Styles using Image Analogies}
+\pagestyle{headings}
+\usepackage{xcolor,graphicx,subfigure}
+\usepackage[margin=1.25in]{geometry}
+
+\usepackage{epigraph}
+
+% \epigraphsize{\small}% Default
+\setlength\epigraphwidth{16cm}
+\setlength\epigraphrule{1pt}
+
+\usepackage{etoolbox}
+
+\makeatletter
+\patchcmd{\epigraph}{\@epitext{#1}}{\itshape\@epitext{#1}}{}{}
+\makeatother\usepackage{algorithm}
+\usepackage{multirow}
+\usepackage{algpseudocode}
+\begin{document}
+% generates the title
+\maketitle
+
+\begin{figure}[h]
+    \centerline{
+        \subfigure[Artistic Example]{%
+            \includegraphics[width=0.4\textwidth,height=.2\textwidth]{manet}
+        }%
+        \subfigure[Target Image]{%
+           \includegraphics[width=0.4\textwidth,height=.2\textwidth]{sunflower}
+        }
+        \subfigure[Output Image]{%
+            \includegraphics[width=0.4\textwidth,height=.2\textwidth]{sf_manet_C_3L}
+        }%
+ }
+ \caption{Image Analogy}
+\end{figure}
+
+\begin{abstract}
+Image Analogy is a framework for image processing which uses a source pair of images as training data to ``learn'' an image transform and then applies this transform to a target image to create a new image. Image Analogy has been shown  to have a wide array of applications.  One interesting application is using works of art as training data, which can produce images that imitate the artistic style of the input artwork.  This paper discusses the basic algorithm for Image Analogy, as well as a number of improvements and extensions that can be applied to produce higher quality images. This paper also looks at the different output images generated from a Matlab implementation of Image Analogy when several key features are varied, as well as their effect on computation time.  
+\end{abstract}
+
+% insert the table of contents
+\tableofcontents
+\listoffigures
+\listoftables
+\epigraph{Good artists copy, great artists steal}{ \textup{Steve Jobs}}
+
+\section{Introduction}
+English writer Charles Caleb Colton's famous quote ``Imitation is the sincerest form of flattery" is one of the most famous and often repeated aphorisms used today, and for good reason. Art history is littered with examples of innovative painters, writers, and filmmakers who create an original, unique work that clearly influences a large body of work that comes after it. Many famous paintings and painters have distinct styles, often full of subtle details.  There are many examples of artistic style, but until recently, only people with artistic skill could create  visually pleasing images in a certain artistic style.    Work in computer graphics in non-photorealistic rendering and in computational photography has resulted in techniques that can imitate artistic styles without the artistic talent.  One general technique for doing this is called Image Analogy.   
+
+An analogy is a very powerful framework for comparison and association. An analogy, defined as $A : A' :: B : B'$, consists of a source pair ($A$ and $A'$) and a target pair ($B$ and $B'$).  In general terms, an analogy is a statement that the relationship between $B$ and $B'$ is very similar to the relationship between $A$ and $A'$.  When an analogy is used as the basis for a problem (like on a standardized test), $B'$ is not supplied. To answer correctly,  a person must come up with an appropriate $B'$ for $B$ and the relationship between $A$ and $A'$.  In this paper I attempt to use Image Analogy to solve the following problem : Given an image of a painting (or some detailed subset of a painting) $A$ and a target image $B$, generate an image $B'$ which contains both image data from $B$ and clear artistic qualities from $A$. In essence, `` Make the target image look like it was painted in the same style as this painting''.
+
+
+The goal of this project is to implement and alter an Image Analogy algorithm, make some improvements and optimizations and to try and find optimal settings to the many parameters of the algorithm.  A large number of images were generated using a small set of artistic style examples and images to apply them to.  
+
+ 
+\section{Related Work}
+
+The original concept of and algorithm for Image Analogy was initially described in Hertzmann et al~\cite{analogy}. My project is largely an extension and analysis of the concepts discussed in that paper as they apply to artistic style imitation.  In ~\cite{analogy}, Hertzmann et al focus on a wide range of potential applications for which the Image Analogy algorithm can be used, including texture synthesis and transfer, super resolution, and texture by numbers.  They mention artistic filters as a potential application and give a few visually pleasing examples, but do not explore the concept with much depth.  As that paper readily acknowledges, the process of Image Analogy combines a number of well known techniques in computational photography to create a framework that can do established things like texture synthesis and texture transfer as well as new things like applying an artistic style to an image.  
+
+In trying to generate images with artistic style, this application of Image Analogy falls into the very large, very general field of non-photorealistic rendering.  Non-photorealistic rendering is an umbrella term that encompasses work in computer graphics, visualization, and computational photography, all of which are more interested in generating images artistically  than accurately. While many non-photorealistic techniques focus on a single style, Image Analogy is much more general.
+
+\section{Image Analogy}
+Using the concept of analogy as a framework for applying image alterations is very intuitive.  The general idea is that if given a source image $A$, an altered source image $A'$, and a target image $B$, the Image Analogy algorithm will produce an image $B'$ that looks like $B$ with similar alterations as between $A$ and $A'$.  There are several advantages of using this method to generate artistic imitations.  A potentially major advantage of Image Analogy is that many other forms of non-photorealistic rendering focus on generating a single, specific style ~\cite{watercolor,brush,animate}. Image Analogies are designed to work on any and all artistic styles. 
+
+While this concept of using a source pair might make sense in the context of other applications, it may not initially be clear how this algorithm requiring a source pair has an application of imitating artistic style; paintings rarely come with a source image.  But, if some assumptions are made about what constitutes the important components of an artistic style, a ``source" version of a painting can be easily produced. 
+\begin{figure}[h]
+ \centerline{
+        \subfigure[Original Image]{%
+            \includegraphics[width=.5\textwidth,height=.35\textwidth]{manet}
+            \label{fig:Manetorig}
+              }%
+        \subfigure[Generated ``Source'' Image]{%
+           \includegraphics[width=.5\textwidth,height=.35\textwidth]{manetsrc}
+           \label{fig:Manetgen}
+        }   
+     }
+\caption{Detail of Manet's \emph{Still Life with Melon and Peaches}}
+\label{fig:Manet}
+\end{figure}
+ If we define artistic style as the fine grain texture of an image (see the faint lines on the fruit in Figure ~\ref{fig:Manetorig}), then a source version of an artistic work  is the same image with this texture removed.  By applying anisotropic diffusion ~\cite{diffusion} to the image to remove noise without blurring edges and larger scale detail, images that work well as source counterparts can be generated.
+
+While the overarching concept of the Image Analogy process is very clear (make this image look like those images), actually going about this is an extremely under constrained problem.  A broad overview of the algorithm is described below.  A key constraint of the input images is that $A$ and $A'$ be in register. Consequently generated image $B'$ will be in register with $B$. For each pixel in $A, A'$ and $B$, a feature vector is generated. Pixels for $B'$ are generated in scan line order.  To generate some pixel $x$ in $B'$, we take feature $B(x)$ and search for the "best matching" feature in $A$, $A(y)$.  The pixel $y$ in $A'$ is then copied to $B'$.  The difficulty and variability of the Image Analogy algorithm comes into play when implementing vague elements like what constitutes the pixel feature and how to decide which feature of $A$ is the  best match with $B(x)$.
+
+\begin{algorithmic}
+\Function{ImageAnalogy}{$A,A',B,options$} 
+		\For{Each Pixel $q \in B'$} \Comment{Scan Line Order}
+			\State Create Feature vector $F_q$
+			\State $p_{best} \gets$ pixel in $A$ with best matching feature $F_p$
+			\State $B'(q) \gets A'(p_{best})$
+		\EndFor
+	\State \Return $B'$ 
+\EndFunction
+\end{algorithmic}
+
+
+
+\subsection{Feature Vectors}
+In the context of the Image Analogy algorithm, a feature is a set of information about a pixel.  Image Analogies use these features as a way of quantifying the similarity between pixels. Features can be any combination of information, and choosing different data and different amounts of data can produce drastically different results.  One of the simplest and most obvious feature vectors for a pixel is simply the pixel's RGB values.  In this situation the closest pixel in $A$ would be found for every pixel in $B$, and the corresponding pixel in $A'$ would be copied to $B'$.  
+
+Hertzmann et al indicate in their paper and I have confirmed by running my own tests that using a pixel's RGB values (and even a neighborhood of RGB values) generally produces a poor image.  The reason for this poor quality is because if the colors in images $A$ and $B$ differ, there will be a poor mapping from features in $B$ to features in $A$.  Hertzmann refers to this issue as the "curse of dimensionality".  
+
+
+One solution to this curse is to reduce the space of feature data from three dimensions (RGB values) to one dimension (luminance).  There has been success in using feature data in a color space which decouples luminosity from color.  Hertzmann et al use the Y component of the YIQ color space, but any luminance component color space should be effective. In this case only Y values are used in feature matching, with the I and Q components simply copied from pixels in $B$ to $B'$. This is not always an ideal solution, particularly in cases where color manipulation is part of the alteration between $A$ and $A'$. However, since our source images are generated in a way that only removes the color of the fine detail, this solution is valid. Using only luminance values also makes processing images faster, since only one third the amount of data needs to be processed. For artistic style imitation, using luminance values for feature data produces much higher quality results than  simply using RGB values.     
+
+While there are clear benefits to only using luminance values, issues can still arise if $A$ and $B$ have different luminance ranges. If one image is very dark and the other very bright, the resulting image will be poor. In the worst case, there is no overlap between the two luminance ranges and all features in one image can map to a single feature in the other. To ensure that there is a good correspondence between the images, it is helpful to map the distribution of the luminance values in $A$ and $A'$ into the distribution of luminance values in $B$.  Hertzmann's paper refers to this process as luminance remapping. 
+\begin{equation}
+ Y_{remap}(p) = \sigma_B/\sigma_A (Y(p)  -\mu_A)+\mu_B
+ \end{equation}  
+ This remapping gives the remapped $A$ and $B$ the same mean and standard deviations, making the mapping much better.     
+
+So far this discussion of feature vectors has been about the kind of data to use rather than the amount of data to use.  Often, using a single pixel does not make as much sense as using a neighborhood of pixels around the pixels in question.  Neighborhoods of pixels are much less susceptible to noise and outliers that can cause artifacts when a single pixel is used.  In addition, the characteristics of an artistic style are multi pixel in nature. Since the Image Analogy algorithm runs in scan line order, we can also use some of the pixels already generated in $B'$ as part of the data used in our search.  My  implementation use a $5x5$ neighborhood for features from $A$ and $B$ as well as a $5x5$ neighborhood of valid pixels in $A'$ and $B'$.  Images using the $5x5$ neighborhoods can look very good, but often, there is a sense that the algorithm gets finer grain details correct but fails to create a cohesive image.  To try and combat this, we use Gaussian Pyramid representations of the images.  
+
+
+ \begin{figure}[h]
+\centering
+	\includegraphics[width=0.45\textwidth]{HertzFeature}
+\caption{Feature Matching using Gaussian Pyramids and Neighborhoods.  source:~\cite{analogy}}
+\label{fig:feat}
+\end{figure}
+
+A gaussian pyramid is a multi scale representation of the image.  A gaussian pyramid is created by applying a gaussian filter to an image and then subsampling the filtered image to produce an image with half the length and width of the original image.  This process can be applied recursively to the smaller image to create smaller and smaller representations of the image.  The benefit of using this representation of image in the Image Analogy algorithm is that $B'$ can be generated from a small, coarse grain image to a larger, finer detail image.  When data from the next coarser level of the pyramid is used as feature data, then the generated image tends to look more cohesive.  A $3x3$ neighborhood of the pixel in the next coarsest level (if it exists) is also used. 
+The actual feature used in ~\cite{analogy} and in my implementation is shown in Figure ~\ref{fig:feat}.  As the figure shows, $5x5$ neighborhoods from the current level and $3x3$ neighborhoods from the next coarsest level are used.  All generated images in this paper additionally use the luminance component of YIQ as well as luminance remapping.
+  
+\subsection{Finding Matches}
+In the general description of the algorithm given at the start of this section, I was vague about two things, one was what constitutes a feature, the other was the concept of finding the "best match" between a feature in $B$ and all the features in $A$. The method for finding the best match is actually two methods.  The first, approximate method, uses the approximate nearest neighbor algorithm to efficiently find a close pixel in $A$ ~\cite{ann}. The approximate search is the default search for the Image Analogy algorithm.  Additionally a coherence search, based on work by in ~\cite{cohere}, can be used to find pixels that fit well with nearby pixels that have already been generated. 
+
+
+ 
+ \begin{figure}[h]
+\centering
+	\includegraphics[width=0.6\textwidth,height=0.3\textheight]{coherePic}
+\caption{Coherence Search}
+\label{fig:coherePic}
+\end{figure}
+The coherence match works, as shown in Figure ~\ref{fig:coherePic} and described in equation ~\ref{eq:coh}, by taking each previously generated pixel $r$ in the neighborhood of the pixel $q$ being generated in $B'$, going back to the corresponding pixel in $A$ (defined as function $s(q)$ in equation ~\ref{eq:coh}), and then using the relative offset $r-q$ to find a potential coherent pixel $P$ in $A$.  
+\begin{equation}
+ r^* = \arg \min_{r \in N(q)} ||F_l (s(r) + q-r) - F_l(q) ||^2
+ \label{eq:coh}
+ \end{equation}
+ The coherence search takes the squared magnitude of the difference between $F_l(P)$ and$F_l(q)$, essentially the distance between them, for each $r$ to finds  the pixel $r^*$ with the minimum distance and its corresponding $P^*$.  The coherence search returns $P^*$ as its ``best fitting'' pixel. It is possible for border cases that the coherence search does not return any pixel.
+If both approximate search and coherence search are used, the feature with the smaller distance to the feature of the pixel being generated is considered the best match.  If you compare the distance to the approximate feature with the distance to  the coherent feature, the approximate difference will almost always be smaller. There is a difference though between being a numerically better fit and being more visually appealing.  To make things more equitable, Hertzmann et al introduce a coherence parameter $K$ to scale up the value of the approximate distance.
+\begin{algorithmic}
+\Function{BestMatch}{$A,A',B,B',level,q$} 
+	\State $p_{app} \gets $ ApproxMatch($A,A',B,B',level,q)$
+	\State $p_{coh} \gets $ CohereMatch($A,A',B,B',level,q)$
+	\State $d_{app} \gets || F(level,p_{app}) - F(level,q)||^2	$
+	\State $d_{coh} \gets || F(level,p_{coh}) - F(level,q)||^2 $
+	\If {$d_{coh}\leq K*d_{app}$}
+		\State \Return $p_{coh}$
+	\Else
+		\State \Return $p_{app}$
+	\EndIf 
+	\EndFunction
+\end{algorithmic}
+ The value of this coherence parameter has a great effect on the resulting image, and is semi arbitrary, making it difficult to set correctly. 
+
+
+
+
+
+\subsection{Algorithm}
+The full Image Analogy algorithm used in this paper is shown below:
+\begin{algorithmic}
+
+\Function{ImageAnalogy}{$A,A',B,options$} 
+	\State Convert $A, A' ,B$ to YIQ
+	\State Create Gaussian Pyramids for $A, A', B$
+	\For{$level = 1 \to PyrLevels$} \Comment{Coarse to Fine}
+		\For{Each Pixel $q \in B'_{level}$} \Comment{Scan Line Order}
+			\State Create ANN Feature Lists for $A, A',$ and $B$
+			\State $p_{best} \gets BestMatch(A,A',B,B',level,q)$
+			\State $B'_{level}(q) \gets A'_{level}(p_{best})$
+		
+		\EndFor
+	\EndFor
+	\State Convert B' to RGB
+	\State \Return $B'_{pyrLevels}$ 
+\EndFunction
+\end{algorithmic}
+
+\section{Implementation and Test Plan}
+I implemented the Image Analogy algorithm in MATLAB.  The only portion of the code I did not write is the approximate nearest neighbor code.  I use Fast Library for Approximate Nearest Neighbors ~\cite{flann} to do the approximate search. Initially I used a MATLAB nearest neighbor implementation, but it proved to be orders of magnitude slower than FLANN. The functions I wrote are roughly 350 lines of code.  I wrote an additional several hundred lines of scripts for testing.   
+
+In addition, I ran some initial tests using the executables available from ~\cite{analogySite}.  The source code was also provided, and was written completely in C++.  The Makefiles provided with the source code were tailored very specifically to their systems and seemed to be out of date, so I used their precompiled executables rather than build from source.  Without explicitly running tests to compare run times, their executable ran much faster than my implementation.
+
+ My MATLAB implementation can be very slow depending on the inputs.  More detailed times are discussed below, but as a general rule, only using approximate searching took less than an hour, while using coherence search would take several hours.  The images generated for my presentation and this paper took roughly 120 hours of compute time, though not all images generated are used here. I built my code to have many user-specified options including coherence search and parameter, number of levels, luminance remapping, feature neighborhood size, gaussian filter dimensions and distribution for pyramids, FLANN search parameters, and write to file. There are too many variables for me to reasonably test all combinations, so my testing mainly focused on altering the number of levels in the Gaussian Pyramid and the coherence parameter. I used artwork and their generated source images from the Image Analogy project website ~\cite{analogySite}. I measured the synthesis time of each result and do a relative comparison of image quality. The main things I look for when discussing image quality are coherence within the image ( no unexpected discontinuities or artifacts) and similarity of style with the source painting. 
+ 
+I generated many images using my Image Analogy program.  Not all of the output images look very good; in fact, the majority of them have very clear artifacts.  I wrote a number of Matlab scripts which loaded a source pair of images and a set of target images.  For each target image, the Image Analogy function was run with varying options. These variations included some combination of coherence on/off, differing pyramid levels, and/or differing coherence parameter values.  Computation time for synthesizing each image was calculated using Matlab's tic and toc functions.  In general, I have found that the algorithm works better for areas with a gradual but definite gradient.  It seems to have the most trouble at sharp edges with a large color change, like  Figure~\ref{fig:COHnoCsf}, and on areas with very little color change at all, like Figure ~\ref{fig:COHnoCwc}
+
+
+\section{Results}
+\subsection{Adding Coherence}
+Activating the coherence search option alone  significantly increases the quality of most output images, though often output images still contain noticeable artifacts. It is also responsible for a good deal of the slow down in the run times of images. While good images can still be created using only coherence, additional methods must often be used to produce high quality results. 
+
+  When only approximate searching is used, only one feature has to be calculated to be used in the approximate nearest neighbor calculation. The run time of approximate search images are quite reasonable, as Table ~\ref{tab:COH} shows. Table ~\ref{tab:COH} also shows how costly adding coherence searching can be. To perform a coherence search, the distance  to the current pixel in $B'$ must be calculated twelve times (excepting edge cases) to find the minimum distance.  Once a coherence feature has been calculated, additional calculations must be done to pick between the approximate pixel and the coherence pixel.  While the additional time these calculations incur are relatively small, they are incurred for each pixel calculated, which quickly adds up.  On average, coherence images seem to increase the run time by an order of magnitude.
+
+\begin{table}[h]
+\begin{center}
+    \begin{tabular}{ | c | c | c | c | c | c | c |}
+    \hline
+    	Source Img & Target Img  & Out Img & $K$ & \# Levels & Time (sec) \\ \hline 
+	\multirow{2}{*}{~\ref{fig:COHaewc}  $640 \times 480$ }& \multirow{2}{*}{~\ref{fig:COHtiwc} $566 \times 425$} & ~\ref{fig:COHnoCwc} & None & 1 & 820 \\ \cline{3-6}
+	 &  & ~\ref{fig:COHCwc} & 7 & 1 & 8763 \\ \hline
+	\multirow{2}{*}{~\ref{fig:COHaesf}  $512 \times 439$} & \multirow{2}{*}{~\ref{fig:COHtisf} $480 \times 360$} & ~\ref{fig:COHnoCsf} & None & 1 & 574 \\ \cline{3-6}
+	 &  & ~\ref{fig:COHCsf} & 7 & 1 & 5820 \\ \hline
+
+    \end{tabular}
+\end{center}\caption{Adding Coherence Search}
+\label{tab:COH}
+\end{table}
+
+
+\begin{figure}[h]
+    \centerline{
+        \subfigure[Artistic Example]{%
+            \includegraphics[width=0.28\textwidth,height=.2\textwidth]{watercolor}
+            \label{fig:COHaewc}
+        }%
+        \subfigure[Target Image]{%
+           \includegraphics[width=0.28\textwidth,height=.2\textwidth]{barn}
+           \label{fig:COHtiwc}
+        }
+        \subfigure[No $K$]{%
+            \includegraphics[width=0.28\textwidth,height=.2\textwidth]{barn_watercolor_noC_1L}
+            \label{fig:COHnoCwc}
+        }%
+         \subfigure[$K = 2$]{%
+            \includegraphics[width=0.28\textwidth,height=.2\textwidth]{barn_watercolor_C_1L}
+            \label{fig:COHCwc}
+        }
+        }
+        \centerline{
+          \subfigure[Artistic Example]{%
+            \includegraphics[width=0.28\textwidth,height=.2\textwidth]{pastel}
+            \label{fig:COHaesf}
+        }%
+        \subfigure[Target Image]{%
+           \includegraphics[width=0.28\textwidth,height=.2\textwidth]{sunflower}
+            \label{fig:COHtisf}
+        }
+         \subfigure[No $K$]{%
+            \includegraphics[width=0.28\textwidth,height=.2\textwidth]{sf_pastel_noC_1L}
+            \label{fig:COHnoCsf}
+        }
+           \subfigure[$K = 2$]{%
+            \includegraphics[width=0.28\textwidth,height=.2\textwidth]{sf_pastel_C_1L}
+            \label{fig:COHCsf}
+        }
+    }
+
+ \caption{Differences in Output Quality Based on Use of Coherence Search}
+ \label{fig:COH}
+
+\end{figure}
+
+While the run time costs are quite high, the increase in image quality is noticeable.  Without using the coherence search option, it is highly unlikely that a visually pleasing image will be synthesized.  Of the many images I generated for this project, every image produced using only approximate searching had clear artifacts.  Adding coherence certainly does not guarantee removal of artifacts, but with appropriate manipulation of coherence parameter $K$ and use of gaussian pyramids, very good images can be generated, though with considerable time cost. The reason for the increase in quality is that coherence searching takes into account values of neighboring pixels, so the results are less likely to have discontinuities. Figure ~\ref{fig:COH} gives two examples of the differences in a resulting image when using Coherence search.  Figures ~\ref{fig:COHnoCwc} and ~\ref{fig:COHnoCsf} were produced using only approximate search, while figures ~\ref{fig:COHCwc} and ~\ref{fig:COHCsf} used additionally used coherence search with $K=2$. 
+
+ In ~\ref{fig:COHnoCwc}, artifacts can clearly be seen at the left and right edges of the barn, where there are dark blue edges that do not exist in the original image.  In addition, there are color discontinuities in the sky, on the front wall of the barn, and on the barn silo.  There are clear, jagged changes in color where there are smooth transitions in the original image.  In ~\ref{fig:COHCwc}, the artifacts are still there, but they have been reduced in size.  The sky still has jagged discontinuities, but they are smaller in area.  Additionally, the front of the barn and the silo are consistently colored for the most part, though there are still obvious artifacts near edges. The coherence search version does add issues along the edge of the barn roof, however, making the edge less clear than in the approximate version.
+ 
+  
+Figure ~\ref{fig:COHnoCsf} shows very obvious artifacts where the gray roof of the building in the background ends and the red siding begins.  Large vertical gray streaks appear in an area that should be dark.  Figure ~\ref{fig:COHCsf} shows the same artifacts, but the streaking is much less solid than before.  In addition, more of the parallel lines style texture from the pastel source image can be seen in the coherence image, particularly on the petals of the largest sunflower.
+
+
+
+
+\subsection{Using Gaussian Pyramids}
+
+Using gaussian pyramid image representations, especially in conjunction with a properly tuned coherence parameter, can generate high qualty images.  While using coherence search adds more computation time per pixel, gaussian pyramids increase the number of pixels that must be calculated.  For an image of size $I \times J$ each additional level  $l$ necessitates  $1/4^l \times I \times J$ more pixels be computed. Also, after the first level of the pyramid has been calculated, features also use data from previously calculated levels to help improve the quality of search results.  In addition, images generated with gaussian pyramids images seem more cohesive because they are essentially produced on a coarse to fine scale.
+
+
+\begin{table}[h]
+\begin{center}
+    \begin{tabular}{ | c | c | c | c | c | c |}
+    \hline
+    	Source Img & Target Img  & Out Img & $K$ & \# Levels & Time (sec) \\ \hline 
+	 \multirow{3}{*}{~\ref{fig:PYRSRC} $640 \times 480$}  & \multirow{3}{*}{~\ref{fig:PYRTAR} $480 \times 360$}  & ~\ref{fig:PYR1} & \multirow{3}{*}{12} & 1 & 15413 \\ \cline{3-3} \cline{5-6}
+	  & &  ~\ref{fig:PYR2} & & 2 & 20313 \\ \cline{3-3} \cline{5-6}
+	  & &  ~\ref{fig:PYR3} & & 3 & 21989 \\ \hline
+    \end{tabular}
+\end{center}
+\caption{Increasing Pyramid Levels}
+\label{tab:PYR}
+\end{table}
+
+
+Because additional levels work on images with smaller and smaller dimensions, adding levels incurs less of a time penalty each time. This is clearly shown in Table ~\ref{tab:PYR}, where the jump between two and three levels is much smaller than the jump between one and two levels. While this is a nice feature there is a threshold beyond which additional levels have no effect.  While this threshold is dependent on the size of the images being processed, I have found that for images I have worked on, diminishing returns begin at three levels and after four levels there is no noticeable benefit.  For larger images, that threshold will clearly go up.
+
+\begin{figure}[h]
+    \centerline{
+        \subfigure[Artistic Example]{%
+            \includegraphics[width=0.33\textwidth,height=.2\textwidth]{watercolor}
+            \label{fig:PYRSRC}
+        }%
+        \subfigure[Target Image]{%
+           \includegraphics[width=0.33\textwidth,height=.2\textwidth]{golden_gate}
+           \label{fig:PYRTAR}
+        }}
+        \centerline{
+        \subfigure[One Level (No Pyramid)]{%
+            \includegraphics[width=0.33\textwidth,height=.2\textwidth]{gg_watercolor_C_1L}
+            \label{fig:PYR1}
+        }%
+         \subfigure[Two Levels]{%
+            \includegraphics[width=0.33\textwidth,height=.2\textwidth]{gg_watercolor_C_2L7K}
+            \label{fig:PYR2}
+        }
+           \subfigure[Three Levels]{%
+            \includegraphics[width=0.33\textwidth,height=.2\textwidth]{gg_watercolor_C_3L7K}
+            \label{fig:PYR3}
+        }
+   }
+ \caption{Increasing Gaussian Pyramid Levels}
+ \label{fig:PYR}
+\end{figure}
+
+
+Figure ~\ref{fig:PYR} shows the effect using Gaussian Pyramids can have on output quality.  The source image is a watercolor of two apples, the target image is a photograph of the Golden Gate Bridge in San Francisco.  Figure ~\ref{fig:PYR1} is the image analogy generated using only coherence. In my implementation all images are treated as pyramids, but a one level pyramid is essentially the same as not using gaussian pyramids.  One of the big issues my Image Analogy implementation had processing this image is the thin vertical lines of the cables supporting the bridge.  Figure ~\ref{fig:PYR1} contains many artifacts around either side of those cables where the background is much darker than it should be.  In addition, the sky contains jagged discontinuities and slashes of darker and lighter blue.  
+
+Figure ~\ref{fig:PYR2} shows the created image when using a two-level gaussian pyramid. The artifacts and discontinuities around the cables have mostly been cleaned up and smoothed out.  Also, the sky looks much more visually pleasing with the cloudy layers than with the jagged changes in color in ~\ref{fig:PYR1}.  That is not to say though that the image is devoid of artifacts.  There is still some darkening of the sky around the large red supports to the left and there is a small jagged area towards the left-center of the sky between the two supports (though, luckily it resembles a bird at a glance).  There are also some small artifacts with the way the skyline in the background.  But overall, these issues do not ruin the image as the artifacts in Figure ~\ref{fig:PYR1}.
+
+Figure ~\ref{fig:PYR3} shows the image generated with a three-level gaussian pyramid image representation.  One of the obvious qualities of this set of output images is that the difference in quality between figures ~\ref{fig:PYR3} and ~\ref{fig:PYR2} is much smaller than the difference between ~\ref{fig:PYR2} and ~\ref{fig:PYR1}.  An argument could even be made that the large red support structure looks better at two levels than at three.  But the issues with the skyline present and the bird-shaped artifact have both largely been cleaned up in figure ~\ref{fig:PYR3}.  In addition, ~\ref{fig:PYR3} restores some detail of the original image; outlines of motor vehicles can be made out in the bottom left hand corner of the image.  But issues are still present.  To achieve a better result than this, we must manipulate the coherence parameter $K$.
+
+\subsection{Varying Coherence Parameter}
+\begin{figure}[h]
+    \centerline{
+        \subfigure[Artistic Example]{%
+            \includegraphics[width=0.37\textwidth,height=.23\textwidth]{vangogh}
+        }%
+        \subfigure[Target Image]{%
+           \includegraphics[width=0.37\textwidth,height=.23\textwidth]{cat}
+        }}
+        \centerline{
+        \subfigure[$K=2$]{%
+            \includegraphics[width=0.3\textwidth,height=.2\textwidth]{cat_vangoh_C_3L}
+            \label{fig:K1}
+        }%
+         \subfigure[$K=7$]{%
+            \includegraphics[width=0.3\textwidth,height=.2\textwidth]{cat_vangoh_C_3L7K}
+            \label{fig:K2}
+        }
+           \subfigure[$K=10$]{%
+            \includegraphics[width=0.3\textwidth,height=.2\textwidth]{cat_vangoh_C_3L10K}
+            \label{fig:K3}
+        }}
+           \centerline{
+        \subfigure[$K=12$]{%
+            \includegraphics[width=0.3\textwidth,height=.2\textwidth]{cat_vangogh_C_3L12K}
+            \label{fig:K4}
+        }%
+         \subfigure[$K=15$]{%
+            \includegraphics[width=0.3\textwidth,height=.2\textwidth]{cat_vangogh_C_3L15K}
+            \label{fig:K5}
+        }
+           \subfigure[$K=20$]{%
+            \includegraphics[width=0.3\textwidth,height=.2\textwidth]{cat_vangogh_C_3L20K}
+            \label{fig:K6}
+        }}
+ \caption{Increasing Gaussian Pyramid Levels}
+ \label{fig:K}
+\end{figure}
+
+While the optimal value of the coherence parameter for a given Image Analogy is fairly arbitrary, it is possible to predict how an output image will change  with a relative change in $K$.   A larger $K$ will make the image less sharply defined, blending some of the discontinuity created by approximate search values. Additionally, the texture transferred from the source image seems better defined and more dominant as $K$ increases. This can have the negative effect of making the image look muddy, but can also help an image seem more coherent.  Smaller values of $K$ conversely make the features of the target image more dominant, though it can also introduce some artifacts created by approximate search results.  Finding a happy medium between these two extremes depends almost entirely on the images being used and the user's desired result.  
+
+Figure ~\ref{fig:K} applies the detail from a section of Vincent Van Gogh's \emph{Starry Night on the Rh\^{o}ne} to a photograph of my cat using a three-level gaussian pyramid.  Figures ~\ref{fig:K1}, ~\ref{fig:K2}, and ~\ref{fig:K3} show the output at $K=2,7,10,12,15$  and $20$ respectively. In figure ~\ref{fig:K1}, much of the shape from the original target image is maintained, even for relatively small object such as tree ornaments.  The texture added on the back walls is very light and small.  In figure ~\ref{fig:K2}, some of the original detail is lost.  It is difficult to differentiate between tree branches, and even between the tree and the ornaments on it.  The texture on the back walls and on the red tree skirt is larger and more well defined.  Figure ~\ref{fig:K3} shows these changes to an even greater extent, with the texture on the background wall now dominant.  This trend continues as $K$ continues to rise to the point that in Figure ~\ref{fig:K6} with $K=20$, it is difficult to make objects out at all.
+
+Hertzmann et al recommend using a $K$ value between 2 and 25 for their general purpose algorithm, but I have found that for most images, but I have found that for artistic filters a good range for most images is between 7 and 12, though that range may differ depending on the user's desired output.  
+ 
+\subsection{Computation Time}
+My Matlab implementation of the Image Analogy algorithm can produce widely varying run times depending on the source image size, the target image size, whether coherence is used, and how many levels the images' gaussian pyramids have. 
+Computation time results varying the use of coherence and number of  gaussian pyramid levels can be found in Tables ~\ref{tab:COH} and ~\ref{tab:PYR} respectively.
+
+
+\begin{table}[h]
+\begin{center}
+    \begin{tabular}{ | c | c | c | c | c |}
+    \hline
+    Source Dim & Target Dim & $K$ & $\#$  Levels & Time (sec) \\ \hline
+	 \multirow{3}{*}{Pastel $512 \times 493$}  & SF $480 \times 360$ &  \multirow{3}{*}{Yes} &  \multirow{3}{*}{2} & 6801 \\ \cline{2-2} \cline{5-5}
+	 & BARN $566 \times 425$ & &  & 12503 \\ \cline{2-2} \cline{5-5}
+	 & GG $625 \times 493$ &  &  & 21056 \\ \hline
+	
+    \end{tabular}
+\end{center}\caption{Increasing Target Size}
+\label{tab:INCTAR}
+\end{table}
+
+
+Table ~\ref{tab:INCTAR} shows the results of three different generated images using the same settings.  According to ~\cite{analogy}, the image analogy algorithm is linear with respect to target image size.  While there are only a few data points collected, this seems like a reasonable conclusion.  Hertzmann also states that the algorithm is logarithmic with respect to source image size.  Table ~\ref{tab:INCSOU} shows that increases in the target image have a much smaller effect on computation time than increases in the size of the target image.
+
+
+
+\begin{table}[h]
+\begin{center}
+    \begin{tabular}{ | c | c | c | c | c |}
+    \hline
+    Source Dim & Target Dim & $K$ & $\#$  Levels & Time (sec) \\ \hline
+	Pastel $512 \times 493$ & \multirow{2}{*}{GG $625 \times 493$} &  \multirow{2}{*}{Yes} &  \multirow{2}{*}{3} &  20723\\ \cline{1-1} \cline{5-5}
+	   water $640 \times 480$ & &  &  &  21990\\ \hline
+	
+    \end{tabular}
+\end{center}\caption{Increasing Source Size}
+\label{tab:INCSOU}
+\end{table}
+
+From my testing, it seems that adding coherence has the biggest effect on computation speed, with target image size also being a major factor.  After the second level, adding gaussian pyramid levels seem to have a relatively small effect to computation time, as does source image size.  
+
+\section{Concluding Remarks}
+The Image Analogy algorithm can be a powerful tool for generating images that imitate artistic styles.  This is done by taking a source artistic image and a generated ``source'' image and some different target image.  For each pixel in the target image, the best matching pixel in the source pair is found and copied to the corresponding pixel of the output image.  The results of this image can be drastically improved by using a coherence search in addition to an approximate nearest neighbor search, using gaussian pyramid representations of images, and by tuning the coherence parameter.  My implementation was completely done in Matlab, and most images generated took several hours of computation time to generate. There are several obvious avenues of future work for this project. The most obvious area of future work would be in optimizing the code or implementing the code in a faster language to speed up the process.  It would also be interesting to experiment with how features are constructed.  I am also interested to see how well the algorithm performs for very high quality source and target images, which I was not able to pursue due to time constraints. An extension of that would be using the idea of Image Analogy to apply artistic styles to video clips.   
+
+% references section
+
+\addcontentsline{toc}{section}{Bibliography}
+\begin{thebibliography}{99}
+\bibitem{analogy}A. Hertzmann, C. Jacobs, N. Oliver, B. Curless, D. Salesin. Image Analogies. SIGGRAPH 2001 Conference Proceedings.
+\bibitem{analogySite}Image Analogy Project website, New York University. www.mrl.nyu.edu/projects/image-analogies/
+\bibitem{texSynth}Alexei Efros and Thomas Leung. Texture Synthesis by Non-parametric Sampling. 7th IEEE International Conference on Computer Vision, 1999. 
+\bibitem{ann}S. Arya, D. M. Mount, N. S. Netanyahu, R. Silverman, and A. Y. Wu. An optimal algorithm for approximate nearest neighbor searching. Journal of the ACM, 45:891–923, 1998.
+\bibitem{flann}M. Muja and D. G. Lowe. Fast approximate nearest neighbors with automatic algorithmic conﬁguration. In Proc. VISAPP, 2009. code at http://mloss.org/software/view/143/
+\bibitem{cohere}Michael Ashikhmin. Synthesizing Natural Textures. 2001 ACM Symposium on Interactive 3D Graphics, pages 217–226, March 2001.
+\bibitem{watercolor}Cassidy J. Curtis, Sean E. Anderson, Joshua E. Seims, Kurt W. Fleischer, and David H. Salesin. Computer-Generated Watercolor. Proceedings of SIGGRAPH 97, pages 421–430, August 1997.
+\bibitem{diffusion}Pietro Perona and Jitendra Malik. Scale-Space and Edge Detection using Anisotropic Diffusion. IEEE Trans. on Pattern Analysis and Machine Intelli- gence, 12:629–639, December 1990.
+\bibitem{brush}Aaron Hertzmann. Painterly Rendering with Curved Brush Strokes of Multiple Sizes. In SIGGRAPH 98 Conference Proceedings, pages 453–460, July 1998.
+\bibitem{animate}Barbara J. Meier. Painterly Rendering for Animation. In SIGGRAPH 96 Confer- ence Proceedings, pages 477–484, August 1996.
+\end{thebibliography}
+
+I wrote all code used for this project except for the approximate nearest neighbor code, for which I used Fast Library for Approximate Nearest Neighbor (FLANN).  The ImageAnalogy function and functions used to implement it are approximately 350 lines of code.  In addition, I wrote between 150 and 200 lines of scripting code to run my tests.  I generated 60+ (roughly 110 hours of compute time) plus images for this project, the most representative ones were used in this paper.
+
+
+% that`s all folks
+\end{document}
+
+
+
