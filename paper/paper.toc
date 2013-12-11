@@ -1,5 +1,5 @@
-\contentsline {section}{\numberline {1}Introduction}{1}
-\contentsline {section}{\numberline {2}Related Work}{1}
+\contentsline {section}{\numberline {1}Introduction}{2}
+\contentsline {section}{\numberline {2}Related Work}{2}
 \contentsline {section}{\numberline {3}Approach}{2}
 \contentsline {subsection}{\numberline {3.1}Mining Git Repositories}{2}
 \contentsline {subsection}{\numberline {3.2}Automatically Classifying Past Commits}{3}
@@ -8,7 +8,11 @@
 \contentsline {subsection}{\numberline {3.5}Pull Requests}{4}
 \contentsline {section}{\numberline {4}Results}{4}
 \contentsline {subsection}{\numberline {4.1}Data}{4}
-\contentsline {subsection}{\numberline {4.2}Analysis}{4}
-\contentsline {subsection}{\numberline {4.3}Threats to Validity}{4}
-\contentsline {section}{\numberline {5}Concluding Remarks}{4}
-\contentsline {section}{Bibliography}{4}
+\contentsline {subsection}{\numberline {4.2}Feature Analysis}{4}
+\contentsline {subsection}{\numberline {4.3}Testing Methodology}{4}
+\contentsline {subsection}{\numberline {4.4}Learner Accuracy}{5}
+\contentsline {subsection}{\numberline {4.5}Training Set Variation}{5}
+\contentsline {subsection}{\numberline {4.6}Cross Repository Training}{5}
+\contentsline {subsection}{\numberline {4.7}Threats to Validity}{7}
+\contentsline {section}{\numberline {5}Concluding Remarks}{8}
+\contentsline {section}{Bibliography}{8}

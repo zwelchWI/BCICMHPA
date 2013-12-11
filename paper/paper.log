@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  10 DEC 2013 00:17
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  10 DEC 2013 23:26
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -111,14 +111,41 @@ Package: epigraph 2009/09/02 v1.5c typesetting epigraphs
 \epigraphwidth=\skip51
 \epigraphrule=\skip52
 )
+(/usr/local/texlive/2011/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2010/09/12 v5.6 Page Geometry
+
+(/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is detected.
+)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2010/03/01 v1.5 Switches for detecting VTeX and its modes (HO)
+Package ifvtex Info: VTeX not detected.
+)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+\Gm@cnth=\count92
+\Gm@cntv=\count93
+\c@Gm@tempcnt=\count94
+\Gm@bindingoffset=\dimen107
+\Gm@wd@mp=\dimen108
+\Gm@odd@mp=\dimen109
+\Gm@even@mp=\dimen110
+\Gm@layoutwidth=\dimen111
+\Gm@layoutheight=\dimen112
+\Gm@layouthoffset=\dimen113
+\Gm@layoutvoffset=\dimen114
+\Gm@dimlist=\toks15
+)
 (/usr/local/texlive/2011/texmf-dist/tex/latex/etoolbox/etoolbox.sty
 Package: etoolbox 2011/01/03 v2.1 e-TeX tools for LaTeX
 
 (/usr/local/texlive/2011/texmf-dist/tex/latex/etex-pkg/etex.sty
 Package: etex 1998/03/26 v2.0 eTeX basic definition package (PEB)
-\et@xins=\count92
+\et@xins=\count95
 )
-\etb@tempcnta=\count93
+\etb@tempcnta=\count96
 )
 (/usr/local/texlive/2011/texmf-dist/tex/latex/algorithms/algorithm.sty
 Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
@@ -126,20 +153,20 @@ nment
 
 (/usr/local/texlive/2011/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count94
-\float@exts=\toks15
+\c@float@type=\count97
+\float@exts=\toks16
 \float@box=\box26
-\@float@everytoks=\toks16
+\@float@everytoks=\toks17
 \@floatcapt=\box27
 )
 (/usr/local/texlive/2011/texmf-dist/tex/latex/base/ifthen.sty
 Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
 )
-\@float@every@algorithm=\toks17
-\c@algorithm=\count95
+\@float@every@algorithm=\toks18
+\c@algorithm=\count98
 )
 (/usr/local/texlive/2011/texmf-dist/tex/latex/multirow/multirow.sty
-\bigstrutjot=\dimen107
+\bigstrutjot=\dimen115
 )
 (/usr/local/texlive/2011/texmf-dist/tex/latex/algorithmicx/algpseudocode.sty
 Package: algpseudocode 
@@ -148,57 +175,62 @@ Package: algpseudocode
 Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
 
 Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
-\c@ALG@line=\count96
-\c@ALG@rem=\count97
-\c@ALG@nested=\count98
+\c@ALG@line=\count99
+\c@ALG@rem=\count100
+\c@ALG@nested=\count101
 \ALG@tlm=\skip53
 \ALG@thistlm=\skip54
-\c@ALG@Lnr=\count99
-\c@ALG@blocknr=\count100
-\c@ALG@storecount=\count101
-\c@ALG@tmpcounter=\count102
+\c@ALG@Lnr=\count102
+\c@ALG@blocknr=\count103
+\c@ALG@storecount=\count104
+\c@ALG@tmpcounter=\count105
 \ALG@tmplength=\skip55
 )
 Document Style - pseudocode environments for use with the `algorithmicx' style
-) (./paper.aux)
+) (./paper.aux
+
+LaTeX Warning: Label `git_comp' multiply defined.
+
+
+LaTeX Warning: Label `git_comp' multiply defined.
+
+
+LaTeX Warning: Label `git_comp' multiply defined.
+
+)
 \openout1 = `paper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-
-(/usr/local/texlive/2011/texmf-dist/tex/context/base/supp-pdf.mkii
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+ (/usr/local/texlive/2011/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count103
-\scratchdimen=\dimen108
+\scratchcounter=\count106
+\scratchdimen=\dimen116
 \scratchbox=\box28
-\nofMPsegments=\count104
-\nofMParguments=\count105
-\everyMPshowfont=\toks18
-\MPscratchCnt=\count106
-\MPscratchDim=\dimen109
-\MPnumerator=\count107
-\makeMPintoPDFobject=\count108
-\everyMPtoPDFconversion=\toks19
+\nofMPsegments=\count107
+\nofMParguments=\count108
+\everyMPshowfont=\toks19
+\MPscratchCnt=\count109
+\MPscratchDim=\dimen117
+\MPnumerator=\count110
+\makeMPintoPDFobject=\count111
+\everyMPtoPDFconversion=\toks20
 ) (/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/04/22 v0.16 Utilities of pdfTeX for LuaTeX (HO)
 
 (/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/ifluatex.sty
 Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
 Package ifluatex Info: LuaTeX not detected.
-)
-(/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/ifpdf.sty
-Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
-Package ifpdf Info: pdfTeX in PDF mode is detected.
 )
 Package pdftexcmds Info: LuaTeX not detected.
 Package pdftexcmds Info: \pdf@primitive is available.
@@ -236,15 +268,48 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: letterpaper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(90.3375pt, 433.62001pt, 90.3375pt)
+* v-part:(T,H,B)=(90.3375pt, 614.295pt, 90.3375pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=433.62001pt
+* \textheight=614.295pt
+* \oddsidemargin=18.0675pt
+* \evensidemargin=18.0675pt
+* \topmargin=-18.9325pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=44.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 35.
+(Font)              <12> on input line 36.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 35.
+(Font)              <8> on input line 36.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 35.
+(Font)              <6> on input line 36.
 Missing character: There is no Ò in font cmr10!
 Missing character: There is no Ó in font cmr10!
-
 [1
 
 {/usr/local/texlive/2011/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
@@ -261,9 +326,9 @@ Missing character: There is no Ó in font cmr10!
 \openout5 = `paper.lot'.
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.95> on input line 61.
+(Font)              <10.95> on input line 62.
 
-Overfull \hbox (65.24408pt too wide) in paragraph at lines 61--61
+Overfull \hbox (21.62407pt too wide) in paragraph at lines 62--62
  []$
  []
 
@@ -281,28 +346,83 @@ Missing character: There is no Ó in font cmr12!
 Missing character: There is no Ñ in font cmr12!
  [3]
 
-LaTeX Warning: Empty `thebibliography' environment on input line 94.
+LaTeX Warning: `h' float specifier changed to `ht'.
 
-[4] (./paper.aux) ) 
+<images/history.png, id=21, 697.60625pt x 236.885pt>
+File: images/history.png Graphic file (type png)
+ <use images/history.png>
+Package pdftex.def Info: images/history.png used on input line 119.
+(pdftex.def)             Requested size: 325.215pt x 110.43231pt.
+
+[4]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<images/learner_comp.png, id=25, 1964.7804pt x 955.4094pt>
+File: images/learner_comp.png Graphic file (type png)
+
+<use images/learner_comp.png>
+Package pdftex.def Info: images/learner_comp.png used on input line 177.
+(pdftex.def)             Requested size: 325.215pt x 158.13141pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<images/time_comp.png, id=27, 2133.4104pt x 987.69pt>
+File: images/time_comp.png Graphic file (type png)
+
+<use images/time_comp.png>
+Package pdftex.def Info: images/time_comp.png used on input line 187.
+(pdftex.def)             Requested size: 325.215pt x 150.55846pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+Missing character: There is no Õ in font cmr12!
+Missing character: There is no Õ in font cmr12!
+[5 <./images/history.png>]
+<images/git_comp.png, id=31, 1358.676pt x 911.5656pt>
+File: images/git_comp.png Graphic file (type png)
+
+<use images/git_comp.png>
+Package pdftex.def Info: images/git_comp.png used on input line 199.
+(pdftex.def)             Requested size: 260.17465pt x 174.54846pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+Missing character: There is no Ò in font cmr12!
+Missing character: There is no Ó in font cmr12!
+[6] [7 <./images/learner_comp.png> <./images/time_comp.png>]
+
+LaTeX Warning: Empty `thebibliography' environment on input line 221.
+
+[8 <./images/git_comp.png>] (./paper.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
 Here is how much of TeX's memory you used:
- 3111 strings out of 493633
- 42398 string characters out of 3143378
- 108681 words of memory out of 3000000
- 6364 multiletter control sequences out of 15000+200000
+ 3617 strings out of 493633
+ 49985 string characters out of 3143378
+ 133444 words of memory out of 3000000
+ 6854 multiletter control sequences out of 15000+200000
  10367 words of font info for 36 fonts, out of 3000000 for 9000
  831 hyphenation exceptions out of 8191
- 38i,5n,35p,1255b,269s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfo
-nts/cm/cmbx10.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmbx12.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmcsc10.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmr10.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmr12.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm
-/cmti10.pfb>
-Output written on paper.pdf (5 pages, 97709 bytes).
+ 38i,9n,35p,1255b,271s stack positions out of 5000i,500n,10000p,200000b,50000s
+</usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
+></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
+</usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb>
+</usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></
+usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></us
+r/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on paper.pdf (9 pages, 1621728 bytes).
 PDF statistics:
- 44 PDF objects out of 1000 (max. 8388607)
- 30 compressed objects within 1 object stream
+ 66 PDF objects out of 1000 (max. 8388607)
+ 41 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
