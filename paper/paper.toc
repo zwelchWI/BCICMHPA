@@ -1,18 +1,17 @@
 \contentsline {section}{\numberline {1}Introduction}{2}
 \contentsline {section}{\numberline {2}Related Work}{2}
-\contentsline {section}{\numberline {3}Approach}{2}
-\contentsline {subsection}{\numberline {3.1}Mining Git Repositories}{2}
+\contentsline {section}{\numberline {3}Approach}{3}
+\contentsline {subsection}{\numberline {3.1}Mining Git Repositories}{3}
 \contentsline {subsection}{\numberline {3.2}Automatically Classifying Past Commits}{3}
-\contentsline {subsection}{\numberline {3.3}Features}{3}
-\contentsline {subsection}{\numberline {3.4}Machine Learning Algorithms}{4}
-\contentsline {subsection}{\numberline {3.5}Pull Requests}{4}
-\contentsline {section}{\numberline {4}Results}{4}
-\contentsline {subsection}{\numberline {4.1}Data}{4}
-\contentsline {subsection}{\numberline {4.2}Feature Analysis}{4}
-\contentsline {subsection}{\numberline {4.3}Testing Methodology}{4}
-\contentsline {subsection}{\numberline {4.4}Learner Accuracy}{5}
-\contentsline {subsection}{\numberline {4.5}Training Set Variation}{5}
-\contentsline {subsection}{\numberline {4.6}Cross Repository Training}{5}
-\contentsline {subsection}{\numberline {4.7}Threats to Validity}{7}
-\contentsline {section}{\numberline {5}Concluding Remarks}{8}
-\contentsline {section}{Bibliography}{8}
+\contentsline {subsection}{\numberline {3.3}Machine Learning Algorithms}{4}
+\contentsline {subsection}{\numberline {3.4}Pull Requests}{4}
+\contentsline {section}{\numberline {4}Results}{5}
+\contentsline {subsection}{\numberline {4.1}Feature Analysis}{5}
+\contentsline {subsection}{\numberline {4.2}Testing Methodology}{6}
+\contentsline {subsection}{\numberline {4.3}Learner Accuracy}{7}
+\contentsline {subsection}{\numberline {4.4}Training Set Variation}{8}
+\contentsline {subsection}{\numberline {4.5}Cross Repository Training}{9}
+\contentsline {section}{\numberline {5}Threats to Validity}{11}
+\contentsline {section}{\numberline {6}Future Work}{12}
+\contentsline {section}{\numberline {7}Concluding Remarks}{12}
+\contentsline {section}{Bibliography}{12}

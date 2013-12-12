@@ -1,4 +1,8 @@
-\contentsline {figure}{\numberline {1}{\ignorespaces Testing and Training Sets}}{5}
-\contentsline {figure}{\numberline {2}{\ignorespaces Comparison of Feature Results - 6 Months}}{7}
-\contentsline {figure}{\numberline {3}{\ignorespaces Training Data Size - Message and Attributes}}{7}
-\contentsline {figure}{\numberline {4}{\ignorespaces Training With Git - 6 Months, Message and Attribute Data}}{8}
+\contentsline {figure}{\numberline {1}{\ignorespaces Testing and Training Sets}}{7}
+\contentsline {figure}{\numberline {2}{\ignorespaces Percent Buggy Commits over Time}}{8}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Git}}}{8}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Puppet}}}{8}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Scala}}}{8}
+\contentsline {figure}{\numberline {3}{\ignorespaces Comparison of Feature Results - 1 Year}}{9}
+\contentsline {figure}{\numberline {4}{\ignorespaces Training Data Size - Message and Attributes}}{10}
+\contentsline {figure}{\numberline {5}{\ignorespaces Training With Git and Scipy - 1 Months, Message and Attribute Data}}{11}

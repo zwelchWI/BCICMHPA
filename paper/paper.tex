@@ -62,7 +62,10 @@ On a given day, a large open-source Git Repository likely receives many pull req
 \epigraph{Yeah Science!!}{ \textup{Jesse Pinkman}}
 
 \section{Introduction}
+ Sometimes test suites simply aren’t enough to ensure bug-free changes to code. Manual inspection by a human is, at times, necessary to ensure code correctness. Due to the large volume of commits submitted to open-source repositories each day, managers of these repositories often do not have the time to manually inspect all of these proposed changes to the code.
  
+In this paper, we discuss our development of a model which attempts to predict the bugginess of commits submitted to a repository using machine-learning techniques. This tool furthers the goal of better directing the testing efforts of repository owners by providing recommendations about which commits are most likely to be buggy. The next section frames this project with the related work of others. Section [CITE] discusses our approach in developing out model including data sources, feature selection, and algorithm development. Section [CITE] discusses the refinement of the model, presents our results, and discusses our methodology for validation of our results. Section [CITE] discusses shortcomings, threats to validity, and future work, and section [CITE] concludes.
+
 \section{Related Work}
 Using version control system history to aid the development process is not a new idea;  the wealth of data that repositories store makes them very attractive artifacts to researchers who want to understand and improve the ways in which code is written.  In the last ten years a good deal of work has gone into trying to use repository data to make various aspects of the development process easier [3]. In the early 2000s Zimmerman et al [1] and Ying [2] developed systems to mine version history to make suggestions on potential locations to make changes based on recent alterations to versioned files. Their results were very interesting,  reliably finding associations between sections of code and between code and documentation. 
 
@@ -73,27 +76,56 @@ There has also been some work in attempting to automatically infer which past co
 Some work has also been done by this group at attempting to use machine learning techniques to predict the bugginess of future commits.  Our work differs from theirs in several ways, namely that their work focuses much more heavily on analysis of committed code, which we generally ignore in favor of the attributes and message of a commit.    
 \section{Approach}
 \subsection{Mining Git Repositories}
-We mined eight open-source repositories hosted on Github.com for features to serve as our testing data sets (Figure 1). The repositories are quite varied; they range in size from around 2000-30000 commits and in age from roughly 3-13 years. We extracted two sets of features about commits from each repository: commit attributes and message attributes. Commit attributes are information about a commit excluding actual analysis of the code or the commit message. Examples of commit attributes we extracted are the number of lines added, the number of lines removed, the contributor, the length of the comment, the day of the week of the commit, and the number of files altered. The commit message attributes we selected are the frequency of words, grammatical correctness, and readability and stylistic metrics of the message. We used the Kincaid metric for readability [CITE], diction, a unix command line tool, to quantify style (triteness, over-wordiness) [CITE], and Queequeg to test the degree of grammatical correctness [CITE] for each commit message. Our analysis of the commit messages assumes they are written in English.
-\subsection{Automatically Classifying Past Commits}
-To create a classification model from these features, we required a “ground truth” about whether or not each commit was bug inducing. We used a modified version of a heuristic from [CITE] to determine the set of commits for each repository that were bug inducing. This technique works by first identifying the set of commits in the repository which are bug fixes. Our modification of the heuristic accomplishes this with an analysis of the commit message looking for words such as “bug” or “fix”, or for strings of numbers and letters that appear to be bug-tracking numbers. After defining this set of bug fix commits, we process each commit individually, identifying hunks of source code that the commit altered. For each hunk, we then flag as bug-inducing the most-recent commit before our bug fix commit which altered that hunk of code. This analysis is conducted using a annotation ASDFASDFASF (graph/tree) search [CITE]. Obviously, this heuristic is imperfect—it depends on bug fix commits being atomic and on bugs being discovered and fixed immediately after their introduction. However, it works well in practice and serves as a good estimation for which commits are bug inducing, so we adopted it. (ASDFASDFSAF how do we know this????)
+We mined eight open-source repositories hosted on Github.com for features to serve as our testing data sets (Table CITE). The repositories are quite varied; they range in size from around 2000-30000 commits and in age from roughly 3-13 years. The repositories also vary considerably in their goals — they include a programming language, a versioning control system, and ASDFASDFASDFSAD some nuclear reactor thingy. We extracted two sets of features about commits from each repository: commit attributes and message attributes. Commit attributes are information about a commit excluding actual analysis of the code or the commit message. Examples of commit attributes we extracted are the number of lines added, the number of lines removed, the contributor, the length of the comment, the day of the week of the commit, and the number of files altered. The commit message attributes we selected are the frequency of words, grammatical correctness, and readability and stylistic metrics of the message. We used the Kincaid metric for readability [CITE], diction, a unix command line tool, to quantify style (triteness, over-wordiness) [CITE], and Queequeg to test the degree of grammatical correctness [CITE] for each commit message. Our analysis of the commit messages assumes they are written in English. A complete list of attributes examined can be found in Table [CITE].
 
-\subsection{Features}
-With features extracted and a bugginess classification in hand for each commit for our selected repositories, we have the input prepared for constructing, training, and validating a machine-learning algorithm. The algorithm we selected to predict bugginess is an ensemble classifier, or in other words an aggregation of the outputs of several machine-learning algorithms (see Table 1). (ASDFASDFSDF list of our ml algs and perhaps their parameters??) The tuning of this method is an iterative process involving selecting the ideal set of features to train and test on, the sizes of both the training and testing datasets, and the machine-learning algorithms and their parameters to serve as initial classifiers. A list of features we examined, with those selected for the current version of our ensemble classifier highlighted, is found in Table 2.
+\subsection{Automatically Classifying Past Commits}
+To create a classification model from these features, we require a ground truth about whether or not each commit was bug inducing. We used a modified version of the SZZ algorithm from [CITE] to determine the set of commits for each repository that were bug inducing. This technique works by first identifying the set of commits in the repository which are bug fixes. Our modification of the algorithm accomplishes this with an analysis of the commit message looking either for words such as “bug” or “fix” or for strings of numbers and letters that appear to be bug-tracking numbers. After defining this set of bug fix commits, we process each commit individually, identifying sections of source code, called hunks, that the commit altered. For each hunk, we then flag as bug-inducing the most-recent commit before the bug fix commit which altered that hunk of code. This analysis is conducted using a annotation ASDFASDFASF (graph/tree) search [CITE]. Obviously, this heuristic is imperfect; it depends on bug fix commits being atomic and on bugs being discovered and fixed immediately after their introduction. However, as ASDFSDAF et. al showed in [CITE], this technique tends to work well in practice, as their study using actual developers to confirm bugginess found only a 4-5\% rate of false positives. This algorithm works well in practice and serves as a good estimation for which commits are bug inducing, so we adopted it.
 
 \subsection{Machine Learning Algorithms}
-\subsection{Pull Requests}
-\section{Results}
-\subsection{Data}
-\subsection{Feature Analysis}
-We went through several iterations of features to represent commits; we will briefly touch here on the features that did not work well before continuing to a more lengthy discussion of the features we actually used.  Our first attempt at classifying commits attempted to cast this prediction problem as equivalent to catching email spam.  A simple way to predict that an email is to train on the individual words in spam email.  The more a word is associated with being seen only in spam email, the more likely an email containing that word is spam.  We attempted to apply this to commits by training a Naive Bayes learner on the words of a commit messages. This turned out to be a not-very-good idea, with results about as good as randomly guessing clean or buggy.  Abandoning the buggy commit as email spam metaphor, we decided to look at attributes of the commit.   
+With features extracted and a bugginess classification in hand for each commit for our selected repositories, we have the input prepared for constructing, training, and validating a machine-learning algorithm. The method we selected to predict bugginess is an ensemble classifier, or in other words an aggregation of the outputs of several machine-learning algorithms (see Table CITE (listing ML algorithms and their parameters). The tuning of this method involved an iterative process which included selecting the ideal set of features to train and test on, the sizes of both the training and testing datasets, and the machine-learning algorithms and their parameters to serve as initial classifiers. We made sure to include at least one decision tree algorithm as part of our ensemble method due to the extra intuition which can be gained from an examination of the first few splits of its branches. Our prescriptive remarks to future repository committers were largely influenced by the output of these trees.
 
-   The features we chose to represent our commits are fairly simple ones; of the commit attribute data we use, only the day of the week required any computation.  Most of these attributes are presented to the user by git when they make a commit.  We did some initial testing with a decision tree learner, inspecting changes in results while testing differnt subsets of features.  We also manually kept track of which features were pruned from the tree, which indicates they are less informative.   We concluded Time and Date commit data is not very informative for the open source projects we chose to study.  Year and Month are too large to contain much signal, day of month and minute are too specific.  Because hour is not stored in local time and the generally distributed nature of these projects, we did not find Hour to be an informative feature.  It is possible that these features could be more valuable in a highly centralized development structure, where there is extra knowledge of development schedules and other information, but without any additional knowledge, we decided to ignore specific time-date data.  
+\subsection{Pull Requests}
+In large open source projects, very rarely are commits added one by one.  Instead, a developer checks out the main development branch, makes a series of changes, and then asks for their work to be merged back into the development branch (on Github, this is implemented as a pull request).  This request contains a series of commits, many of which likely overlap in their changes and some which fix issues with earlier commits in the request (“oops” commits).  Being able to classify an entire pull request as clean or buggy seems like it would be a much more applicable tool than one which simply classifies individual commits.
+
+The simple, obvious solution would be to classify a pull request clean if all commits in it are clean, otherwise buggy.  This seems to be too drastic a measure however, due to these “oops” commits; any method for classifying requests should take into account that buggy commits in a pull request can potentially contain the associated bug fix in the same request.  We propose a variation on the SZZ algorithm to handle this possibility.  All commits are initially given a label using our ensemble classifier.  For a buggy commit in the pull request, we take every hunk from the commit and look forward in time for a clean commit with that hunk.  Finding a hunk in a clean commit would imply that whatever bug originally existed has been fixed.  If all the buggy hunks have corresponding clean hunks later in the pull request, or if the number of unpaired buggy hunks is below some threshold, the pull request is accepted as clean.        
+
+\section{Results}
+\subsection{Feature Analysis}
+We went through several iterations of features to represent commits; we will briefly touch here on the features that did not work well before continuing to a more lengthy discussion of the features we actually used.  Our first attempt at classifying commits attempted to cast this prediction problem as equivalent to catching email spam.  A simple way to predict that an email is spam is to train on the individual words in spam emails.  The more a word is associated with being seen only in spam email, the more likely an email containing that word is spam.  We attempted to apply this to commits by training a Naive Bayes classifier on the words of a commit messages. This turned out to not be a very good idea, with results about as good as randomly guessing clean or buggy.  Abandoning the buggy commit as email spam metaphor, we decided to look at attributes of the commit.   
+
+\begin{table}[h]
+\begin{center}
+    \begin{tabular}{ | c | c | }
+    \hline
+   
+
+Lines Added& Lines Added\\ \hline
+Lines Removed& Lines Removed\\ \hline
+Hour Commited (UTC)& \\ \hline
+Minute Commited& \\ \hline
+Day Commited& \\ \hline
+Month Commited& \\ \hline
+Year Commited& \\ \hline
+Day of Week& Day of Week \\ \hline
+Committing User&  Committing User\\ \hline
+Number of Files Commited& Number of Files Commited\\ \hline
+
+   
+   
+   
+    \end{tabular}
+\end{center}\caption{All Git Attributes (Left), Useful Git Attributes(Right)}
+\label{tab:attribs}
+\end{table}
+
+
+
+The features we chose to represent our commits are fairly simple ones; of the commit attribute data we use, only the day of the week required any computation.  Most of these attributes are presented to the user by git when they make a commit.  We did some initial testing with a decision tree classifier, inspecting changes in results while testing different subsets of features.  We also manually kept track of which features were pruned from the tree, which indicates they are less informative.   We concluded time and date commit data is not very informative for the open source projects we chose to study.  Year and Month are too large to contain much signal, and day of month and minute are too specific.  Because Hour is not stored in local time and the generally distributed nature of these projects, we did not find Hour to be an informative feature.  It is possible that these features could be more valuable in a highly centralized development structure, where there is extra knowledge of development schedules, but without any additional knowledge, we decided to ignore specific time-date data.  
 
 
 \subsection{Testing Methodology}
 
-To test the effectiveness of our feature selection, we mined features from eight open source repositories.  We attempted to choose projects with different life spans and applications to make our results more generalizable.  The list of projects mined, their number of commits, and the percentage of those commits we found to be buggy are in table {CITE}.
-
+To test the effectiveness of our feature selection, we mined features from eight open source repositories.  We attempted to choose projects with different life spans and applications to make our results more generalizable.  The list of projects mined, their number of commits, and the percentage of those commits we found to be buggy are in table {CITE}.  
 \begin{table}[h]
 \begin{center}
     \begin{tabular}{ | c | c | c | c | c |}
@@ -112,8 +144,8 @@ To test the effectiveness of our feature selection, we mined features from eight
 \label{tab:repos}
 \end{table}
 
+ For each repository we mined, we took the year of 2013, regardless of its size, to be our test set.  The reasoning behind this is that in practice, users will want to classify new commits as they come in, and the most recent year of commits were the best fit of the data we had. Notice due to the way our heuristic works (start at a bug fix and work back) our test set is likely to contain more false negatives because the bug fixes have potentially not been written yet.  However, in practice this will also be the case, so we feel this should not unreasonably skew our results.
 
-  For each repository we mined, we took the year of 2013, regardless of its size, to be our test set.  The reasoning behind this is that in practice, users will want to classify new commits as they come in, and the most recent year of commits were the best fit of the data we had. Notice due to the way our heuristic works (start at a bug fix and work back) our test set is likely to contain more false negatives because the bug fixes have potentially not been written yet.  However, in practice this will also be the case so we feel this should not unreasonably skew our results.
  \begin{figure}[h]
 \centering
 	\includegraphics[width=0.75\textwidth]{images/history}
@@ -122,7 +154,7 @@ To test the effectiveness of our feature selection, we mined features from eight
 
 \end{figure}
 
- 	For training data, we took commits from the final day of 2012 back six months, one year, two year, and to the start of the repository.  The goal here is to see how our results change with more data to train on (and potentially overfit to). 
+For training data, we took commits from the final day of 2012 back six months, one year, two years, and to the start of the repository.  The goal here is to see how our results change with more data to train on (and potentially overfit to).  Tables [CITE] and [CITE] show the size and percentage of commits which are buggy respectively.  Notice as time increases, the percentage of buggy commits increases (excepting scala all time).  This seems to be an artifact of our heuristic; older bugs are more likely to have associated bug fixes, and so are more likely to be found by our method.  Without having the actual distribution of buggy commits, we can make no assumptions about its trend over time.        
 	
 	
 	\begin{table}[h]
@@ -170,47 +202,78 @@ scipy  & 18.8 & 23.6 & 23.6 & 24.7 & 35.5 \\ \hline
 \label{tab:buggy}
 \end{table}
 
+\begin{figure}[h]
+    \centerline{
+        \subfigure[Git]{%
+            \includegraphics[width=0.4\textwidth,height=.3\textwidth]{images/perc_buggy_git}
+        }%
+        \subfigure[Puppet]{%
+           \includegraphics[width=0.4\textwidth,height=.3\textwidth]{images/perc_buggy_puppet}
+        }
+        \subfigure[Scala]{%
+            \includegraphics[width=0.4\textwidth,height=.3\textwidth]{images/perc_buggy_scala}
+        }%
+ }
+ \caption{Percent Buggy Commits over Time}
+\end{figure}
+
+To compare our features against some baseline, we created a “random weighted coin” classifier which calculated the percent buggy in a training set, and used this percentage as the weight on a random buggy/clean coin for each test instance.  We feel this represents a better floor against which to compare our results than simply using a fair coin.  To compare the effectiveness of attribute and message features, we also trained classifiers using only attribute features, only message features, and both sets of features.  
+
+
 \subsection{Learner Accuracy}
 
  \begin{figure}[h]
 \centering
-	\includegraphics[width=0.75\textwidth]{images/learner_comp}
-\caption{Comparison of Feature Results - 6 Months}
+	\includegraphics[width=1.0\textwidth,height=.7\textwidth]{images/learner_comp}
+\caption{Comparison of Feature Results - 1 Year}
 \label{git_comp}
 
 \end{figure}
+Figure [CITE] contains our accuracy results using one year of training data.  Results for random coin vary but in general are about fifteen to twenty points lower than the rest of the classifiers.  Using attribute features only tends to work as well or slightly better than message features, with big drops only occurring in cyclus and jquery.  Using both sets of features is comparable to only using one, though it appears more similar to message attributes.
+ 
+As much as we would like it to be otherwise, the 93.3 \% accuracy seen by jedit is more than a little misleading; the jquery test set is only 6.7\% buggy, and so the jedit classifiers simply guess clean for every instance. This is true for the majority of message-only feature classifiers; only cyclus and jquery classifiers ever classify any test commits as buggy.  The results from these classifiers are still promisingly higher than our baseline, which leads us to believe that our features do have some non-random correlation with clean and buggy commits.   All of our attribute-trained and attribute/message-trained classifiers have non-trivial decision boundaries.
+
+MOAR DATA HERE PLZ SOMETHING WIT RECALL AND PRECISION
 
 \subsection{Training Set Variation}
 
  \begin{figure}[h]
 \centering
-	\includegraphics[width=0.75\textwidth]{images/time_comp}
+	\includegraphics[width=1.0\textwidth,height=.7\textwidth]{images/time_comp}
 \caption{Training Data Size - Message and Attributes}
 \label{git_comp}
 
 \end{figure}
+Accuracy across repositories tended to trend downward as the time frame from the training set increased.  Not visible in table [CITE] is the fact that for six months data sets, the likelihood  of trivial decision boundaries seems to increase.  On the other end of the spectrum, however,  it seems clear that using all of the data introduces too much noise.  Some of these projects predate git and almost certainly were originally in another version system.  Overall, it seems likely to us that recent commits are more representative of commits in the near future, which would explain the drop in results.  From our work, we suspect one to two years is the “optimal” range of sizes, though this will obviously be different for each repository, depending on how often they make commits.  We did not test this, but it might also be beneficial to allow a period of time between the training data and the most recent commit; this space could help reduce false negatives by allowing a reasonable amount of time for bug fixes for the training data to be added. 
 
 \subsection{Cross Repository Training}
 
-Six months to a year of repository data before being able to use a tool seems like a fairly high price of admission.  Being able to substitute another repository’s history for your own with little to no hit in accuracy seems like it would make our tool more applicable.  Furthermore, what does this say about commits if commits from two unrelated repositories are similar enough that one can be used to train the other?  To answer these questions, we decided to use git’s commit history to train our learner and test on the other seven repositories.  Git was chosen because it was the repository with the best nontrivial performance.  In order for training and testing data to be compatible, the user feature had to be removed from both data sets. 
+A year of repository data before being able to use a tool seems like a fairly high price of admission.  Being able to substitute another repository’s history for your own with little to no hit in accuracy seems like it would make our tool more applicable.  Furthermore, what does this say about commits if commits from two unrelated repositories are similar enough that one can be used to train the other?  To answer these questions, we decided to use git’s commit history to train our classifier and test on the other seven repositories.  Scipy and git were chosen because they were large repositories with good performance and non trivial decision boundaries.  In order for training and testing data to be compatible, the user feature had to be removed from all data sets. 
 
  \begin{figure}[h]
 \centering
-	\includegraphics[width=0.6\textwidth]{images/git_comp}
-\caption{Training With Git - 6 Months, Message and Attribute Data}
+	\includegraphics[width=1.0\textwidth]{images/git_comp}
+\caption{Training With Git and Scipy - 1 Months, Message and Attribute Data}
 \label{git_comp}
 
 \end{figure}
 
-In general, results tended to be comparable to those using their respective data sets.  The git learner accuracies displayed the same trend of slow decrease as training data size increased, with a noticeable drop when all training data was used.  As Table [CITE] shows, cyclus and jquery see drop offs of about four percentage points, while scala performs six percentage points better.  The other four repositories stay essentially the same, with some minor variation.  Interestingly, the git trained learner is able to slightly improve on the always-guess-clean jedit learner even though the git training data is three times as buggy as the jedit test data.  
+In general, results tended to be comparable to those using their respective data sets.  The cross-repository classifier accuracies displayed the same trend of slow decrease as training data size increased, with a noticeable drop when all training data was used.  
 
-This comparable performance indicates to us that using a learner trained on another repository is a valid proxy for repositories that do not have their own history.  It also seems that the distribution of message and commit attribute features we use do not vary much across repositories.  More work would need to be done to give such a claim actual weight, but if our features have global, general boundaries, could we use this information in some kind of prescriptive fashion, a la “keep your commits to X lines added if possible”. Or would knowledge and enforcement of this information simply shift the boundary? 
+This comparable performance indicates to us that using a classifier trained on another repository is a valid proxy for repositories that do not have their own history.  It also seems that the distribution of message and commit attribute features we use do not vary much across repositories.  More work would need to be done to give such a claim actual weight, but if our features have global, general boundaries, could we use this information in some kind of prescriptive fashion, a la “keep your commits to X lines added if possible”. Or would knowledge and enforcement of this information simply shift the boundary?   
 
-\subsection{Threats to Validity}
+\section{Threats to Validity}
 
 There are several potential threats to the validity of our results.  The heuristic used in classifying past commits represents a multifaceted threat.  First, though [CITE] has presented some evidence that this method works well in practice, there is no evidence to support that these results generalize well.  As we mined neither of the two projects they studied, it is possible that our approximation of the true distribution of clean and buggy commits is flawed.  Even if we had mined those repositories, it is possible in the eight years between the writing of [CITE] and now that the heuristic does as well.  Another potential problem this heuristic introduces is that our ensemble learner is attempting to learn this approximation.  If the approximation does not closely match the actual distribution, then the results we present are in no way an indication of how our tool would perform against actual commits.
 
 Another potential threat is the repositories we chose.  While we attempted to pick a representative sample of the open source projects in development, this excludes closed source projects. Also, we only mined english-speaking repositories, which is required by our heuristic classification and all of our message features.  We made no attempt to take into account differences and eccentricities of the individual repositories we did mine.  It is possible (even likely) that these eccentricities are to account for the variation between repositories.   
+
+\section{Future Work}
+More work on heuristic
+More work on message representation (NLP)
+User history instead of/in addition to commit history
+semi supervised learning?
+If commits aren’t idiosyncratic to repositories, maybe they are to developers?
 
 \section{Concluding Remarks}
 

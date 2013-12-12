@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  10 DEC 2013 23:26
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  12 DEC 2013 01:28
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -336,93 +336,127 @@ Overfull \hbox (21.62407pt too wide) in paragraph at lines 62--62
 Missing character: There is no Õ in font cmr12!
 Missing character: There is no Õ in font cmr12!
 Missing character: There is no Õ in font cmr12!
+Missing character: There is no Õ in font cmr12!
  [2]
-Missing character: There is no Ò in font cmr12!
-Missing character: There is no Ó in font cmr12!
-Missing character: There is no Ò in font cmr12!
-Missing character: There is no Ó in font cmr12!
-Missing character: There is no Ò in font cmr12!
-Missing character: There is no Ó in font cmr12!
 Missing character: There is no Ñ in font cmr12!
+Missing character: There is no Ò in font cmr12!
+Missing character: There is no Ó in font cmr12!
+Missing character: There is no Ò in font cmr12!
+Missing character: There is no Ó in font cmr12!
  [3]
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<images/history.png, id=21, 697.60625pt x 236.885pt>
+Missing character: There is no Ò in font cmr12!
+Missing character: There is no Ó in font cmr12!
+Missing character: There is no Ò in font cmr12!
+Missing character: There is no Ó in font cmr12!
+ [4] [5] <images/history.png, id=27, 697.60625pt x 236.885pt>
 File: images/history.png Graphic file (type png)
- <use images/history.png>
-Package pdftex.def Info: images/history.png used on input line 119.
+
+<use images/history.png>
+Package pdftex.def Info: images/history.png used on input line 151.
 (pdftex.def)             Requested size: 325.215pt x 110.43231pt.
 
-[4]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
+[6]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/learner_comp.png, id=25, 1964.7804pt x 955.4094pt>
+<images/perc_buggy_git.png, id=32, 578.16pt x 433.62pt>
+File: images/perc_buggy_git.png Graphic file (type png)
+
+<use images/perc_buggy_git.png>
+Package pdftex.def Info: images/perc_buggy_git.png used on input line 216.
+(pdftex.def)             Requested size: 173.4405pt x 130.087pt.
+
+<images/perc_buggy_puppet.png, id=34, 578.16pt x 433.62pt>
+File: images/perc_buggy_puppet.png Graphic file (type png)
+
+<use images/perc_buggy_puppet.png>
+Package pdftex.def Info: images/perc_buggy_puppet.png used on input line 216.
+(pdftex.def)             Requested size: 173.4405pt x 130.087pt.
+
+<images/perc_buggy_scala.png, id=35, 578.16pt x 433.62pt>
+File: images/perc_buggy_scala.png Graphic file (type png)
+
+<use images/perc_buggy_scala.png>
+Package pdftex.def Info: images/perc_buggy_scala.png used on input line 216.
+(pdftex.def)             Requested size: 173.4405pt x 130.087pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+Missing character: There is no Ò in font cmr12!
+Missing character: There is no Ó in font cmr12!
+<images/learner_comp.png, id=36, 1964.7804pt x 955.4094pt>
 File: images/learner_comp.png Graphic file (type png)
 
 <use images/learner_comp.png>
-Package pdftex.def Info: images/learner_comp.png used on input line 177.
-(pdftex.def)             Requested size: 325.215pt x 158.13141pt.
+Package pdftex.def Info: images/learner_comp.png used on input line 227.
+(pdftex.def)             Requested size: 433.60213pt x 303.52133pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/time_comp.png, id=27, 2133.4104pt x 987.69pt>
+[7 <./images/history.png>]
+<images/time_comp.png, id=40, 2133.4104pt x 987.69pt>
 File: images/time_comp.png Graphic file (type png)
 
 <use images/time_comp.png>
-Package pdftex.def Info: images/time_comp.png used on input line 187.
-(pdftex.def)             Requested size: 325.215pt x 150.55846pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-Missing character: There is no Õ in font cmr12!
-Missing character: There is no Õ in font cmr12!
-[5 <./images/history.png>]
-<images/git_comp.png, id=31, 1358.676pt x 911.5656pt>
-File: images/git_comp.png Graphic file (type png)
-
-<use images/git_comp.png>
-Package pdftex.def Info: images/git_comp.png used on input line 199.
-(pdftex.def)             Requested size: 260.17465pt x 174.54846pt.
+Package pdftex.def Info: images/time_comp.png used on input line 242.
+(pdftex.def)             Requested size: 433.60835pt x 303.52826pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 Missing character: There is no Ò in font cmr12!
 Missing character: There is no Ó in font cmr12!
-[6] [7 <./images/learner_comp.png> <./images/time_comp.png>]
+[8 <./images/perc_buggy_git.png> <./images/perc_buggy_puppet.png> <./images/per
+c_buggy_scala.png>]
+Missing character: There is no Õ in font cmr12!
+Missing character: There is no Õ in font cmr12!
+ [9 <./images/learner_comp.png>]
+<images/git_comp.png, id=51, 1689.1908pt x 1010.3346pt>
+File: images/git_comp.png Graphic file (type png)
 
-LaTeX Warning: Empty `thebibliography' environment on input line 221.
+<use images/git_comp.png>
+Package pdftex.def Info: images/git_comp.png used on input line 255.
+(pdftex.def)             Requested size: 433.62001pt x 259.35085pt.
 
-[8 <./images/git_comp.png>] (./paper.aux)
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+Missing character: There is no Ò in font cmr12!
+Missing character: There is no Ó in font cmr12!
+[10 <./images/time_comp.png>]
+Missing character: There is no Õ in font cmr12!
+ [11 <./images/git_comp.png>]
+
+LaTeX Warning: Empty `thebibliography' environment on input line 284.
+
+[12] (./paper.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 3617 strings out of 493633
- 49985 string characters out of 3143378
- 133444 words of memory out of 3000000
- 6854 multiletter control sequences out of 15000+200000
+ 3633 strings out of 493633
+ 50434 string characters out of 3143378
+ 129461 words of memory out of 3000000
+ 6867 multiletter control sequences out of 15000+200000
  10367 words of font info for 36 fonts, out of 3000000 for 9000
  831 hyphenation exceptions out of 8191
- 38i,9n,35p,1255b,271s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,10n,35p,1445b,271s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb>
 </usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></
 usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></us
 r/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on paper.pdf (9 pages, 1621728 bytes).
+Output written on paper.pdf (13 pages, 1840807 bytes).
 PDF statistics:
- 66 PDF objects out of 1000 (max. 8388607)
- 41 compressed objects within 1 object stream
+ 85 PDF objects out of 1000 (max. 8388607)
+ 50 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 21 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 36 words of extra memory for PDF output out of 10000 (max. 10000000)
 
