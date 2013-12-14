@@ -3,15 +3,15 @@
 \contentsline {section}{\numberline {3}Approach}{3}
 \contentsline {subsection}{\numberline {3.1}Mining Git Repositories}{3}
 \contentsline {subsection}{\numberline {3.2}Automatically Classifying Past Commits}{3}
-\contentsline {subsection}{\numberline {3.3}Machine Learning Algorithms}{4}
+\contentsline {subsection}{\numberline {3.3}Machine Learning Algorithms}{3}
 \contentsline {subsection}{\numberline {3.4}Pull Requests}{4}
 \contentsline {section}{\numberline {4}Results}{5}
 \contentsline {subsection}{\numberline {4.1}Feature Analysis}{5}
 \contentsline {subsection}{\numberline {4.2}Testing Methodology}{6}
-\contentsline {subsection}{\numberline {4.3}Learner Accuracy}{7}
-\contentsline {subsection}{\numberline {4.4}Training Set Variation}{8}
-\contentsline {subsection}{\numberline {4.5}Cross Repository Training}{9}
+\contentsline {subsection}{\numberline {4.3}Classifier Accuracy}{8}
+\contentsline {subsection}{\numberline {4.4}Training Set Variation}{9}
+\contentsline {subsection}{\numberline {4.5}Cross Repository Training}{10}
 \contentsline {section}{\numberline {5}Threats to Validity}{11}
-\contentsline {section}{\numberline {6}Future Work}{12}
+\contentsline {section}{\numberline {6}Future Work}{11}
 \contentsline {section}{\numberline {7}Concluding Remarks}{12}
 \contentsline {section}{Bibliography}{12}

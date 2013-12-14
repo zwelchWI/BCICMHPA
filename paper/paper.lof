@@ -1,8 +1,16 @@
-\contentsline {figure}{\numberline {1}{\ignorespaces Testing and Training Sets}}{7}
-\contentsline {figure}{\numberline {2}{\ignorespaces Percent Buggy Commits over Time}}{8}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Git}}}{8}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Puppet}}}{8}
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Scala}}}{8}
-\contentsline {figure}{\numberline {3}{\ignorespaces Comparison of Feature Results - 1 Year}}{9}
-\contentsline {figure}{\numberline {4}{\ignorespaces Training Data Size - Message and Attributes}}{10}
-\contentsline {figure}{\numberline {5}{\ignorespaces Training With Git and Scipy - 1 Months, Message and Attribute Data}}{11}
+\contentsline {figure}{\numberline {1}{\ignorespaces Testing and Training Sets\relax }}{6}
+\contentsline {figure}{\numberline {2}{\ignorespaces Percent Buggy Commits over Time\relax }}{7}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Git}}}{7}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Puppet}}}{7}
+\contentsline {figure}{\numberline {3}{\ignorespaces Comparison of Feature Results - 1 Year\relax }}{8}
+\contentsline {figure}{\numberline {4}{\ignorespaces Precision Recall Graphs\relax }}{9}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Cyclus}}}{9}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Scala}}}{9}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Scipy}}}{9}
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {Cyclus - ROC graph}}}{9}
+\contentsline {figure}{\numberline {5}{\ignorespaces Training Data Size - Message and Attributes\relax }}{10}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Accuracy}}}{10}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Precision Recall Graph}}}{10}
+\contentsline {figure}{\numberline {6}{\ignorespaces Training With Git and Scipy - 1 Months, Message and Attribute Data\relax }}{10}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Accuracy}}}{10}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Precision Recall}}}{10}
