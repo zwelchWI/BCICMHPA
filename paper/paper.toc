@@ -9,9 +9,9 @@
 \contentsline {subsection}{\numberline {4.1}Feature Analysis}{5}
 \contentsline {subsection}{\numberline {4.2}Testing Methodology}{6}
 \contentsline {subsection}{\numberline {4.3}Classifier Accuracy}{8}
-\contentsline {subsection}{\numberline {4.4}Training Set Variation}{9}
-\contentsline {subsection}{\numberline {4.5}Cross Repository Training}{10}
+\contentsline {subsection}{\numberline {4.4}Training Set Variation}{10}
+\contentsline {subsection}{\numberline {4.5}Cross Repository Training}{11}
 \contentsline {section}{\numberline {5}Threats to Validity}{11}
-\contentsline {section}{\numberline {6}Future Work}{11}
-\contentsline {section}{\numberline {7}Concluding Remarks}{12}
-\contentsline {section}{Bibliography}{12}
+\contentsline {section}{\numberline {6}Future Work}{12}
+\contentsline {section}{\numberline {7}Concluding Remarks}{13}
+\contentsline {section}{Bibliography}{13}
