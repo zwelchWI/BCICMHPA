@@ -1,0 +1,85 @@
+\begin{thebibliography}{10}
+
+\bibitem{Cataldo:2011:FLI:1985793.1985816}
+{\sc Cataldo, M., and Herbsleb, J.~D.}
+\newblock Factors leading to integration failures in global feature-oriented
+  development: An empirical analysis.
+\newblock In {\em Proceedings of the 33rd International Conference on Software
+  Engineering\/} (New York, NY, USA, 2011), ICSE '11, ACM, pp.~161--170.
+
+\bibitem{Hindle:2008:LCT:1370750.1370773}
+{\sc Hindle, A., German, D.~M., and Holt, R.}
+\newblock What do large commits tell us?: A taxonomical study of large commits.
+\newblock In {\em Proceedings of the 2008 International Working Conference on
+  Mining Software Repositories\/} (New York, NY, USA, 2008), MSR '08, ACM,
+  pp.~99--108.
+
+\bibitem{Kagdi:2007:STA:1345056.1345057}
+{\sc Kagdi, H., Collard, M.~L., and Maletic, J.~I.}
+\newblock A survey and taxonomy of approaches for mining software repositories
+  in the context of software evolution.
+\newblock {\em J. Softw. Maint. Evol. 19}, 2 (Mar. 2007), 77--131.
+
+\bibitem{Kim:2008:CSC:1399105.1399451}
+{\sc Kim, S., Whitehead, Jr., E.~J., and Zhang, Y.}
+\newblock Classifying software changes: Clean or buggy?
+\newblock {\em IEEE Trans. Softw. Eng. 34}, 2 (Mar. 2008), 181--196.
+
+\bibitem{Kim:2006:AIB:1169218.1169308}
+{\sc Kim, S., Zimmermann, T., Pan, K., and Whitehead, E. J.~J.}
+\newblock Automatic identification of bug-introducing changes.
+\newblock In {\em Proceedings of the 21st IEEE/ACM International Conference on
+  Automated Software Engineering\/} (Washington, DC, USA, 2006), IEEE Computer
+  Society, pp.~81--90.
+
+\bibitem{Flesch}
+Microsoft office : Test your document's readability.
+\newblock
+  \url{http://office.microsoft.com/en-us/word-help/test-your-document-s-readability-HP010354286.aspx}.
+\newblock Accessed: 2013-11-23.
+
+\bibitem{Nagappan:1062514}
+{\sc Nagappan, N., and Ball, T.}
+\newblock Use of relative code churn measures to predict system defect density.
+\newblock In {\em Proc. Int'l Conf. Software Engineering (ICSE)\/} (2005),
+  pp.~284--292.
+
+\bibitem{Queequeg}
+{\sc Shinyama, Y.}
+\newblock Queequeg, a tiny english grammar checker.
+\newblock \url{http://queequeg.sourceforge.net/index-e.html}.
+\newblock Accessed: 2013-11-20.
+
+\bibitem{Sliwerski:2005:CIF:1082983.1083147}
+{\sc \'{S}liwerski, J., Zimmermann, T., and Zeller, A.}
+\newblock When do changes induce fixes?
+\newblock {\em SIGSOFT Softw. Eng. Notes 30}, 4 (May 2005), 1--5.
+
+\bibitem{Ying:2004:PSC:1018037.1018388}
+{\sc Ying, A. T.~T., Murphy, G.~C., Ng, R., and Chu-Carroll, M.~C.}
+\newblock Predicting source code changes by mining change history.
+\newblock {\em IEEE Trans. Softw. Eng. 30}, 9 (Sept. 2004), 574--586.
+
+\bibitem{Zimmermann:2009:CDP:1595696.1595713}
+{\sc Zimmermann, T., Nagappan, N., Gall, H., Giger, E., and Murphy, B.}
+\newblock Cross-project defect prediction: A large scale experiment on data vs.
+  domain vs. process.
+\newblock In {\em Proceedings of the the 7th Joint Meeting of the European
+  Software Engineering Conference and the ACM SIGSOFT Symposium on The
+  Foundations of Software Engineering\/} (New York, NY, USA, 2009), ESEC/FSE
+  '09, ACM, pp.~91--100.
+
+\bibitem{Zimmermann:2012:CPB:2337223.2337363}
+{\sc Zimmermann, T., Nagappan, N., Guo, P.~J., and Murphy, B.}
+\newblock Characterizing and predicting which bugs get reopened.
+\newblock In {\em Proceedings of the 2012 International Conference on Software
+  Engineering\/} (Piscataway, NJ, USA, 2012), ICSE 2012, IEEE Press,
+  pp.~1074--1083.
+
+\bibitem{zimmermann-icse-2004}
+{\sc Zimmermann, T., Weißgerber, P., Diehl, S., and Zeller, A.}
+\newblock Mining version histories to guide software changes.
+\newblock In {\em Proceedings of the 26th International Conference on Software
+  Engineering\/} (May 2004), IEEE Computer Society, pp.~563--572.
+
+\end{thebibliography}
