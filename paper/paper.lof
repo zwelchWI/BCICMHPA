@@ -2,7 +2,7 @@
 \contentsline {figure}{\numberline {2}{\ignorespaces Percent Buggy Commits over Time\relax }}{8}
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Git}}}{8}
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Puppet}}}{8}
-\contentsline {figure}{\numberline {3}{\ignorespaces Comparison of Feature Results - 1 Year\relax }}{9}
+\contentsline {figure}{\numberline {3}{\ignorespaces Comparison of Feature Results $-$ 1 Year\relax }}{9}
 \contentsline {figure}{\numberline {4}{\ignorespaces Precision Recall Graphs\relax }}{10}
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Cyclus}}}{10}
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Scala}}}{10}
@@ -11,6 +11,6 @@
 \contentsline {figure}{\numberline {5}{\ignorespaces Training Data Size - Message and Attributes\relax }}{11}
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Accuracy}}}{11}
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Precision Recall Graph- Puppet}}}{11}
-\contentsline {figure}{\numberline {6}{\ignorespaces Training With Git and Scipy - 1 Months, Message and Attribute Data\relax }}{12}
+\contentsline {figure}{\numberline {6}{\ignorespaces Training With Git and Scipy $-$ 1 Months, Message and Attribute Data\relax }}{12}
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Accuracy}}}{12}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Precision Recall-Puppet}}}{12}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Precision Recall$-$Puppet}}}{12}
